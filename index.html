@@ -1,0 +1,1303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Commonplace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b2b44">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Commonplace">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f1f3f6; --sheet:#ffffff; --ink:#16212e; --muted:#667385; --rule:#dde2ea; --soft:#e7ebf1;
+  --navy:#1b2b44; --navy-ink:#ffffff; --sun:#f2b632; --danger:#b3261e;
+  --sup:#2f8f6b; --chal:#c8452f; --read:#c98d0b; --ctx:#3b6fb6;
+  --serif:'Spectral',Georgia,'Times New Roman',serif; --sans:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f141b; --sheet:#171e28; --ink:#e6ebf2; --muted:#8b98ab; --rule:#263040; --soft:#1e2733;
+    --navy:#dfe7f5; --navy-ink:#0f141b; --danger:#ff8a80;
+    --sup:#5cc9a0; --chal:#ff8a72; --read:#f2b632; --ctx:#7fb0ff; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f141b; --sheet:#171e28; --ink:#e6ebf2; --muted:#8b98ab; --rule:#263040; --soft:#1e2733;
+  --navy:#dfe7f5; --navy-ink:#0f141b; --danger:#ff8a80;
+  --sup:#5cc9a0; --chal:#ff8a72; --read:#f2b632; --ctx:#7fb0ff; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-text-size-adjust:100%;font-size:16px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:30}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+#main{max-width:680px;margin:0 auto;padding:0 18px 130px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);padding:16px 0 12px;display:flex;align-items:flex-end;gap:10px}
+.top .ttl{flex:1;min-width:0}
+.top h1{font-family:var(--serif);font-size:2.1rem;line-height:1.05;margin:0;font-weight:600;letter-spacing:-.015em}
+.top .sub{font-size:.84rem;color:var(--muted);margin-top:2px}
+.ibtn{width:40px;height:40px;border-radius:50%;border:0;background:var(--soft);display:flex;align-items:center;justify-content:center;flex:none}
+.ibtn svg{width:20px;height:20px}
+.hint{color:var(--muted);font-size:.84rem;margin:0}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.spread{justify-content:space-between}
+.primary{background:var(--navy);color:var(--navy-ink);border:0;border-radius:12px;padding:10px 16px;font-weight:500;font-size:.92rem}
+.ghost{background:none;border:1px solid var(--rule);border-radius:12px;padding:9px 14px;font-size:.9rem}
+.small{padding:6px 12px;font-size:.82rem;border-radius:10px}
+.danger{color:var(--danger)}
+.empty{color:var(--muted);text-align:center;padding:32px 12px;font-size:.95rem;line-height:1.5}
+
+/* the writing surface */
+.dump{background:var(--sheet);border-radius:16px;padding:14px 16px 12px;margin:2px 0 16px;box-shadow:0 1px 0 var(--rule),0 12px 30px -16px rgba(22,33,46,.25)}
+.dump textarea{width:100%;border:0;background:none;resize:none;outline:none;color:var(--ink);font-family:var(--serif);font-size:1.18rem;line-height:1.7;min-height:96px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(1.7em - 1px),var(--rule) calc(1.7em - 1px),var(--rule) 1.7em);background-attachment:local}
+.dump textarea::placeholder{color:var(--muted);font-style:italic}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:500;border:1px solid var(--rule);background:none;color:var(--ink)}
+.chip.on{background:var(--navy);color:var(--navy-ink);border-color:var(--navy)}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters .chip{white-space:nowrap;padding:6px 12px;font-size:.84rem}
+
+/* feed */
+.day{font-family:var(--serif);font-size:1.5rem;font-weight:600;margin:22px 0 10px;letter-spacing:-.01em}
+.day small{font-family:var(--sans);font-size:.8rem;font-weight:400;color:var(--muted);margin-left:8px}
+.page{position:relative;background:var(--sheet);border-radius:6px;padding:16px 18px 14px;margin:0 8px 14px 0;box-shadow:0 1px 0 var(--rule),0 10px 24px -18px rgba(22,33,46,.35);cursor:pointer}
+.page.claim{border-left:4px solid var(--navy)}
+.page h3{font-family:var(--serif);font-size:1.28rem;line-height:1.25;margin:0 0 6px;font-weight:600;letter-spacing:-.005em}
+.page p{font-family:var(--serif);font-size:1.03rem;line-height:1.6;margin:0;color:var(--ink);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap}
+.page .meta{display:flex;gap:8px;align-items:center;font-size:.78rem;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}
+.page .foot{margin-top:10px}
+.etabs{position:absolute;right:-8px;top:14px;display:flex;flex-direction:column;gap:4px}
+.etab{width:9px;height:22px;border-radius:0 4px 4px 0;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.etab.supports{background:var(--sup)} .etab.challenges{background:var(--chal)} .etab.readmore{background:var(--read)} .etab.context{background:var(--ctx)}
+.scrap{background:var(--soft);border-radius:14px 14px 14px 3px;padding:10px 14px;margin:0 0 12px;cursor:pointer;max-width:92%}
+.scrap p{font-family:var(--serif);font-size:.98rem;line-height:1.55;margin:0;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.scrap .meta{font-size:.74rem;color:var(--muted);margin-bottom:3px}
+.pill{font-size:.72rem;font-weight:500;border-radius:6px;padding:1px 7px;background:var(--soft);color:var(--muted)}
+.pill.claimp{background:var(--navy);color:var(--navy-ink)}
+.pill.gap{background:transparent;color:var(--chal);border:1px solid var(--chal)}
+
+/* scrapbook */
+.masonry{columns:2;column-gap:12px}
+.clip{break-inside:avoid;margin:0 0 12px;position:relative;cursor:pointer;background:var(--sheet);box-shadow:0 1px 0 var(--rule),0 8px 20px -16px rgba(22,33,46,.35);overflow:hidden}
+.clip.loose{outline:1.5px dashed var(--rule);outline-offset:-1.5px;box-shadow:none;background:transparent}
+.clip .in{padding:12px 13px 11px}
+.clip .src{font-size:.74rem;color:var(--muted);margin-top:8px;line-height:1.35;word-break:break-word}
+.clip.quote{border-radius:4px 14px 4px 14px}
+.clip.quote .txt{font-family:var(--serif);font-size:1.02rem;line-height:1.5;font-style:italic}
+.clip.quote .in::before{content:"\201C";display:block;font-family:var(--serif);font-size:2.4rem;line-height:.6;color:var(--sun);margin-bottom:2px}
+.clip.data{border-radius:14px}
+.clip.data .big{font-family:var(--serif);font-size:2.3rem;line-height:1;font-weight:600;letter-spacing:-.02em}
+.clip.data .lab{font-size:.84rem;margin-top:6px;line-height:1.35}
+.clip.link{border-radius:10px;border-top:3px solid var(--ctx)}
+.clip.link .dom{font-size:.74rem;color:var(--ctx);font-weight:500;margin-bottom:3px;word-break:break-all}
+.clip.link .txt{font-family:var(--serif);font-size:1rem;line-height:1.4;font-weight:500}
+.clip.note{border-radius:3px 12px 12px 12px;background:#fbf0c9;color:#3b3208}
+.clip.note .txt{font-family:var(--serif);font-size:.98rem;line-height:1.5;white-space:pre-wrap}
+.clip.image{border-radius:3px;padding:7px 7px 2px;background:#fff}
+.clip.image img{width:100%;display:block;border-radius:1px}
+.clip.image .src{color:#59626d;padding:0 4px 6px}
+.clip .toread{position:absolute;top:0;right:12px;width:12px;height:18px;background:var(--read);clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)}
+.clip .uses{display:flex;gap:3px;margin-top:8px}
+.clip .uses b{width:14px;height:5px;border-radius:3px}
+.clip .uses .supports{background:var(--sup)} .clip .uses .challenges{background:var(--chal)} .clip .uses .readmore{background:var(--read)} .clip .uses .context{background:var(--ctx)}
+
+/* topics */
+.topic{display:block;width:100%;text-align:left;background:var(--sheet);border:0;border-radius:6px;padding:14px 16px 14px 20px;margin:0 0 12px;position:relative;box-shadow:0 1px 0 var(--rule),0 10px 24px -18px rgba(22,33,46,.35)}
+.topic::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:6px 0 0 6px;background:var(--tc)}
+.topic h3{font-family:var(--serif);font-size:1.3rem;margin:0 0 4px;font-weight:600}
+.topic .stats{display:flex;gap:14px;font-size:.82rem;color:var(--muted);flex-wrap:wrap}
+.stat b{color:var(--ink);font-weight:600}
+.gapcard{background:var(--sheet);border-radius:6px;padding:12px 16px;margin:0 0 12px;box-shadow:0 1px 0 var(--rule)}
+.gapcard h4{margin:0 0 6px;font-family:var(--serif);font-size:1.08rem;font-weight:600}
+.gapcard .it{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--rule);padding:9px 0;font-size:.92rem;line-height:1.4}
+.seg{display:flex;background:var(--soft);border-radius:11px;padding:3px;margin:0 0 14px}
+.seg button{flex:1;background:none;border:0;border-radius:9px;padding:7px 4px;font-size:.85rem;color:var(--muted)}
+.seg button.on{background:var(--sheet);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.map{background:var(--sheet);border-radius:8px;box-shadow:0 1px 0 var(--rule);padding:4px;margin-bottom:10px}
+.map svg{width:100%;height:auto;display:block;touch-action:manipulation}
+.map text{font-family:var(--sans);font-size:9px;fill:var(--muted);pointer-events:none}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin:6px 2px 10px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{display:inline-block;width:16px;height:0;border-top:2px solid}
+
+/* sheets and editor */
+.bg{position:fixed;inset:0;z-index:60;background:rgba(10,16,24,.5);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--paper);width:100%;max-width:680px;max-height:94vh;max-height:94dvh;overflow:auto;border-radius:22px 22px 0 0;padding:14px 18px calc(24px + env(safe-area-inset-bottom,0px));animation:rise .2s ease-out}
+.sheet.full{height:94vh;height:94dvh}
+@keyframes rise{from{transform:translateY(18px);opacity:.6}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet .bar{display:flex;justify-content:space-between;align-items:center;margin:0 0 8px}
+.sheet .grab{width:38px;height:4px;border-radius:2px;background:var(--rule);margin:0 auto 10px}
+.t-in{width:100%;border:0;background:none;font-family:var(--serif);font-size:1.75rem;line-height:1.2;font-weight:600;color:var(--ink);outline:none;padding:6px 0;letter-spacing:-.01em}
+.b-in{width:100%;border:0;background:none;resize:none;font-family:var(--serif);font-size:1.14rem;line-height:1.7;color:var(--ink);outline:none;min-height:150px;padding:4px 0 12px}
+.t-in:focus-visible,.b-in:focus-visible,.dump textarea:focus-visible{outline:none}
+.t-in{resize:none;overflow:hidden;display:block}
+.t-in::placeholder,.b-in::placeholder{color:var(--muted);font-style:italic;font-weight:400}
+.sec{margin:18px 0 6px;font-family:var(--serif);font-size:1.1rem;font-weight:600}
+.mark{display:flex;gap:10px;align-items:flex-start;background:var(--sheet);border-radius:8px;padding:10px 12px;margin:0 0 8px;box-shadow:0 1px 0 var(--rule)}
+.mark .role{border:1.5px solid currentColor;background:none;border-radius:8px;padding:3px 8px;font-size:.75rem;font-weight:600;flex:none;margin-top:1px}
+.mark .mb{flex:1;min-width:0;cursor:pointer}
+.mark .mt{font-family:var(--serif);font-size:.98rem;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.mark small{color:var(--muted);font-size:.76rem}
+.mark .x{background:none;border:0;font-size:1.3rem;color:var(--muted);padding:0 4px;line-height:1}
+.field{width:100%;background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;font:inherit;font-size:.95rem;color:var(--ink);margin:0 0 8px}
+textarea.field{font-family:var(--serif);font-size:1.02rem;line-height:1.5;min-height:90px;resize:vertical}
+.lbl{font-size:.8rem;color:var(--muted);margin:10px 0 4px;display:block}
+.pickrow{display:block;width:100%;text-align:left;background:var(--sheet);border:0;border-radius:8px;padding:10px 12px;margin:0 0 6px;box-shadow:0 1px 0 var(--rule)}
+.pickrow .pt{font-family:var(--serif);font-size:.98rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pickrow small{color:var(--muted);font-size:.75rem}
+.search{width:100%;background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:11px 14px;font:inherit;font-size:1rem;color:var(--ink);margin:0 0 12px}
+
+/* v2: confidence, strength, history, questions, bridges, build */
+.strength{background:var(--sheet);border-radius:8px;padding:10px 12px;margin:8px 0;box-shadow:0 1px 0 var(--rule)}
+.strength .lab{font-size:.9rem;font-weight:600;margin-bottom:6px}
+.strength .rowb{display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--muted);margin:3px 0}
+.strength .rowb em{font-style:normal;width:66px;flex:none}
+.strength .track{flex:1;height:7px;border-radius:4px;background:var(--soft);overflow:hidden}
+.strength .track i{display:block;height:100%;border-radius:4px}
+.strength .s{background:var(--sup)} .strength .c{background:var(--chal)}
+.strength .note{font-size:.76rem;color:var(--muted);margin-top:6px;line-height:1.4}
+.qual{display:inline-block;font-size:.68rem;font-weight:600;border-radius:5px;padding:1px 6px;margin-top:8px;background:var(--soft);color:var(--muted)}
+.clip.image .qual{background:#eef0f3;color:#59626d;margin:0 4px 6px}
+.clip.note .qual{background:rgba(0,0,0,.08);color:#3b3208}
+.qcard{background:var(--sheet);border-radius:6px;padding:12px 16px;margin:0 0 10px;box-shadow:0 1px 0 var(--rule);cursor:pointer;border-left:4px solid var(--ctx)}
+.qcard.answered{border-left-color:var(--sup)} .qcard.parked{border-left-color:var(--muted)}
+.qcard .qt{font-family:var(--serif);font-size:1.12rem;line-height:1.35;font-weight:500;margin:0 0 8px}
+.tl{border-left:2px solid var(--rule);margin:10px 0 10px 8px;padding-left:16px}
+.tl .ev{position:relative;margin:0 0 14px}
+.tl .ev::before{content:"";position:absolute;left:-23px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--muted)}
+.tl .ev.conf::before{background:var(--sun)} .tl .ev.mark::before{background:var(--sup)} .tl .ev.claim::before{background:var(--navy)} .tl .ev.text::before{background:var(--ctx)}
+.tl .ev small{display:block;color:var(--muted);font-size:.74rem}
+.tl .ev p{margin:2px 0 0;font-size:.92rem;line-height:1.4}
+.ver{background:var(--sheet);border-radius:8px;padding:10px 12px;margin:0 0 8px;box-shadow:0 1px 0 var(--rule)}
+.ver .vt{font-family:var(--serif);font-size:.98rem;line-height:1.5;white-space:pre-wrap;margin:8px 0}
+.outline{background:var(--sheet);border-radius:8px;padding:14px 16px;font-family:var(--serif);font-size:.98rem;line-height:1.55;white-space:pre-wrap;box-shadow:0 1px 0 var(--rule);margin:10px 0;-webkit-user-select:text;user-select:text}
+.brow{display:flex;gap:8px;align-items:center;background:var(--sheet);border-radius:8px;padding:8px 10px;margin:0 0 6px;box-shadow:0 1px 0 var(--rule)}
+.brow .bt{flex:1;min-width:0;font-family:var(--serif);font-size:.98rem;line-height:1.3}
+.brow button.sq{width:32px;height:32px;border-radius:8px;border:1px solid var(--rule);background:none;font-size:1rem;flex:none}
+.brow button.sq:disabled{opacity:.3}
+.chk{width:22px;height:22px;border-radius:6px;border:2px solid var(--muted);background:none;flex:none;font-size:.8rem;line-height:1;color:var(--navy-ink)}
+.chk.on{background:var(--navy);border-color:var(--navy)}
+.bridge{background:var(--sheet);border-radius:6px;padding:10px 14px;margin:0 0 8px;box-shadow:0 1px 0 var(--rule);border-left:4px solid var(--sun);cursor:pointer}
+.bridge .bt{font-family:var(--serif);font-size:1rem;line-height:1.35;margin-bottom:6px}
+.bridge small{color:var(--muted);font-size:.78rem}
+
+.syncbtn{position:relative}
+.syncdot{position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:var(--muted);border:2px solid var(--paper);display:inline-block}
+.syncdot.ok{background:var(--sup)}.syncdot.syncing,.syncdot.needconnect{background:var(--sun)}.syncdot.error{background:var(--chal)}
+/* navigation */
+#tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--paper) 88%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--rule);padding:6px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+#tabs .in{max-width:680px;margin:0 auto;display:flex}
+.tab{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 2px;font-size:.7rem;color:var(--muted)}
+.tab svg{width:23px;height:23px}
+.tab.on{color:var(--ink);font-weight:600}
+.tab.on svg{stroke-width:2.2}
+.fab{position:fixed;right:18px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:35;width:54px;height:54px;border-radius:50%;border:0;background:var(--navy);color:var(--navy-ink);box-shadow:0 10px 24px rgba(10,20,40,.35);display:flex;align-items:center;justify-content:center}
+.fab svg{width:24px;height:24px}
+.fab::after{content:"";position:absolute;right:11px;top:10px;width:7px;height:7px;border-radius:50%;background:var(--sun)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:9px 14px;border-radius:10px;font-size:.86rem;z-index:80;opacity:0;pointer-events:none;transition:opacity .2s;max-width:88vw}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div id="main"></div>
+<div id="tabs"><div class="in" id="tabin"></div></div>
+<div id="fabslot"></div>
+<div id="toast" role="status"></div>
+<script>
+(function(){
+
+const PALETTE=['#2f6f8f','#b5651d','#6b4fc4','#b83280','#2e8b57','#8a6d1d','#c0453a','#4a5568'];
+const ROLES={supports:{label:'Supports',icon:'✓',cv:'--sup'},challenges:{label:'Challenges',icon:'⚠',cv:'--chal'},readmore:{label:'To read',icon:'◔',cv:'--read'},context:{label:'Context',icon:'◦',cv:'--ctx'}};
+const ROLE_KEYS=Object.keys(ROLES);
+const KINDS=[['quote','Quote'],['data','Data'],['link','Link'],['image','Image'],['note','Note']];
+const $=s=>document.querySelector(s);
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+function el(tag,attrs,...kids){const e=document.createElement(tag);if(attrs)for(const k in attrs){const v=attrs[k];if(k==='class')e.className=v;else if(k==='text')e.textContent=v;else if(k==='html')e.innerHTML=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(k,v===true?'':v)}kids.flat().forEach(k=>{if(k!=null)e.append(k.nodeType?k:document.createTextNode(k))});return e}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2200)}
+const ICON={
+ journal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4z"/><path d="M9 9h6M9 13h4"/></svg>',
+ scrap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="10" height="9" rx="1.5"/><rect x="15" y="4" width="6" height="6" rx="1.5"/><rect x="3" y="15" width="6" height="5" rx="1.5"/><rect x="11" y="12" width="10" height="8" rx="1.5"/></svg>',
+ topics:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
+ questions:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2 1-1.2 1.8"/><circle cx="12" cy="17" r=".7" fill="currentColor"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>'
+};
+const svgIcon=n=>{const d=document.createElement('span');d.innerHTML=ICON[n];return d.firstChild};
+
+/* ---------- data ---------- */
+let S=null;
+
+
+function seed(){
+  const t=Date.now(),H=36e5,D=864e5;
+  const mk=(o)=>Object.assign({topics:[],marks:[],links:[],claim:false,created:t,u:t,sample:true},o);
+  const topics=[{id:'t_dcs',name:'Digital culture shock',color:PALETTE[0],desc:'How fast-moving devices are reshaping attention, reward and everyday culture.',created:t,u:t,sample:true}];
+  const clips=[
+    {id:'c_simon',kind:'quote',text:'A wealth of information creates a poverty of attention.',source:'Herbert A. Simon, 1971 (widely attributed)',url:'',topics:['t_dcs'],toread:false,created:t-2*D,u:t-2*D,sample:true},
+    {id:'c_data',kind:'data',value:'XX',label:'Average daily phone pick-ups. Replace with a real figure.',source:'Sample. Add your source here.',topics:['t_dcs'],toread:false,created:t-2*D,u:t-2*D,sample:true},
+    {id:'c_counter',kind:'quote',text:'Sample counter-argument: the dopamine framing may oversimplify how habits actually form.',source:'Sample. Add your source here.',topics:['t_dcs'],toread:false,created:t-D,u:t-D,sample:true},
+    {id:'c_read',kind:'link',url:'https://example.com/attention-reading-list',text:'Reading list on attention and technology',note:'Start with the neuroscience papers.',topics:['t_dcs'],toread:true,created:t-D,u:t-D,sample:true},
+    {id:'c_note',kind:'note',text:'Compare how fast people adopted print, the telephone and the smartphone.',topics:['t_dcs'],toread:false,created:t-3*H,u:t-3*H,sample:true}
+  ];
+  const entries=[
+    mk({id:'e_claim',kind:'journal',claim:true,title:'Notifications may be retraining our reward systems',body:'Every buzz is a small, unpredictable reward. If the pattern holds, the brain starts to expect the signal before the content, which would explain the phantom-vibration feeling many of us report.\n\nWhat I still need: a clear measure of how often these cues occur in a normal day, and a reason to think the effect lasts after the phone is put away.',topics:['t_dcs'],marks:[{id:'m1',clip:'c_simon',role:'context'},{id:'m2',clip:'c_data',role:'supports'},{id:'m3',clip:'c_counter',role:'challenges'},{id:'m4',clip:'c_read',role:'readmore'}],links:['e_press'],created:t-26*H,u:t-26*H}),
+    mk({id:'e_press',kind:'journal',title:'The printing press analogy',body:'Each wave of new media brought a panic about attention and morals. The useful question is not whether the panic is familiar, but what was different about speed this time.',topics:['t_dcs'],created:t-50*H,u:t-50*H}),
+    mk({id:'e_gap',kind:'journal',claim:true,title:'The shock is about speed of change, not the devices themselves',body:'Culture seems able to absorb almost any tool given a generation. Devices arrived faster than the habits and norms around them could settle.',topics:['t_dcs'],created:t-27*H,u:t-27*H}),
+    mk({id:'e_dump',kind:'dump',title:'',body:'Does anyone measure how long a society takes to stop noticing a new technology? Compare with earlier panics about print.',created:t-40*60000,u:t-40*60000})
+  ];
+  return{topics,clips,entries,v:1};
+}
+
+/* ---------- helpers ---------- */
+const TAGROLE=r=>ROLES[r]||ROLES.context;
+const topicById=id=>S.topics.find(t=>t.id===id);
+const clipById=id=>S.clips.find(c=>c.id===id);
+const entryById=id=>S.entries.find(e=>e.id===id);
+const hex2rgba=(h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`};
+function entryTitle(e){if(e.title&&e.title.trim())return e.title.trim();const l=(e.body||'').trim().split('\n')[0];return l?(l.length>70?l.slice(0,70)+'…':l):'Untitled'}
+function clipText(c){return c.kind==='data'?((c.value?c.value+' ':'')+(c.label||'')).trim():(c.text||c.note||c.url||'')}
+function clipPreview(c){const t=clipText(c).replace(/\s+/g,' ');return c.kind==='image'?(c.text||'Image'):(t.length>110?t.slice(0,110)+'…':t)}
+function clipSource(c){return c.kind==='link'?domain(c.url)||c.source||'':(c.source||'')}
+function domain(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return ''}}
+const usedIn=cid=>S.entries.filter(e=>e.marks.some(m=>m.clip===cid));
+const roleCount=(e,r)=>e.marks.filter(m=>m.role===r).length;
+function dayLabel(t){const d=new Date(t),n=new Date();const a=new Date(d.getFullYear(),d.getMonth(),d.getDate()),b=new Date(n.getFullYear(),n.getMonth(),n.getDate());const diff=Math.round((b-a)/864e5);if(diff===0)return'Today';if(diff===1)return'Yesterday';const o={weekday:'long',month:'long',day:'numeric'};if(d.getFullYear()!==n.getFullYear())o.year='numeric';return d.toLocaleDateString([],o)}
+const timeLabel=t=>new Date(t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+function topicChips(ids){return ids.map(topicById).filter(Boolean).map(t=>el('span',{class:'chip'},el('i',{style:'background:'+t.color}),t.name))}
+
+/* ---------- v2 helpers ---------- */
+const QUAL={primary:{label:'Primary study or data',w:1},review:{label:'Review or analysis',w:1},expert:{label:'Expert opinion',w:.6},press:{label:'Journalism',w:.4},anecdote:{label:'Anecdote or personal',w:.25},unrated:{label:'Not rated',w:.5}};
+const QUAL_KEYS=Object.keys(QUAL);
+const CONF=['','Doubtful','Unsure','Leaning','Likely','Confident'];
+const qOf=c=>QUAL[c.quality]||QUAL.unrated;
+function strength(e){
+  let sup=0,chal=0;
+  (e.marks||[]).forEach(m=>{const c=clipById(m.clip);if(!c)return;const w=qOf(c).w;if(m.role==='supports')sup+=w;if(m.role==='challenges')chal+=w});
+  let label='';
+  if(e.claim)label=sup===0?'No support':(chal>0&&chal>=sup*.6)?'Contested':sup<1?'Thin support':sup<2?'Moderate support':'Strong support';
+  return{sup,chal,label};
+}
+const isUnsupported=e=>e.claim&&strength(e).sup===0;
+const isContested=e=>e.claim&&strength(e).label==='Contested';
+const isThin=e=>e.claim&&strength(e).label==='Thin support';
+function logEv(e,k,t){e.log=e.log||[];e.log.push({t:Date.now(),k,txt:t});if(e.log.length>200)e.log.shift()}
+const wc=s=>(s||'').trim()?(s.trim().split(/\s+/).length):0;
+function diffWords(a,b){const d=wc(b)-wc(a);return d>0?'+'+d+' words':d<0?'−'+Math.abs(d)+' words':'reworded'}
+const questionById=id=>S.questions.find(q=>q.id===id);
+function strengthPills(e){
+  const out=[];if(!e.claim)return out;
+  out.push(el('span',{class:'pill claimp',text:'Claim'}));
+  const s=strength(e);
+  if(s.label==='No support')out.push(el('span',{class:'pill gap',text:'Needs evidence'}));
+  else if(s.label==='Contested'||s.label==='Thin support')out.push(el('span',{class:'pill gap',text:s.label}));
+  else out.push(el('span',{class:'pill',text:s.label}));
+  if(e.conf)out.push(el('span',{class:'pill',text:CONF[e.conf]}));
+  return out;
+}
+/* bridges: things that live in more than one topic */
+const STOP=new Set('about above after again against because before being below between both could does doing down during each from further have having here itself just more most other over same should some such than that their them then there these they this those through under until very were what when where which while with would your into onto upon also been whose whom which'.split(' '));
+function tokens(s){const out=new Set();(s||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(w=>{if(w.length<5||STOP.has(w))return;if(w.length>5&&w.endsWith('s'))w=w.slice(0,-1);out.add(w)});return out}
+function topicsOfClip(c){const s=new Set(c.topics);usedIn(c.id).forEach(e=>e.topics.forEach(t=>s.add(t)));return [...s].filter(topicById)}
+function topicsOfEntry(e){const s=new Set(e.topics);(e.links||[]).map(entryById).filter(Boolean).forEach(x=>x.topics.forEach(t=>s.add(t)));S.entries.filter(x=>(x.links||[]).includes(e.id)).forEach(x=>x.topics.forEach(t=>s.add(t)));return [...s].filter(topicById)}
+function bridges(){
+  const out=[];
+  S.clips.forEach(c=>{const t=topicsOfClip(c);if(t.length>=2)out.push({kind:'clip',id:c.id,topics:t})});
+  S.entries.forEach(e=>{const t=topicsOfEntry(e);if(t.length>=2)out.push({kind:'entry',id:e.id,topics:t})});
+  return out;
+}
+function possibleBridges(){
+  const items=[];
+  S.clips.forEach(c=>{const t=topicsOfClip(c);if(t.length===1)items.push({kind:'clip',id:c.id,topic:t[0],tok:tokens(clipText(c)+' '+(c.mnote||'')),obj:c})});
+  S.entries.forEach(e=>{const t=topicsOfEntry(e);if(t.length===1)items.push({kind:'entry',id:e.id,topic:t[0],tok:tokens(entryTitle(e)+' '+(e.body||'')),obj:e})});
+  const res=[];
+  for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
+    const a=items[i],b=items[j];if(a.topic===b.topic)continue;
+    const sh=[...a.tok].filter(w=>b.tok.has(w));if(sh.length>=2)res.push({a,b,shared:sh.slice(0,4),score:sh.length});
+  }
+  return res.sort((x,y)=>y.score-x.score).slice(0,8);
+}
+const itemText=(kind,id)=>{if(kind==='clip'){const c=clipById(id);return c?clipPreview(c):''}const e=entryById(id);return e?entryTitle(e):''};
+const openItem=(kind,id)=>kind==='clip'?openClipView(id):openEntry(id);
+function bridgeRow(b){
+  return el('div',{class:'bridge',onclick:()=>openItem(b.kind,b.id)},el('div',{class:'bt',text:itemText(b.kind,b.id)}),el('div',{class:'chips'},b.topics.map(topicById).map(t=>el('span',{class:'chip'},el('i',{style:'background:'+t.color}),t.name)),el('small',{text:b.kind==='clip'?'clip':'thought'})));
+}
+function possibleRow(p){
+  const ta=topicById(p.a.topic),tb=topicById(p.b.topic);
+  return el('div',{class:'bridge',style:'border-left-style:dashed'},
+    el('div',{class:'bt',text:'“'+itemText(p.a.kind,p.a.id).slice(0,80)+'” in '+ta.name+' and “'+itemText(p.b.kind,p.b.id).slice(0,80)+'” in '+tb.name}),
+    el('small',{text:'They share: '+p.shared.join(', ')}),
+    el('div',{class:'row',style:'margin-top:8px'},el('button',{class:'primary small',text:'Make a bridge',onclick:()=>{
+      const o=p.a.obj;if(!o.topics.includes(p.b.topic))o.topics.push(p.b.topic);o.u=Date.now();persist();render();toast('Bridge made')}}),
+      el('button',{class:'ghost small',text:'Open',onclick:()=>openItem(p.a.kind,p.a.id)})));
+}
+
+/* ---------- sheets ---------- */
+function sheet(build,opts){
+  opts=opts||{};
+  const bg=el('div',{class:'bg',role:'dialog'}),sh=el('div',{class:'sheet'+(opts.full?' full':'')});bg.append(sh);
+  let closed=false;
+  const close=()=>{if(closed)return;closed=true;bg.remove();if(opts.onClose)opts.onClose();afterSheetClose()};
+  bg.addEventListener('click',e=>{if(e.target===bg)close()});
+  sh.append(el('div',{class:'grab'}));
+  build(sh,close);document.body.append(bg);return close;
+}
+function armDelete(btn,label,fn){btn.addEventListener('click',()=>{if(!btn.dataset.arm){btn.dataset.arm='1';btn.textContent='Tap again to '+label;setTimeout(()=>{if(btn.isConnected){btn.dataset.arm='';btn.textContent=btn.dataset.orig}},3500);return}fn()})}
+function fill(node,...kids){node.replaceChildren(...kids.flat(Infinity).filter(k=>k!=null))}
+function autogrow(ta){const f=()=>{ta.style.height='auto';ta.style.height=Math.max(ta.scrollHeight,150)+'px'};ta.addEventListener('input',f);setTimeout(f,0)}
+
+/* ---------- navigation ---------- */
+let nav={tab:'journal',topic:null,tsub:'overview',filter:'all',sfilter:'all',qfilter:'open',q:'',node:null};
+function render(){
+  const m=$('#main');m.replaceChildren();
+  const t=nav.tab;
+  if(t==='journal')vJournal(m);else if(t==='scrap')vScrap(m);else if(t==='questions')vQuestions(m);
+  else if(t==='topics')(nav.topic&&(nav.topic==='all'||topicById(nav.topic))?vTopic(m):(nav.topic=null,vTopics(m)));
+  else vSearch(m);
+  paintTabs();paintFab();
+}
+function go(tab,topic){nav.tab=tab;nav.topic=topic||null;nav.tsub='overview';nav.node=null;render();window.scrollTo(0,0)}
+function paintTabs(){
+  const t=$('#tabin');t.replaceChildren();
+  [['journal','Journal','journal'],['scrap','Scrapbook','scrap'],['questions','Questions','questions'],['topics','Topics','topics'],['search','Search','search']].forEach(([k,l,ic])=>{
+    t.append(el('button',{class:'tab'+(nav.tab===k?' on':''),onclick:()=>{if(nav.tab===k&&k==='topics'&&nav.topic)go('topics');else go(k)}},svgIcon(ic),l))});
+}
+function paintFab(){
+  const slot=$('#fabslot');slot.replaceChildren();
+  const a={journal:()=>openEntry(null,'journal'),scrap:()=>openClip(null),questions:()=>openQuestion(null),topics:()=>openTopic(null)}[nav.tab];
+  if(!a||(nav.tab==='topics'&&nav.topic))return;
+  const lab={journal:'New entry',scrap:'New clip',questions:'New question',topics:'New topic'}[nav.tab];
+  slot.append(el('button',{class:'fab','aria-label':lab,onclick:a},svgIcon('plus')));
+}
+function header(title,sub,btns){return el('div',{class:'top'},el('div',{class:'ttl'},el('h1',{text:title}),sub?el('div',{class:'sub',text:sub}):null),btns||null)}
+
+/* ---------- journal ---------- */
+function vJournal(m){
+  m.append(header('Journal',new Date().toLocaleDateString([],{weekday:'long',month:'long',day:'numeric'}),[
+    el('button',{class:'ibtn syncbtn','aria-label':'Settings and sync',onclick:openSettings},svgIcon('gear'),el('i',{class:'syncdot '+(sync.needAuth?'error':sync.state)}))]));
+  const ta=el('textarea',{placeholder:'What’s on your mind? Just type.','aria-label':'Dump a thought',rows:'3'});
+  const save=()=>{const v=ta.value.trim();if(!v)return;S.entries.unshift({id:uid(),kind:'dump',title:'',body:v,claim:false,topics:[],marks:[],links:[],created:Date.now(),u:Date.now()});persist();ta.value='';render();toast('Dumped. Sort it whenever you like.')};
+  ta.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter')save()});
+  m.append(el('div',{class:'dump'},ta,el('div',{class:'row spread'},el('p',{class:'hint',text:'No title, no folder. Sort it later.'}),el('button',{class:'primary',text:'Dump it',onclick:save}))));
+  const unsorted=S.entries.filter(e=>e.kind==='dump'&&!e.topics.length).length;
+  const FL=[['all','All'],['unsorted','Unsorted'+(unsorted?' ('+unsorted+')':'')],['claims','Claims'],['gaps','Needs evidence']];
+  m.append(el('div',{class:'filters'},FL.map(([k,l])=>el('button',{class:'chip'+(nav.filter===k?' on':''),text:l,onclick:()=>{nav.filter=k;render()}}))));
+  let list=S.entries.slice().sort((a,b)=>b.created-a.created);
+  if(nav.filter==='unsorted')list=list.filter(e=>e.kind==='dump'&&!e.topics.length);
+  if(nav.filter==='claims')list=list.filter(e=>e.claim);
+  if(nav.filter==='gaps')list=list.filter(isUnsupported);
+  if(!list.length){m.append(el('div',{class:'empty',text:nav.filter==='all'?'Nothing here yet. Dump a thought above, or tap + to write a full entry.':'Nothing matches this filter.'}));if(nav.filter==='all'&&!S.clips.length&&!S.topics.length&&!S.questions.length)m.append(el('div',{style:'text-align:center'},el('button',{class:'ghost small',text:'Add sample material to explore',onclick:()=>{addAllSamples();persist();render()}})));return}
+  let last='';
+  list.forEach(e=>{const d=dayLabel(e.created);if(d!==last){last=d;m.append(el('div',{class:'day',text:d}))}m.append(entryCard(e))});
+}
+function entryCard(e){
+  if(e.kind==='dump'&&!e.marks.length&&!e.claim){
+    return el('div',{class:'scrap',onclick:()=>openEntry(e.id)},
+      el('div',{class:'meta',text:timeLabel(e.created)+(e.topics.length?'':'   unsorted')}),
+      el('p',{text:e.body}),e.topics.length?el('div',{class:'chips',style:'margin-top:6px'},topicChips(e.topics)):null);
+  }
+  const tabs=el('div',{class:'etabs'});e.marks.forEach(mk=>tabs.append(el('span',{class:'etab '+mk.role,title:ROLES[mk.role].label})));
+  return el('article',{class:'page'+(e.claim?' claim':''),onclick:()=>openEntry(e.id)},
+    el('div',{class:'meta'},el('span',{text:timeLabel(e.created)}),strengthPills(e)),
+    e.title&&e.title.trim()?el('h3',{text:e.title}):null,
+    el('p',{text:e.body}),
+    (e.topics.length||e.marks.length)?el('div',{class:'foot chips'},topicChips(e.topics),ROLE_KEYS.filter(r=>roleCount(e,r)).map(r=>el('span',{class:'chip',style:`color:var(${ROLES[r].cv});border-color:currentColor`,text:ROLES[r].icon+' '+roleCount(e,r)+' '+ROLES[r].label.toLowerCase()}))):null,
+    e.marks.length?tabs:null);
+}
+/* ---------- entry editor ---------- */
+function openEntry(id,kind,opts){
+  opts=opts||{};
+  let e=id?entryById(id):{id:uid(),kind:kind||'journal',title:opts.title||'',body:opts.body||'',claim:false,conf:0,topics:(opts.topics||[]).slice(),marks:[],links:[],hist:[],log:[],created:Date.now(),u:Date.now()};
+  if(!e)return;
+  e.hist=e.hist||[];e.log=e.log||[];if(e.conf==null)e.conf=0;
+  let saved=!!id,skipSnap=false;
+  const base={t:e.u||e.created,title:e.title||'',body:e.body||''};
+  const ensure=()=>{if(!saved){S.entries.unshift(e);saved=true;logEv(e,'new',e.kind==='dump'?'Dumped a thought':'Started this entry');if(opts.afterCreate)opts.afterCreate(e)}};
+  const touch=()=>{e.u=Date.now();ensure();persist()};
+  const hasContent=()=>(e.title||'').trim()||(e.body||'').trim()||e.marks.length;
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('span',{class:'hint',text:new Date(e.created).toLocaleDateString([],{month:'short',day:'numeric'})+', '+timeLabel(e.created)}),
+      el('div',{class:'row'},(id&&(e.log.length||e.hist.length))?el('button',{class:'ghost small',text:'History',onclick:()=>openHistory(e,()=>{skipSnap=true;close();setTimeout(()=>openEntry(e.id),60)})}):null,el('button',{class:'primary small',text:'Done',onclick:close}))));
+    const t=el('textarea',{class:'t-in',rows:'1',placeholder:'Title (optional)','aria-label':'Title'});t.value=e.title||'';
+    const fit=()=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'};
+    t.addEventListener('input',()=>{e.title=t.value.replace(/\n/g,' ');if(e.title!==t.value)t.value=e.title;fit();touch()});setTimeout(fit,0);
+    const b=el('textarea',{class:'b-in',placeholder:'Write freely. Claims, doubts, half-formed ideas all belong here.','aria-label':'Entry text'});b.value=e.body||'';
+    b.addEventListener('input',()=>{e.body=b.value;touch()});autogrow(b);
+    sh.append(t,b);
+    const flags=el('div',{class:'row'}),confBox=el('div');
+    const paintConf=()=>{confBox.replaceChildren();if(!e.claim)return;
+      confBox.append(el('div',{class:'sec',text:'How sure are you?'}),el('div',{class:'chips'},[1,2,3,4,5].map(v=>el('button',{class:'chip'+(e.conf===v?' on':''),text:CONF[v],onclick:()=>{if(e.conf===v)return;const prev=e.conf;e.conf=v;logEv(e,'conf',prev?'Confidence '+CONF[prev]+' → '+CONF[v]:'Confidence set to '+CONF[v]);touch();paintConf()}}))))};
+    const paintFlags=()=>{flags.replaceChildren(
+      el('button',{class:'chip'+(e.claim?' on':''),text:e.claim?'This is a claim':'Mark as a claim',onclick:()=>{e.claim=!e.claim;logEv(e,'claim',e.claim?'Marked as a claim':'No longer a claim');touch();paintFlags();paintConf();paintMarks()}}),
+      el('button',{class:'chip'+(e.kind==='dump'?' on':''),text:e.kind==='dump'?'Quick dump':'Journal entry',onclick:()=>{e.kind=e.kind==='dump'?'journal':'dump';touch();paintFlags()}}))};
+    paintFlags();sh.append(flags,confBox);paintConf();
+    sh.append(el('div',{class:'sec',text:'Topics'}));
+    const tbox=el('div',{class:'chips'});
+    const paintTopics=()=>{fill(tbox,topicChips(e.topics),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(e.topics,v=>{e.topics=v;touch();paintTopics()})}))};
+    paintTopics();sh.append(tbox);
+    // questions
+    sh.append(el('div',{class:'row spread'},el('div',{class:'sec',text:'Questions'}),el('button',{class:'ghost small',text:'＋ Link a question',onclick:()=>pickQuestion(q=>{q.refs=q.refs||[];if(!q.refs.includes(e.id))q.refs.push(e.id);q.u=Date.now();touch();paintQs()},e.topics)})));
+    const qbox=el('div');
+    const paintQs=()=>{qbox.replaceChildren();const qs=S.questions.filter(q=>(q.refs||[]).includes(e.id));
+      qs.forEach(q=>qbox.append(el('div',{class:'mark'},el('span',{class:'role',style:'color:var(--ctx)',text:q.status==='answered'?'Answered':'Question'}),el('div',{class:'mb',onclick:()=>{skipSnap=false;close();setTimeout(()=>openQuestion(q.id),60)}},el('div',{class:'mt',text:q.text})),el('button',{class:'x',text:'×','aria-label':'Unlink question',onclick:()=>{q.refs=q.refs.filter(i=>i!==e.id);persist();paintQs()}}))));
+      if(!qs.length)qbox.append(el('p',{class:'hint',text:'Link this thought to a question it helps answer.'}))};
+    paintQs();sh.append(qbox);
+    // earmarks
+    sh.append(el('div',{class:'row spread'},el('div',{class:'sec',text:'Earmarks'}),el('button',{class:'ghost small',text:'＋ Add evidence',onclick:()=>pickClip(e,(c,role)=>{e.marks.push({id:uid(),clip:c.id,role});logEv(e,'mark','Earmarked as '+ROLES[role].label.toLowerCase()+': '+clipPreview(c).slice(0,60));touch();paintMarks()})})));
+    const sbox=el('div'),mbox=el('div');
+    const paintMarks=()=>{
+      mbox.replaceChildren();sbox.replaceChildren();
+      e.marks.forEach(mk=>{const c=clipById(mk.clip);if(!c)return;
+        mbox.append(el('div',{class:'mark'},
+          el('button',{class:'role',style:`color:var(${ROLES[mk.role].cv})`,'aria-label':'Change role',text:ROLES[mk.role].icon+' '+ROLES[mk.role].label,onclick:()=>{mk.role=ROLE_KEYS[(ROLE_KEYS.indexOf(mk.role)+1)%ROLE_KEYS.length];logEv(e,'mark','Changed an earmark to '+ROLES[mk.role].label.toLowerCase()+': '+clipPreview(c).slice(0,50));touch();paintMarks()}}),
+          el('div',{class:'mb',onclick:()=>openClipView(c.id)},el('div',{class:'mt',text:clipPreview(c)}),el('small',{text:[clipSource(c),qOf(c).label].filter(Boolean).join('. ')})),
+          el('button',{class:'x','aria-label':'Remove earmark',text:'×',onclick:()=>{e.marks=e.marks.filter(x=>x!==mk);logEv(e,'mark','Removed an earmark: '+clipPreview(c).slice(0,50));touch();paintMarks()}})))});
+      if(!e.marks.length)mbox.append(el('p',{class:'hint',text:'No evidence yet. Earmark a quote, figure, link or image from your scrapbook. Tap a role to change it.'}));
+      if(e.claim){const s=strength(e),bar=(v,cls)=>el('div',{class:'track'},el('i',{class:cls,style:'width:'+Math.min(100,Math.round(v/3*100))+'%'}));
+        sbox.append(el('div',{class:'strength'},el('div',{class:'lab',text:s.label}),el('div',{class:'rowb'},el('em',{text:'Support'}),bar(s.sup,'s')),el('div',{class:'rowb'},el('em',{text:'Challenge'}),bar(s.chal,'c')),el('div',{class:'note',text:'Weighed by source quality. A rough guide, not a verdict.'})))}
+    };
+    paintMarks();sh.append(sbox,mbox);
+    // connections
+    sh.append(el('div',{class:'row spread'},el('div',{class:'sec',text:'Connected thoughts'}),el('button',{class:'ghost small',text:'＋ Connect',onclick:()=>pickEntry(e,x=>{if(!e.links.includes(x.id)){e.links.push(x.id);logEv(e,'link','Connected to “'+entryTitle(x).slice(0,50)+'”')}touch();paintLinks()})})));
+    const lbox=el('div');
+    const paintLinks=()=>{
+      lbox.replaceChildren();
+      const out=e.links.map(entryById).filter(Boolean),back=S.entries.filter(x=>x.id!==e.id&&(x.links||[]).includes(e.id));
+      out.forEach(x=>lbox.append(el('div',{class:'mark'},el('span',{class:'role',style:'color:var(--ink)',text:'Links to'}),el('div',{class:'mb',onclick:()=>{close();setTimeout(()=>openEntry(x.id),50)}},el('div',{class:'mt',text:entryTitle(x)})),el('button',{class:'x',text:'×','aria-label':'Remove connection',onclick:()=>{e.links=e.links.filter(i=>i!==x.id);touch();paintLinks()}}))));
+      back.forEach(x=>lbox.append(el('div',{class:'mark'},el('span',{class:'role',style:'color:var(--muted)',text:'From'}),el('div',{class:'mb',onclick:()=>{close();setTimeout(()=>openEntry(x.id),50)}},el('div',{class:'mt',text:entryTitle(x)})))));
+      if(!out.length&&!back.length)lbox.append(el('p',{class:'hint',text:'Link thoughts that belong together, even across topics.'}));
+    };
+    paintLinks();sh.append(lbox);
+    const del=el('button',{class:'ghost small danger',style:'margin-top:22px',text:'Delete entry'});del.dataset.orig='Delete entry';
+    armDelete(del,'delete for good',()=>{S.entries=S.entries.filter(x=>x!==e);S.entries.forEach(x=>{x.links=(x.links||[]).filter(i=>i!==e.id)});S.questions.forEach(q=>{q.refs=(q.refs||[]).filter(i=>i!==e.id)});saved=false;skipSnap=true;e.marks=[];e.title='';e.body='';persist();close();toast('Entry deleted')});
+    if(id)sh.append(del);
+    if(opts.save)touch();
+    if(!id&&!opts.title&&!opts.body)setTimeout(()=>b.focus(),60);
+  },{full:true,onClose:()=>{
+    const changed=saved&&!skipSnap&&((e.title||'')!==base.title||(e.body||'')!==base.body)&&(base.title||base.body);
+    if(changed){e.hist.push({t:base.t,title:base.title,body:base.body});if(e.hist.length>30)e.hist.shift();logEv(e,'text','Edited the text ('+diffWords(base.body,e.body||'')+')');persist()}
+    if(saved&&!hasContent()){S.entries=S.entries.filter(x=>x!==e);persist()}
+    render()}});
+}
+function openHistory(e,onRestore){
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'How this thought changed'}),el('button',{class:'primary small',text:'Close',onclick:close})));
+    const ev=(e.log||[]).slice().sort((a,b)=>b.t-a.t);
+    if(!ev.length)sh.append(el('p',{class:'hint',text:'Changes will appear here as you write, earmark and change your mind.'}));
+    const fd=t=>new Date(t).toLocaleDateString([],{month:'short',day:'numeric',year:'numeric'});
+    if(ev.length){const tl=el('div',{class:'tl'});ev.forEach(x=>tl.append(el('div',{class:'ev '+x.k},el('small',{text:fd(x.t)+', '+timeLabel(x.t)}),el('p',{text:x.txt}))));sh.append(tl)}
+    const vs=(e.hist||[]).slice().reverse();
+    if(vs.length){
+      sh.append(el('div',{class:'sec',text:'Earlier versions'}));
+      vs.forEach(v=>{
+        const body=el('div',{class:'vt',style:'display:none',text:(v.title?v.title+'\n\n':'')+v.body});
+        sh.append(el('div',{class:'ver'},el('div',{class:'row spread'},el('span',{class:'hint',text:fd(v.t)+', '+wc(v.body)+' words'}),el('div',{class:'row'},
+          el('button',{class:'ghost small',text:'View',onclick:()=>{body.style.display=body.style.display==='none'?'block':'none'}}),
+          el('button',{class:'ghost small',text:'Restore',onclick:()=>{
+            e.hist=e.hist.filter(h=>h!==v);e.hist.push({t:e.u||e.created,title:e.title||'',body:e.body||''});
+            e.title=v.title||'';e.body=v.body||'';logEv(e,'text','Restored the version from '+fd(v.t));e.u=Date.now();persist();close();if(onRestore)onRestore();toast('Version restored')}}))),body));
+      });
+    }
+  });
+}
+function pickQuestion(cb,topics){
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Link a question'}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    const inp=el('input',{class:'field',placeholder:'Or write a new question','aria-label':'New question'});
+    sh.append(el('div',{class:'row',style:'flex-wrap:nowrap'},inp,el('button',{class:'primary',text:'Add',onclick:()=>{const v=inp.value.trim();if(!v)return;const q={id:uid(),text:v,status:'open',topics:(topics||[]).slice(),refs:[],answer:'',created:Date.now(),u:Date.now()};S.questions.unshift(q);persist();close();cb(q)}})));
+    const open=S.questions.filter(q=>q.status!=='answered');
+    if(!open.length)sh.append(el('p',{class:'hint',text:'No open questions yet.'}));
+    open.forEach(q=>sh.append(el('button',{class:'pickrow',onclick:()=>{close();cb(q)}},el('div',{class:'pt',text:q.text}))));
+  });
+}
+function pickTopics(sel,cb){
+  let cur=sel.slice();
+  sheet((sh,close)=>{
+    const paint=()=>{
+      sh.replaceChildren(el('div',{class:'grab'}),el('div',{class:'bar'},el('strong',{text:'Topics'}),el('button',{class:'primary small',text:'Done',onclick:()=>{cb(cur);close()}})));
+      S.topics.forEach(t=>{const on=cur.includes(t.id);sh.append(el('button',{class:'pickrow',onclick:()=>{cur=on?cur.filter(i=>i!==t.id):[...cur,t.id];paint()}},el('div',{class:'pt'},el('span',{style:'display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;background:'+t.color}),(on?'✓ ':'')+t.name)))});
+      const inp=el('input',{class:'field',placeholder:'New topic name','aria-label':'New topic name'});
+      sh.append(el('div',{class:'row',style:'flex-wrap:nowrap;margin-top:8px'},inp,el('button',{class:'primary',text:'Create',onclick:()=>{const n=inp.value.trim();if(!n)return;const t={id:uid(),name:n,color:PALETTE[S.topics.length%PALETTE.length],desc:'',created:Date.now(),u:Date.now()};S.topics.push(t);cur.push(t.id);persist();paint()}})));
+    };paint();
+  });
+}
+function pickClip(entry,cb){
+  let role='supports',q='';
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Earmark evidence'}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    sh.append(el('div',{class:'seg'},ROLE_KEYS.map(r=>el('button',{class:role===r?'on':'','data-r':r,text:ROLES[r].label,onclick:ev=>{role=r;sh.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.r===r))}}))));
+    const s=el('input',{class:'search',type:'search',placeholder:'Search your scrapbook','aria-label':'Search scrapbook'});
+    const list=el('div');
+    const paint=()=>{
+      list.replaceChildren();const ql=s.value.trim().toLowerCase();
+      let cl=S.clips.filter(c=>!ql||(clipText(c)+' '+(c.source||'')).toLowerCase().includes(ql));
+      cl.sort((a,b)=>{const ta=a.topics.some(t=>entry.topics.includes(t))?0:1,tb=b.topics.some(t=>entry.topics.includes(t))?0:1;return ta-tb||b.created-a.created});
+      cl.forEach(c=>list.append(el('button',{class:'pickrow',onclick:()=>{close();cb(c,c.toread&&role==='supports'?'readmore':role)}},el('div',{class:'pt',text:clipPreview(c)}),el('small',{text:KINDS.find(k=>k[0]===c.kind)[1]+(clipSource(c)?', '+clipSource(c):'')}))));
+      if(!cl.length)list.append(el('div',{class:'empty',text:S.clips.length?'No clips match.':'Your scrapbook is empty. Create a clip first.'}));
+    };
+    s.addEventListener('input',paint);
+    sh.append(s,el('button',{class:'ghost small',style:'margin-bottom:10px',text:'＋ New clip',onclick:()=>{close();openClip(null,{topics:entry.topics,after:c=>cb(c,role)})}}),list);paint();
+  });
+}
+function pickEntry(from,cb){
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Connect a thought'}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    const s=el('input',{class:'search',type:'search',placeholder:'Search your entries','aria-label':'Search entries'}),list=el('div');
+    const paint=()=>{list.replaceChildren();const ql=s.value.trim().toLowerCase();
+      S.entries.filter(x=>x.id!==from.id&&(!ql||(entryTitle(x)+' '+x.body).toLowerCase().includes(ql))).sort((a,b)=>b.created-a.created).slice(0,40).forEach(x=>list.append(el('button',{class:'pickrow',onclick:()=>{close();cb(x)}},el('div',{class:'pt',text:entryTitle(x)}),el('small',{text:dayLabel(x.created)}))));};
+    s.addEventListener('input',paint);sh.append(s,list);paint();
+  });
+}
+
+/* ---------- scrapbook ---------- */
+function vScrap(m){
+  m.append(header('Scrapbook',S.clips.length+' clip'+(S.clips.length===1?'':'s')+' collected'));
+  const FL=[['all','All'],['quote','Quotes'],['data','Data'],['link','Links'],['image','Images'],['note','Notes'],['toread','To read'],['loose','Loose']];
+  m.append(el('div',{class:'filters'},FL.map(([k,l])=>el('button',{class:'chip'+(nav.sfilter===k?' on':''),text:l,onclick:()=>{nav.sfilter=k;render()}}))));
+  const list=clipsFiltered(nav.sfilter);
+  if(nav.sfilter==='loose')m.append(el('p',{class:'hint',style:'margin:0 0 12px',text:'Loose clips are not earmarked on any entry yet. They are material waiting for an idea.'}));
+  m.append(clipGrid(list,S.clips.length?'Nothing matches this filter.':'Collect quotes, figures, links and images here. Anything you might need as evidence later.'));
+}
+function clipsFiltered(f,topic){
+  let l=S.clips.slice().sort((a,b)=>b.created-a.created);
+  if(topic)l=l.filter(c=>c.topics.includes(topic));
+  if(['quote','data','link','image','note'].includes(f))l=l.filter(c=>c.kind===f);
+  if(f==='toread')l=l.filter(c=>c.toread||S.entries.some(e=>e.marks.some(m=>m.clip===c.id&&m.role==='readmore')));
+  if(f==='loose')l=l.filter(c=>!usedIn(c.id).length);
+  return l;
+}
+function clipGrid(list,emptyText){
+  if(!list.length)return el('div',{class:'empty',text:emptyText});
+  return el('div',{class:'masonry'},list.map(clipCard));
+}
+function clipCard(c){
+  const uses=usedIn(c.id),roles=[];uses.forEach(e=>e.marks.filter(m=>m.clip===c.id).forEach(m=>roles.push(m.role)));
+  const card=el('div',{class:'clip '+c.kind+(uses.length?'':' loose'),onclick:()=>openClipView(c.id)});
+  const qual=c.quality&&c.quality!=='unrated'?el('div',{class:'qual',text:QUAL[c.quality].label}):null;
+  if(c.kind==='image'){card.append(el('img',{src:c.img||'',alt:c.text||'Clipped image'}),el('div',{class:'src',text:[c.text,c.source].filter(Boolean).join('. ')}),qual)}
+  else{
+    const inner=el('div',{class:'in'});
+    if(c.kind==='quote')inner.append(el('div',{class:'txt',text:c.text}));
+    if(c.kind==='data')inner.append(el('div',{class:'big',text:c.value||'–'}),el('div',{class:'lab',text:c.label||''}));
+    if(c.kind==='link')inner.append(el('div',{class:'dom',text:domain(c.url)||'Link'}),el('div',{class:'txt',text:c.text||c.url}),c.note?el('div',{class:'src',text:c.note}):null);
+    if(c.kind==='note')inner.append(el('div',{class:'txt',text:c.text}));
+    if(c.kind!=='link'&&c.kind!=='note'&&c.source)inner.append(el('div',{class:'src',text:c.source}));
+    if(c.mnote)inner.append(el('div',{class:'src',text:'My note: '+c.mnote}));
+    if(qual)inner.append(qual);
+    if(roles.length)inner.append(el('div',{class:'uses'},roles.map(r=>el('b',{class:r}))));
+    card.append(inner);
+  }
+  if(c.toread)card.append(el('span',{class:'toread',title:'To read'}));
+  return card;
+}
+function readImage(file,cb){
+  const fr=new FileReader();
+  fr.onload=()=>{const im=new Image();im.onload=()=>{const M=1000,k=Math.min(1,M/Math.max(im.width,im.height));const cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);cb(cv.toDataURL('image/jpeg',.72))};im.onerror=()=>toast('That image could not be read.');im.src=fr.result};
+  fr.readAsDataURL(file);
+}
+function openClip(id,opts){
+  opts=opts||{};
+  const c=id?Object.assign({},clipById(id)):{id:uid(),kind:'quote',text:'',source:'',url:'',value:'',label:'',note:'',img:'',topics:(opts.topics||[]).slice(),toread:false,quality:'unrated',created:Date.now(),u:Date.now()};
+  sheet((sh,close)=>{
+    const body=el('div');
+    const paint=()=>{
+      body.replaceChildren();
+      const F=(label,key,ph,multi)=>{const f=multi?el('textarea',{class:'field',placeholder:ph,'aria-label':label}):el('input',{class:'field',placeholder:ph,'aria-label':label});f.value=c[key]||'';f.addEventListener('input',()=>{c[key]=f.value});return [el('label',{class:'lbl',text:label}),f]};
+      if(c.kind==='quote')body.append(...F('The quote','text','Paste or type the passage',true),...F('Source','source','Author, title, year'),...F('Link (optional)','url','https://'));
+      if(c.kind==='data')body.append(...F('The figure','value','e.g. 4.7 hours, 62%, 1 in 3'),...F('What it measures','label','e.g. Average daily screen time among adults'),...F('Source','source','Study, report, year'),...F('Link (optional)','url','https://'));
+      if(c.kind==='link')body.append(...F('Address','url','https://'),...F('Title','text','What is this page?'),...F('Why it matters','note','A line for your future self',true));
+      if(c.kind==='note')body.append(...F('Note','text','A fact, a reminder, a lead to follow',true),...F('Source (optional)','source',''));
+      if(c.kind==='image'){
+        const file=el('input',{type:'file',accept:'image/*',style:'display:none'});
+        file.addEventListener('change',()=>{const f=file.files[0];if(f)readImage(f,d=>{c.img=d;paint()})});
+        body.append(file,c.img?el('img',{src:c.img,alt:'Preview',style:'width:100%;border-radius:8px;margin:8px 0'}):el('div',{class:'empty',style:'padding:18px',text:'Add a photo, screenshot or chart.'}),el('button',{class:'ghost small',text:c.img?'Change image':'Choose an image',onclick:()=>file.click()}),...F('Caption','text','What is this?'),...F('Source','source','Where it came from'));
+      }
+      body.append(el('label',{class:'lbl',text:'How strong is this source?'}),el('div',{class:'chips'},QUAL_KEYS.map(k=>el('button',{class:'chip'+((c.quality||'unrated')===k?' on':''),text:QUAL[k].label,onclick:()=>{c.quality=k;paint()}}))),el('p',{class:'hint',style:'margin-top:4px',text:'Stronger sources count for more when a claim is weighed.'}));
+      body.append(el('label',{class:'lbl',text:'Topics'}));
+      body.append(el('div',{class:'chips'},topicChips(c.topics),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(c.topics,v=>{c.topics=v;paint()})})),el('div',{class:'row',style:'margin-top:12px'},el('button',{class:'chip'+(c.toread?' on':''),text:'Flag to read later',onclick:()=>{c.toread=!c.toread;paint()}})));
+    };
+    sh.append(el('div',{class:'bar'},el('strong',{text:id?'Edit clip':'New clip'}),el('div',{class:'row'},el('button',{class:'ghost small',text:'Cancel',onclick:close}),el('button',{class:'primary small',text:'Save clip',onclick:()=>{
+      const has=c.kind==='image'?c.img:c.kind==='data'?(c.value||c.label):c.kind==='link'?(c.url||c.text):c.text;
+      if(!(has||'').trim()){toast('Add some content first.');return}
+      c.u=Date.now();const i=S.clips.findIndex(x=>x.id===c.id);if(i>=0)S.clips[i]=c;else S.clips.unshift(c);persist();close();render();if(opts.after)opts.after(c);toast('Saved to scrapbook')}}))));
+    if(!id)sh.append(el('div',{class:'seg'},KINDS.map(([k,l])=>el('button',{class:c.kind===k?'on':'',text:l,onclick:()=>{c.kind=k;sh.querySelectorAll('.seg button').forEach((b,i)=>b.classList.toggle('on',KINDS[i][0]===k));paint()}}))));
+    sh.append(body);paint();
+  },{full:true});
+}
+function openClipView(id){
+  const c=clipById(id);if(!c)return;
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:KINDS.find(k=>k[0]===c.kind)[1]}),el('button',{class:'primary small',text:'Close',onclick:close})));
+    sh.append(el('div',{class:'masonry',style:'columns:1'},clipCard(c)));
+    if(c.url)sh.append(el('p',{class:'hint',style:'word-break:break-all;margin-top:6px',text:c.url}));
+    sh.append(el('p',{class:'hint',style:'margin-top:8px',text:'Source quality: '+qOf(c).label}));
+    if(c.from&&c.from.app==='marginalia')sh.append(el('p',{class:'hint',text:'Brought in from your Marginalia highlights.'}));
+    const uses=usedIn(c.id);
+    sh.append(el('div',{class:'sec',text:uses.length?'Earmarked in':'Not used anywhere yet'}));
+    uses.forEach(e=>sh.append(el('button',{class:'pickrow',onclick:()=>{close();setTimeout(()=>openEntry(e.id),50)}},el('div',{class:'pt',text:entryTitle(e)}),el('small',{text:e.marks.filter(m=>m.clip===c.id).map(m=>ROLES[m.role].label).join(', ')}))));
+    if(c.topics.length)sh.append(el('div',{class:'chips',style:'margin-top:8px'},topicChips(c.topics)));
+    const del=el('button',{class:'ghost small danger',text:'Delete clip'});del.dataset.orig='Delete clip';
+    armDelete(del,'delete for good',()=>{S.clips=S.clips.filter(x=>x.id!==c.id);S.entries.forEach(e=>{e.marks=e.marks.filter(m=>m.clip!==c.id)});persist();close();render();toast('Clip deleted')});
+    sh.append(el('div',{class:'row',style:'margin-top:16px'},el('button',{class:'ghost small',text:'Edit',onclick:()=>{close();openClip(c.id)}}),el('button',{class:'ghost small',text:c.toread?'Unflag to read':'Flag to read',onclick:()=>{c.toread=!c.toread;persist();close();render()}}),del));
+  });
+}
+/* ---------- topics ---------- */
+function vTopics(m){
+  m.append(header('Topics',S.topics.length?'Your lines of inquiry':'Group everything by question'));
+  if(!S.topics.length){m.append(el('div',{class:'empty',text:'A topic is a question you are chasing. Create one and file entries and clips under it.'}));return}
+  m.append(el('button',{class:'primary',style:'margin:0 0 14px',text:'See the whole landscape',onclick:()=>{nav.topic='all';nav.tsub='map';render()}}));
+  if(S.topics.length>1){
+    m.append(el('div',{class:'sec',text:'Bridges'}));
+    const br=bridges();
+    if(br.length)br.slice(0,6).forEach(b=>m.append(bridgeRow(b)));
+    else m.append(el('p',{class:'hint',style:'margin-bottom:8px',text:'A bridge is a clip or thought that belongs to two topics. That is often where an original idea hides.'}));
+    const pb=possibleBridges();
+    if(pb.length){m.append(el('div',{class:'sec',text:'Possible bridges'}),el('p',{class:'hint',style:'margin-bottom:8px',text:'Found by shared words. A starting point, not a conclusion.'}));pb.slice(0,4).forEach(p=>m.append(possibleRow(p)))}
+    m.append(el('div',{class:'sec',text:'Your topics'}));
+  }
+  S.topics.forEach(t=>{
+    const ents=S.entries.filter(e=>e.topics.includes(t.id)),cl=S.clips.filter(c=>c.topics.includes(t.id)),gaps=ents.filter(isUnsupported).length,oq=S.questions.filter(q=>q.topics.includes(t.id)&&q.status==='open').length;
+    m.append(el('button',{class:'topic',style:'--tc:'+t.color,onclick:()=>{nav.topic=t.id;nav.tsub='overview';render();window.scrollTo(0,0)}},
+      el('h3',{text:t.name}),t.desc?el('p',{class:'hint',style:'margin:0 0 8px',text:t.desc}):null,
+      el('div',{class:'stats'},el('span',{class:'stat'},el('b',{text:ents.length}),' entries'),el('span',{class:'stat'},el('b',{text:cl.length}),' clips'),oq?el('span',{class:'stat'},el('b',{text:oq}),' open questions'):null,gaps?el('span',{class:'stat',style:'color:var(--chal)'},el('b',{text:gaps}),' need evidence'):null)));
+  });
+}
+function openTopic(id){
+  const t=id?Object.assign({},topicById(id)):{id:uid(),name:'',desc:'',color:PALETTE[S.topics.length%PALETTE.length],created:Date.now(),u:Date.now()};
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:id?'Edit topic':'New topic'}),el('div',{class:'row'},el('button',{class:'ghost small',text:'Cancel',onclick:close}),el('button',{class:'primary small',text:'Save',onclick:()=>{
+      if(!t.name.trim()){toast('Give the topic a name.');return}t.u=Date.now();const i=S.topics.findIndex(x=>x.id===t.id);if(i>=0)S.topics[i]=t;else S.topics.push(t);persist();close();if(!id){nav.topic=t.id;nav.tsub='overview'}render()}}))));
+    const n=el('input',{class:'field',placeholder:'e.g. Digital culture shock','aria-label':'Topic name'});n.value=t.name;n.addEventListener('input',()=>t.name=n.value);
+    const d=el('textarea',{class:'field',placeholder:'The question or angle you are chasing','aria-label':'Description'});d.value=t.desc||'';d.addEventListener('input',()=>t.desc=d.value);
+    sh.append(el('label',{class:'lbl',text:'Name'}),n,el('label',{class:'lbl',text:'What are you trying to understand?'}),d,el('label',{class:'lbl',text:'Color'}));
+    const cs=el('div',{class:'row'});const pc=()=>{fill(cs,PALETTE.map(c=>el('button',{'aria-label':'Color '+c,style:`width:32px;height:32px;border-radius:50%;border:3px solid ${t.color===c?'var(--ink)':'transparent'};background:${c}`,onclick:()=>{t.color=c;pc()}})))};pc();sh.append(cs);
+    if(id){const del=el('button',{class:'ghost small danger',style:'margin-top:22px',text:'Delete topic'});del.dataset.orig='Delete topic';armDelete(del,'delete (entries and clips stay)',()=>{S.topics=S.topics.filter(x=>x.id!==t.id);S.entries.forEach(e=>e.topics=e.topics.filter(i=>i!==t.id));S.clips.forEach(c=>c.topics=c.topics.filter(i=>i!==t.id));persist();close();nav.topic=null;render();toast('Topic deleted')});sh.append(del)}
+  });
+}
+function vTopic(m){
+  const all=nav.topic==='all',t=all?{id:'all',name:'The whole landscape',desc:'Every topic, entry and clip, and how they connect.',color:'#4a5568'}:topicById(nav.topic);
+  m.append(el('div',{class:'top'},el('button',{class:'ibtn','aria-label':'Back to topics',onclick:()=>go('topics'),html:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'}),el('div',{class:'ttl'},el('h1',{style:'font-size:1.6rem',text:t.name})),all?null:el('button',{class:'ibtn','aria-label':'Edit topic',onclick:()=>openTopic(t.id)},svgIcon('gear'))));
+  if(t.desc)m.append(el('p',{class:'hint',style:'margin:0 0 12px',text:t.desc}));
+  const subs=all?[['overview','Overview'],['map','Map'],['entries','Entries'],['clips','Clips']]:[['overview','Overview'],['map','Map'],['entries','Entries'],['clips','Clips'],['build','Build']];
+  if(all&&nav.tsub==='build')nav.tsub='overview';
+  m.append(el('div',{class:'seg'},subs.map(([k,l])=>el('button',{class:nav.tsub===k?'on':'',text:l,onclick:()=>{nav.tsub=k;nav.node=null;render()}}))));
+  const ents=all?S.entries:S.entries.filter(e=>e.topics.includes(t.id)),cl=all?S.clips:S.clips.filter(c=>c.topics.includes(t.id));
+  if(nav.tsub==='overview')vOverview(m,ents,cl,t,all);
+  if(nav.tsub==='map')vMap(m,t.id);
+  if(nav.tsub==='build'&&!all)vBuild(m,t);
+  if(nav.tsub==='entries'){if(!ents.length)m.append(el('div',{class:'empty',text:'No entries in this topic yet.'}));let last='';ents.slice().sort((a,b)=>b.created-a.created).forEach(e=>{const d=dayLabel(e.created);if(d!==last){last=d;m.append(el('div',{class:'day',text:d}))}m.append(entryCard(e))})}
+  if(nav.tsub==='clips')m.append(clipGrid(cl.slice().sort((a,b)=>b.created-a.created),'No clips in this topic yet.'));
+}
+function vOverview(m,ents,cl,t,all){
+  const qs=S.questions.filter(q=>all||q.topics.includes(t.id));
+  m.append(el('div',{class:'row',style:'margin:0 0 14px;gap:18px'},
+    el('span',{class:'stat'},el('b',{text:ents.length}),' entries'),el('span',{class:'stat'},el('b',{text:cl.length}),' clips'),el('span',{class:'stat'},el('b',{text:ents.filter(e=>e.claim).length}),' claims'),el('span',{class:'stat'},el('b',{text:qs.filter(q=>q.status==='open').length}),' open questions')));
+  const toRead=cl.filter(c=>c.toread||S.entries.some(e=>e.marks.some(x=>x.clip===c.id&&x.role==='readmore')));
+  const groups=[
+    ['Claims without evidence',ents.filter(isUnsupported),e=>({t:entryTitle(e),f:()=>openEntry(e.id)}),'Add a supporting earmark, or reconsider the claim.'],
+    ['Claims resting on thin sources',ents.filter(isThin),e=>({t:entryTitle(e),f:()=>openEntry(e.id)}),'Support exists, but only from weak or unrated sources.'],
+    ['Contested claims',ents.filter(isContested),e=>({t:entryTitle(e),f:()=>openEntry(e.id)}),'Evidence pulls both ways. Worth a closer look.'],
+    ['Open questions',qs.filter(q=>q.status==='open'),q=>({t:q.text,f:()=>openQuestion(q.id)}),'Things you want to find out.'],
+    ['Still to read',toRead,c=>({t:clipPreview(c),f:()=>openClipView(c.id)}),'Sources you marked but have not worked through.'],
+    ['Loose clips',cl.filter(c=>!usedIn(c.id).length),c=>({t:clipPreview(c),f:()=>openClipView(c.id)}),'Collected but not used yet. Material waiting for an idea.']
+  ];
+  let any=false;
+  groups.forEach(([title,items,map,note])=>{if(!items.length)return;any=true;
+    m.append(el('div',{class:'gapcard'},el('h4',{text:title+' ('+items.length+')'}),el('p',{class:'hint',style:'margin-bottom:4px',text:note}),items.slice(0,6).map(i=>{const r=map(i);return el('button',{class:'it',text:r.t,onclick:r.f})})))});
+  // shifts in thinking
+  const evs=[];ents.forEach(e=>(e.log||[]).forEach(x=>{if(['conf','mark','claim'].includes(x.k))evs.push({e,x})}));
+  evs.sort((a,b)=>b.x.t-a.x.t);
+  if(evs.length){any=true;m.append(el('div',{class:'gapcard'},el('h4',{text:'How your thinking has moved'}),el('p',{class:'hint',style:'margin-bottom:4px',text:'Recent changes of confidence and evidence.'}),
+    evs.slice(0,6).map(({e,x})=>el('button',{class:'it',onclick:()=>openEntry(e.id)},el('span',{style:'color:var(--muted);font-size:.76rem',text:new Date(x.t).toLocaleDateString([],{month:'short',day:'numeric'})+'  '}),entryTitle(e).slice(0,50)+': '+x.txt))))}
+  if(!all){
+    const br=bridges().filter(b=>b.topics.some(tt=>tt.id===t.id)&&b.topics.length>1);
+    if(br.length){any=true;m.append(el('div',{class:'sec',text:'Bridges to other topics'}));br.slice(0,5).forEach(b=>m.append(bridgeRow(b)))}
+  }
+  if(!any)m.append(el('div',{class:'empty',text:ents.length||cl.length?'Nothing flagged. Every claim has support and every clip is in use.':'Write a claim and earmark evidence to see where your argument is thin.'}));
+}
+/* ---------- build view ---------- */
+function buildState(t){t.build=t.build||{order:[],skip:[],qs:true,cp:true,notes:true};return t.build}
+function orderedClaims(t){const b=buildState(t),cs=S.entries.filter(e=>e.topics.includes(t.id)&&e.claim),ix=id=>{const i=b.order.indexOf(id);return i<0?1e9:i};return cs.sort((x,y)=>ix(x.id)-ix(y.id)||x.created-y.created)}
+function buildOutline(t){
+  const b=buildState(t),L=[],srcs=new Map();
+  L.push('# '+t.name,'');if(t.desc)L.push(t.desc,'');
+  L.push('## Introduction','');
+  const oq=S.questions.filter(q=>q.topics.includes(t.id)&&q.status==='open');
+  if(b.qs&&oq.length){L.push('Questions this piece sets out to answer:');oq.forEach(q=>L.push('- '+q.text));L.push('')}
+  let n=0;
+  orderedClaims(t).filter(e=>!b.skip.includes(e.id)).forEach(e=>{
+    n++;const s=strength(e);
+    L.push(`## ${n}. ${entryTitle(e)}`);
+    L.push('('+[e.conf?'Confidence: '+CONF[e.conf]:'',s.label].filter(Boolean).join('. ')+')','');
+    const first=(e.body||'').trim().split('\n')[0];if(first)L.push(first.slice(0,260),'');
+    const by=r=>e.marks.filter(m=>m.role===r).map(m=>clipById(m.clip)).filter(Boolean);
+    const cite=c=>{const q=qOf(c).label,src=clipSource(c);if(src&&!srcs.has(src))srcs.set(src,q);return (c.kind==='quote'?'“'+clipText(c)+'”':clipText(c))+(src?' ('+src+')':'')+' ['+q+']'};
+    const sup=by('supports');if(sup.length){L.push('Evidence for:');sup.forEach(c=>L.push('- '+cite(c)));L.push('')}
+    if(b.cp){const ch=by('challenges');if(ch.length){L.push('Counterpoints to address:');ch.forEach(c=>L.push('- '+cite(c)));L.push('')}}
+    const cx=by('context');if(cx.length){L.push('Background:');cx.forEach(c=>L.push('- '+cite(c)));L.push('')}
+    const rd=by('readmore');if(rd.length){L.push('To read or verify before writing:');rd.forEach(c=>L.push('- '+clipPreview(c)+(clipSource(c)?' ('+clipSource(c)+')':'')));L.push('')}
+    const rel=(e.links||[]).map(entryById).filter(Boolean);if(rel.length)L.push('Connects to: '+rel.map(entryTitle).join('; '),'');
+  });
+  if(!n)L.push('(Mark entries in this topic as claims to build the argument.)','');
+  if(b.notes){const nc=S.entries.filter(e=>e.topics.includes(t.id)&&!e.claim);if(nc.length){L.push('## Other notes to weave in','');nc.forEach(e=>L.push('- '+entryTitle(e)));L.push('')}}
+  L.push('## Sources','');
+  [...srcs].forEach(([s,q])=>L.push('- '+s+' ['+q+']'));
+  if(!srcs.size)L.push('(No sources attached yet.)');
+  return L.join('\n');
+}
+function vBuild(m,t){
+  const b=buildState(t),cs=orderedClaims(t);
+  m.append(el('p',{class:'hint',style:'margin:0 0 10px',text:'Turn this topic into an essay outline, with your evidence and sources attached. Choose the claims and their order.'}));
+  if(!cs.length){m.append(el('div',{class:'empty',text:'No claims in this topic yet. Mark an entry as a claim and earmark evidence for it, then come back.'}));return}
+  const sv=()=>{b.order=cs.map(c=>c.id);persist();render()};
+  cs.forEach((e,i)=>{
+    const inc=!b.skip.includes(e.id),s=strength(e);
+    m.append(el('div',{class:'brow'},
+      el('button',{class:'chk'+(inc?' on':''),'aria-label':inc?'Included':'Left out',text:inc?'✓':'',onclick:()=>{b.skip=inc?[...b.skip,e.id]:b.skip.filter(x=>x!==e.id);persist();render()}}),
+      el('div',{class:'bt'},el('div',{text:entryTitle(e)}),el('small',{style:'color:var(--muted);font-size:.76rem',text:s.label+(e.conf?'. '+CONF[e.conf]:'')})),
+      el('button',{class:'sq','aria-label':'Move up',text:'↑',disabled:i===0,onclick:()=>{[cs[i-1],cs[i]]=[cs[i],cs[i-1]];sv()}}),
+      el('button',{class:'sq','aria-label':'Move down',text:'↓',disabled:i===cs.length-1,onclick:()=>{[cs[i+1],cs[i]]=[cs[i],cs[i+1]];sv()}})));
+  });
+  m.append(el('div',{class:'chips',style:'margin:10px 0'},
+    [['qs','Open questions'],['cp','Counterpoints'],['notes','Other notes']].map(([k,l])=>el('button',{class:'chip'+(b[k]?' on':''),text:l,onclick:()=>{b[k]=!b[k];persist();render()}}))));
+  const text=buildOutline(t);
+  m.append(el('div',{class:'outline',text}));
+  m.append(el('div',{class:'row'},
+    el('button',{class:'primary',text:'Start a draft entry',onclick:()=>openEntry(null,'journal',{title:'Draft: '+t.name,body:text,topics:[t.id],save:true})}),
+    el('button',{class:'ghost',text:'Copy outline',onclick:()=>{try{navigator.clipboard.writeText(text).then(()=>toast('Outline copied'),()=>toast('Press and hold the outline to copy it'))}catch(e){toast('Press and hold the outline to copy it')}}})));
+}
+
+/* ---------- landscape map ---------- */
+function graphFor(scope){
+  const nodes=[],edges=[],have=new Set();
+  const add=n=>{if(!have.has(n.id)){have.add(n.id);nodes.push(n)}};
+  const ents=scope==='all'?S.entries:S.entries.filter(e=>e.topics.includes(scope));
+  const clipIds=new Set();
+  ents.forEach(e=>{
+    const t=topicById(e.topics[0]);
+    add({id:'e:'+e.id,type:'entry',ref:e.id,label:entryTitle(e),claim:e.claim,dump:e.kind==='dump',gap:isUnsupported(e),color:t?t.color:'#667385',r:e.claim?10:8});
+    e.marks.forEach(m=>{if(clipById(m.clip)){clipIds.add(m.clip);edges.push({a:'e:'+e.id,b:'c:'+m.clip,role:m.role})}});
+    (e.links||[]).forEach(l=>{if(ents.some(x=>x.id===l))edges.push({a:'e:'+e.id,b:'e:'+l,role:'link'})});
+  });
+  S.clips.filter(c=>scope==='all'||c.topics.includes(scope)).forEach(c=>clipIds.add(c.id));
+  clipIds.forEach(id=>{const c=clipById(id);add({id:'c:'+id,type:'clip',ref:id,label:clipPreview(c).slice(0,26),kind:c.kind,r:6,loose:!usedIn(id).length})});
+  const qs=S.questions.filter(q=>scope==='all'||q.topics.includes(scope));
+  qs.forEach(q=>{add({id:'q:'+q.id,type:'question',ref:q.id,label:q.text,status:q.status,r:8});(q.refs||[]).forEach(r=>edges.push({a:'q:'+q.id,b:'e:'+r,role:'question'}))});
+  if(scope==='all'){
+    S.topics.forEach(t=>{add({id:'t:'+t.id,type:'topic',ref:t.id,label:t.name,color:t.color,r:15});
+      ents.filter(e=>e.topics.includes(t.id)).forEach(e=>edges.push({a:'t:'+t.id,b:'e:'+e.id,role:'topic'}));
+      S.clips.filter(c=>c.topics.includes(t.id)).forEach(c=>edges.push({a:'t:'+t.id,b:'c:'+c.id,role:'topic'}));
+      qs.filter(q=>q.topics.includes(t.id)).forEach(q=>edges.push({a:'t:'+t.id,b:'q:'+q.id,role:'topic'}))});
+  }
+  const br=new Set(bridges().map(b=>(b.kind==='clip'?'c:':'e:')+b.id));
+  nodes.forEach(n=>{if(br.has(n.id))n.bridge=true});
+  return{nodes,edges:edges.filter(e=>have.has(e.a)&&have.has(e.b))};
+}
+function layout(nodes,edges,W,H){
+  const n=nodes.length;
+  nodes.forEach((o,i)=>{const a=i/Math.max(n,1)*Math.PI*2,rad=Math.min(W,H)*(.18+.2*((i*7)%5)/5);o.x=W/2+Math.cos(a)*rad;o.y=H/2+Math.sin(a)*rad;o.vx=0;o.vy=0});
+  const idx=new Map(nodes.map(o=>[o.id,o]));
+  for(let it=0;it<340;it++){
+    const cool=1-it/340;
+    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const a=nodes[i],b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy+.01,d=Math.sqrt(d2);const f=2600/d2;dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f}
+    edges.forEach(e=>{const a=idx.get(e.a),b=idx.get(e.b);const dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)+.01,f=(d-(e.role==='topic'?90:64))*.03;a.vx+=dx/d*f;a.vy+=dy/d*f;b.vx-=dx/d*f;b.vy-=dy/d*f});
+    nodes.forEach(o=>{o.vx+=(W/2-o.x)*.006;o.vy+=(H/2-o.y)*.006;o.x+=o.vx*cool*.55;o.y+=o.vy*cool*.55;o.vx*=.62;o.vy*=.62;o.x=Math.max(22,Math.min(W-22,o.x));o.y=Math.max(22,Math.min(H-22,o.y))});
+  }  const xs=nodes.map(o=>o.x),ys=nodes.map(o=>o.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const k=Math.min((W-90)/Math.max(x1-x0,1),(H-110)/Math.max(y1-y0,1),2.4),cx=(x0+x1)/2,cy=(y0+y1)/2;
+  nodes.forEach(o=>{o.x=W/2+(o.x-cx)*k;o.y=H/2+(o.y-cy)*k});
+}
+const SV='http://www.w3.org/2000/svg';
+function se(tag,attrs){const e=document.createElementNS(SV,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e}
+function vMap(m,scope){
+  const g=graphFor(scope);
+  if(!g.nodes.length){m.append(el('div',{class:'empty',text:'The map appears once you have entries and clips in this topic.'}));return}
+  const W=360,H=440;layout(g.nodes,g.edges,W,H);
+  const idx=new Map(g.nodes.map(o=>[o.id,o]));
+  const svg=se('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Map of entries, clips, questions and their connections'});
+  const rc={supports:'var(--sup)',challenges:'var(--chal)',readmore:'var(--read)',context:'var(--ctx)',link:'var(--ink)',topic:'var(--rule)',question:'var(--ctx)'};
+  g.edges.forEach(e=>{const a=idx.get(e.a),b=idx.get(e.b);svg.append(se('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:rc[e.role],'stroke-width':e.role==='topic'?1:e.role==='link'?1.6:e.role==='question'?1.2:1.8,'stroke-dasharray':e.role==='challenges'?'4 3':e.role==='readmore'?'1.5 3':e.role==='question'?'2 2':'',opacity:e.role==='topic'?.8:.9}))});
+  g.nodes.forEach(o=>{
+    const sel=nav.node===o.id,grp=se('g',{style:'cursor:pointer',tabindex:'0',role:'button','aria-label':o.label});
+    if(o.bridge)grp.append(se('circle',{cx:o.x,cy:o.y,r:o.r+8,fill:'none',stroke:'var(--sun)','stroke-width':2.6}));
+    if(o.type==='topic'){grp.append(se('circle',{cx:o.x,cy:o.y,r:o.r,fill:o.color}))}
+    else if(o.type==='question'){
+      grp.append(se('rect',{x:o.x-o.r,y:o.y-o.r,width:o.r*2,height:o.r*2,rx:4,fill:o.status==='answered'?'var(--sup)':'var(--paper)',stroke:o.status==='answered'?'var(--sup)':'var(--ctx)','stroke-width':1.8}));
+      const qm=se('text',{x:o.x,y:o.y+3.5,'text-anchor':'middle',style:'font-size:10px;font-weight:600;fill:'+(o.status==='answered'?'var(--paper)':'var(--ctx)')});qm.textContent='?';grp.append(qm);
+    }
+    else if(o.type==='entry'){
+      if(o.gap)grp.append(se('circle',{cx:o.x,cy:o.y,r:o.r+5,fill:'none',stroke:'var(--chal)','stroke-width':1.5,'stroke-dasharray':'3 2'}));
+      if(o.claim)grp.append(se('rect',{x:o.x-o.r,y:o.y-o.r,width:o.r*2,height:o.r*2,rx:2,fill:o.color,transform:`rotate(45 ${o.x} ${o.y})`}));
+      else grp.append(se('circle',{cx:o.x,cy:o.y,r:o.r,fill:o.dump?'var(--paper)':o.color,stroke:o.color,'stroke-width':o.dump?1.8:0}));
+    }else{
+      const col={quote:'var(--sun)',data:'var(--sup)',link:'var(--ctx)',image:'var(--chal)',note:'var(--muted)'}[o.kind]||'var(--muted)';
+      grp.append(se('circle',{cx:o.x,cy:o.y,r:o.r,fill:o.loose?'none':col,stroke:col,'stroke-width':1.6,'stroke-dasharray':o.loose?'2 2':''}));
+    }
+    if(sel)grp.append(se('circle',{cx:o.x,cy:o.y,r:o.r+(o.gap?10:o.bridge?11:5),fill:'none',stroke:'var(--ink)','stroke-width':2}));
+    grp.append(se('circle',{cx:o.x,cy:o.y,r:Math.max(o.r+9,16),fill:'transparent'}));
+    svg.append(grp);
+    if(o.type!=='clip'||sel){const tx=se('text',{x:o.x,y:o.y+o.r+13,'text-anchor':'middle'});tx.textContent=o.label.length>24?o.label.slice(0,23)+'…':o.label;svg.append(tx)}
+    grp.addEventListener('click',()=>{nav.node=o.id;render()});
+  });
+  m.append(el('div',{class:'map'},svg));
+  m.append(el('div',{class:'legend'},
+    el('span',{html:'<i style="border-color:var(--sup)"></i>supports'}),el('span',{html:'<i style="border-color:var(--chal);border-top-style:dashed"></i>challenges'}),
+    el('span',{html:'<i style="border-color:var(--read);border-top-style:dotted"></i>to read'}),el('span',{html:'<i style="border-color:var(--ink)"></i>connected thoughts'}),el('span',{html:'<i style="border-color:var(--ctx);border-top-style:dashed"></i>question'})));
+  m.append(el('p',{class:'hint',style:'margin:0 0 10px',text:'Diamonds are claims and squares are questions. A dashed red ring marks a claim with no support. A gold ring marks a bridge between topics. Hollow dots are clips nobody has used yet.'}));
+  const o=nav.node&&idx.get(nav.node);
+  if(o){
+    const row=el('div',{class:'gapcard'});
+    if(o.type==='entry'){const e=entryById(o.ref),s=strength(e);row.append(el('h4',{text:entryTitle(e)}),el('p',{class:'hint',text:(e.claim?s.label+'. ':'')+roleCount(e,'supports')+' supporting, '+roleCount(e,'challenges')+' challenging, '+roleCount(e,'readmore')+' to read.'}),el('button',{class:'primary small',style:'margin-top:8px',text:'Open entry',onclick:()=>openEntry(e.id)}))}
+    else if(o.type==='question'){const q=questionById(o.ref);row.append(el('h4',{text:q.text}),el('p',{class:'hint',text:q.status[0].toUpperCase()+q.status.slice(1)+' question.'}),el('button',{class:'primary small',style:'margin-top:8px',text:'Open question',onclick:()=>openQuestion(q.id)}))}
+    else if(o.type==='clip'){const c=clipById(o.ref);row.append(el('h4',{text:clipPreview(c)}),el('p',{class:'hint',text:qOf(c).label+'. '+(usedIn(c.id).length?'Used in '+usedIn(c.id).length+' entr'+(usedIn(c.id).length===1?'y':'ies')+'.':'Not used anywhere yet.')}),el('button',{class:'primary small',style:'margin-top:8px',text:'Open clip',onclick:()=>openClipView(c.id)}))}
+    else{row.append(el('h4',{text:o.label}),el('button',{class:'primary small',style:'margin-top:8px',text:'Open topic',onclick:()=>{nav.topic=o.ref;nav.tsub='overview';nav.node=null;render();window.scrollTo(0,0)}}))}
+    m.append(row);
+  }
+}
+
+/* ---------- questions ---------- */
+function vQuestions(m){
+  m.append(header('Questions','What you still want to find out'));
+  const ta=el('textarea',{placeholder:'What do you want to know?','aria-label':'New question',rows:'2'});
+  const add=()=>{const v=ta.value.trim();if(!v)return;S.questions.unshift({id:uid(),text:v,status:'open',topics:[],refs:[],answer:'',created:Date.now(),u:Date.now()});persist();ta.value='';render();toast('Question saved')};
+  ta.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter')add()});
+  m.append(el('div',{class:'dump'},ta,el('div',{class:'row spread'},el('p',{class:'hint',text:'Curiosity belongs here, not buried in notes.'}),el('button',{class:'primary',text:'Add question',onclick:add}))));
+  const n={open:0,answered:0,parked:0};S.questions.forEach(q=>{n[q.status]=(n[q.status]||0)+1});
+  m.append(el('div',{class:'filters'},[['open','Open ('+n.open+')'],['answered','Answered ('+n.answered+')'],['parked','Parked ('+n.parked+')'],['all','All']].map(([k,l])=>el('button',{class:'chip'+(nav.qfilter===k?' on':''),text:l,onclick:()=>{nav.qfilter=k;render()}}))));
+  const list=S.questions.filter(q=>nav.qfilter==='all'||q.status===nav.qfilter).sort((a,b)=>b.created-a.created);
+  if(!list.length){m.append(el('div',{class:'empty',text:nav.qfilter==='open'?'No open questions. Write down what you wonder about, and it will wait for you here.':'Nothing here.'}));return}
+  list.forEach(q=>m.append(el('div',{class:'qcard '+q.status,onclick:()=>openQuestion(q.id)},
+    el('div',{class:'qt',text:q.text}),
+    el('div',{class:'chips'},el('span',{class:'pill',text:q.status[0].toUpperCase()+q.status.slice(1)}),topicChips(q.topics),(q.refs||[]).length?el('span',{class:'chip',text:(q.refs.length)+' related thought'+(q.refs.length>1?'s':'')}):null))));
+}
+function openQuestion(id){
+  const q=id?questionById(id):{id:uid(),text:'',status:'open',topics:[],refs:[],answer:'',created:Date.now(),u:Date.now()};
+  if(!q)return;let saved=!!id;
+  const commit=()=>{q.u=Date.now();if(!saved){S.questions.unshift(q);saved=true}persist()};
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:id?'Question':'New question'}),el('button',{class:'primary small',text:'Done',onclick:close})));
+    const t=el('textarea',{class:'field',placeholder:'What do you want to know?','aria-label':'Question',style:'font-size:1.15rem;min-height:72px'});
+    t.value=q.text;t.addEventListener('input',()=>{q.text=t.value;if(q.text.trim())commit()});sh.append(t);
+    const st=el('div',{class:'seg'}),ans=el('div');
+    const paintAns=()=>{ans.replaceChildren();if(q.status!=='answered')return;const a=el('textarea',{class:'field',placeholder:'What did you conclude? Link the thoughts that back it up below.','aria-label':'Your answer'});a.value=q.answer||'';a.addEventListener('input',()=>{q.answer=a.value;commit()});ans.append(el('label',{class:'lbl',text:'Your answer'}),a)};
+    const paintSt=()=>{fill(st,['open','answered','parked'].map(s=>el('button',{class:q.status===s?'on':'',text:s[0].toUpperCase()+s.slice(1),onclick:()=>{q.status=s;commit();paintSt();paintAns()}})))};
+    paintSt();paintAns();sh.append(st,ans);
+    sh.append(el('div',{class:'sec',text:'Topics'}));
+    const tb=el('div',{class:'chips'}),paintT=()=>{fill(tb,topicChips(q.topics),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(q.topics,v=>{q.topics=v;commit();paintT()})}))};paintT();sh.append(tb);
+    sh.append(el('div',{class:'row spread'},el('div',{class:'sec',text:'Related thoughts'}),el('button',{class:'ghost small',text:'＋ Link a thought',onclick:()=>pickEntry({id:'_'},x=>{q.refs=q.refs||[];if(!q.refs.includes(x.id))q.refs.push(x.id);commit();paintR()})})));
+    const rb=el('div'),paintR=()=>{rb.replaceChildren();const es=(q.refs||[]).map(entryById).filter(Boolean);
+      es.forEach(x=>rb.append(el('div',{class:'mark'},el('div',{class:'mb',onclick:()=>{close();setTimeout(()=>openEntry(x.id),60)}},el('div',{class:'mt',text:entryTitle(x)}),el('small',{text:dayLabel(x.created)})),el('button',{class:'x',text:'×','aria-label':'Unlink thought',onclick:()=>{q.refs=q.refs.filter(i=>i!==x.id);commit();paintR()}}))));
+      if(!es.length)rb.append(el('p',{class:'hint',text:'Link the entries that help answer this, or start one now.'}))};
+    paintR();sh.append(rb);
+    sh.append(el('button',{class:'primary',style:'margin-top:10px',text:'Start an entry on this question',onclick:()=>{
+      if(!q.text.trim()){toast('Write the question first.');return}commit();close();
+      setTimeout(()=>openEntry(null,'journal',{title:q.text,topics:q.topics,save:true,afterCreate:e=>{q.refs=q.refs||[];q.refs.push(e.id);q.u=Date.now();persist()}}),60)}}));
+    if(id){const del=el('button',{class:'ghost small danger',style:'margin-top:20px;display:block',text:'Delete question'});del.dataset.orig='Delete question';armDelete(del,'delete for good',()=>{S.questions=S.questions.filter(x=>x!==q);saved=false;persist();close();toast('Question deleted')});sh.append(del)}
+  },{full:true,onClose:()=>{if(saved&&!q.text.trim()){S.questions=S.questions.filter(x=>x!==q);persist()}render()}});
+}
+
+/* ---------- search ---------- */
+function vSearch(m){
+  m.append(header('Search','Across entries, clips, questions and topics'));
+  const s=el('input',{class:'search',type:'search',placeholder:'Search everything','aria-label':'Search everything',value:nav.q});
+  const out=el('div');
+  const paint=()=>{
+    out.replaceChildren();const ql=nav.q.trim().toLowerCase();if(!ql){out.append(el('div',{class:'empty',text:'Type to search your thoughts, notes, quotes, questions and sources.'}));return}
+    const es=S.entries.filter(e=>((e.title||'')+' '+e.body).toLowerCase().includes(ql)),cs=S.clips.filter(c=>(clipText(c)+' '+(c.source||'')+' '+(c.note||'')+' '+(c.mnote||'')+' '+(c.url||'')).toLowerCase().includes(ql)),ts=S.topics.filter(t=>(t.name+' '+(t.desc||'')).toLowerCase().includes(ql)),qs=S.questions.filter(q=>(q.text+' '+(q.answer||'')).toLowerCase().includes(ql));
+    if(!es.length&&!cs.length&&!ts.length&&!qs.length){out.append(el('div',{class:'empty',text:'Nothing found for “'+nav.q+'”.'}));return}
+    if(ts.length){out.append(el('div',{class:'sec',text:'Topics'}));ts.forEach(t=>out.append(el('button',{class:'pickrow',onclick:()=>{nav.topic=t.id;nav.tab='topics';nav.tsub='overview';render()}},el('div',{class:'pt',text:t.name}))))}
+    if(qs.length){out.append(el('div',{class:'sec',text:'Questions'}));qs.slice(0,20).forEach(q=>out.append(el('button',{class:'pickrow',onclick:()=>openQuestion(q.id)},el('div',{class:'pt',text:q.text}),el('small',{text:q.status}))))}
+    if(es.length){out.append(el('div',{class:'sec',text:'Entries'}));es.slice(0,20).forEach(e=>out.append(el('button',{class:'pickrow',onclick:()=>openEntry(e.id)},el('div',{class:'pt',text:entryTitle(e)}),el('small',{text:dayLabel(e.created)}))))}
+    if(cs.length){out.append(el('div',{class:'sec',text:'Clips'}));cs.slice(0,20).forEach(c=>out.append(el('button',{class:'pickrow',onclick:()=>openClipView(c.id)},el('div',{class:'pt',text:clipPreview(c)}),el('small',{text:clipSource(c)}))))}
+  };
+  s.addEventListener('input',()=>{nav.q=s.value;paint()});
+  m.append(s,out);paint();
+}
+
+/* ====================== installable build: storage, Drive sync, settings ====================== */
+const BUILD='2026-10-15-c';
+const ERRLOG=[];
+function briefErr(e){const m=(e&&(e.message||e.name))||String(e);return String(m).replace(/\s+/g,' ').slice(0,160)}
+function logErr(ctx,e){ERRLOG.push(new Date().toLocaleTimeString()+' ['+ctx+'] '+briefErr(e));if(ERRLOG.length>25)ERRLOG.shift()}
+window.addEventListener('error',e=>logErr('error',e.error||e.message));
+window.addEventListener('unhandledrejection',e=>logErr('promise',e.reason));
+const cl=x=>JSON.parse(JSON.stringify(x));
+const nap=ms=>new Promise(r=>setTimeout(r,ms));
+function fmtSize(n){return n>=1073741824?(n/1073741824).toFixed(1)+' GB':(n/1048576).toFixed(n<10485760?1:0)+' MB'}
+async function pool(items,n,fn){let i=0;await Promise.all(Array.from({length:Math.min(n,items.length)},async()=>{while(i<items.length){const k=items[i++];await fn(k)}}))}
+
+/* ---------- local database (IndexedDB) ---------- */
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('commonplace',1);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains('state'))db.createObjectStore('state');if(!db.objectStoreNames.contains('cloud'))db.createObjectStore('cloud')};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+const idbGet=(st,k)=>idb().then(db=>new Promise((res,rej)=>{const q=db.transaction(st,'readonly').objectStore(st).get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)}));
+const idbPut=(st,k,v)=>idb().then(db=>new Promise((res,rej)=>{const t=db.transaction(st,'readwrite');t.objectStore(st).put(v,k);t.oncomplete=()=>res();t.onerror=()=>rej(t.error)}));
+const idbDel=(st,k)=>idb().then(db=>new Promise((res,rej)=>{const t=db.transaction(st,'readwrite');t.objectStore(st).delete(k);t.oncomplete=()=>res();t.onerror=()=>rej(t.error)}));
+const idbAll=st=>idb().then(db=>new Promise((res,rej)=>{const out={},q=db.transaction(st,'readonly').objectStore(st).openCursor();q.onsuccess=()=>{const c=q.result;if(c){out[c.key]=c.value;c.continue()}else res(out)};q.onerror=()=>rej(q.error)}));
+
+/* ---------- saving: every change is stamped, stored here, and queued for Drive ---------- */
+const ARR={e:'entries',c:'clips',t:'topics',q:'questions'},CK=Object.keys(ARR);
+let FP={},IDS={},saveTimer=null;
+const emptyState=()=>({topics:[],clips:[],entries:[],questions:[],tomb:{},v:2,v2:true});
+const fpOf=it=>{const c=Object.assign({},it);delete c.u;return JSON.stringify(c)};
+function stampChanges(){
+  const now=Date.now();S.tomb=S.tomb||{};
+  CK.forEach(k=>{
+    const cur=new Set();
+    S[ARR[k]].forEach(it=>{cur.add(it.id);const f=fpOf(it);if(FP[it.id]!==f){it.u=now;FP[it.id]=f}delete S.tomb[it.id]});
+    (IDS[k]||new Set()).forEach(id=>{if(!cur.has(id)){S.tomb[id]={k,t:now};delete FP[id]}});
+    IDS[k]=cur;
+  });
+  const cut=now-90*864e5;Object.keys(S.tomb).forEach(id=>{if(S.tomb[id].t<cut)delete S.tomb[id]});
+}
+function persist(){if(!S)return;clearTimeout(saveTimer);saveTimer=setTimeout(flush,350)}
+async function flush(){
+  clearTimeout(saveTimer);saveTimer=null;if(!S)return;
+  stampChanges();
+  try{await idbPut('state','main',S)}catch(e){logErr('save',e);toast('Could not save on this device: '+briefErr(e))}
+  syncSoon(2500,false);
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flush();else if(sync.on)syncSoon(600,true)});
+window.addEventListener('pagehide',()=>{flush()});
+
+/* ---------- Google Drive ---------- */
+const GAPI='https://www.googleapis.com/drive/v3',GUP='https://www.googleapis.com/upload/drive/v3',GIS_URL='https://accounts.google.com/gsi/client';
+const GCFG=Object.assign({clientId:''},window.COMMONPLACE_CONFIG||window.MARGINALIA_CONFIG||{});
+const DRIVE={tok:null,exp:0,idx:{},cache:null,lastTry:0};
+const sync={state:'init',msg:'Starting…',on:false,needAuth:false,running:false,again:false,againFull:false,timer:null,wantFull:false,usage:null,last:0};
+function gerr(code,msg){const e=new Error(msg||code);e.code=code;return e}
+async function cloudCache(){if(!DRIVE.cache)DRIVE.cache=await idbAll('cloud').catch(()=>({}));return DRIVE.cache}
+function setSync(state,msg){sync.state=state;sync.msg=msg;paintSyncUI()}
+function paintSyncUI(){
+  document.querySelectorAll('.syncdot').forEach(d=>{d.className='syncdot '+(sync.needAuth?'error':sync.state)});
+  const box=document.getElementById('cpsync');if(box)paintSyncCard(box);
+}
+function paintSyncCard(box){
+  box.replaceChildren(el('div',{class:'row',style:'gap:8px;flex-wrap:nowrap'},el('i',{class:'syncdot '+(sync.needAuth?'error':sync.state),style:'position:static;flex:none'}),el('span',{style:'font-size:.9rem;line-height:1.4',text:sync.msg})));
+  const row=el('div',{class:'row',style:'margin-top:10px'});
+  if(sync.state==='needconnect'||sync.needAuth)row.append(el('button',{class:'primary small',text:sync.needAuth?'Reconnect Google Drive':'Connect Google Drive',onclick:()=>driveUserConnect()}));
+  else if(sync.on&&sync.state!=='syncing')row.append(el('button',{class:'ghost small',text:'Sync now',onclick:()=>syncSoon(0,true)}));
+  if(row.children.length)box.append(row);
+}
+function loadGIS(){
+  return new Promise((res,rej)=>{
+    if(window.google&&window.google.accounts&&window.google.accounts.oauth2)return res();
+    const s=document.createElement('script');s.src=GIS_URL;s.async=true;s.onload=()=>res();s.onerror=()=>rej(gerr('gis','Could not load Google sign-in'));document.head.append(s);
+  });
+}
+function driveConnect(interactive){
+  return loadGIS().then(()=>new Promise((resolve,reject)=>{
+    const tc=window.google.accounts.oauth2.initTokenClient({
+      client_id:GCFG.clientId,scope:'https://www.googleapis.com/auth/drive.appdata',
+      callback:r=>{if(!r||r.error||!r.access_token){reject(gerr('auth',(r&&r.error)||'no token'));return}
+        DRIVE.tok=r.access_token;DRIVE.exp=Date.now()+((+r.expires_in||3600)*1000);try{localStorage.setItem('commonplace:gd','1')}catch(e){}resolve()},
+      error_callback:e=>reject(gerr('auth',(e&&e.type)||'popup'))
+    });
+    tc.requestAccessToken({prompt:interactive?'':'none'});
+  }));
+}
+async function driveUserConnect(){
+  setSync('syncing','Connecting to Google Drive…');
+  try{await driveConnect(true);sync.on=true;sync.needAuth=false;syncSoon(0,true)}
+  catch(e){logErr('connect',e);setSync('needconnect','Could not connect to Google Drive ('+briefErr(e)+'). Your journal is still saved on this device.')}
+}
+async function syncInit(){
+  const cid=GCFG.clientId||'';
+  if(!cid||/PASTE_YOUR_CLIENT_ID/.test(cid)){setSync('off','Saved on this device only. Add your Google client ID to turn on sync.');return}
+  setSync('needconnect','Not connected to Google Drive yet. Your journal is saved on this device.');
+  let was=null;try{was=localStorage.getItem('commonplace:gd')}catch(e){}
+  if(was){try{await driveConnect(false);sync.on=true;sync.needAuth=false;syncSoon(0,true)}catch(e){setSync('needconnect','Tap Connect to sync with Google Drive. Your journal is saved on this device.')}}
+}
+async function gfetch(url,opts,again){
+  opts=opts||{};
+  if(DRIVE.tok&&Date.now()>DRIVE.exp-60000&&Date.now()-DRIVE.lastTry>30000){DRIVE.lastTry=Date.now();try{await driveConnect(false)}catch(e){}}
+  if(!DRIVE.tok||Date.now()>DRIVE.exp){DRIVE.tok=null;sync.needAuth=true;paintSyncUI();throw gerr('auth','Signed out')}
+  const r=await fetch(url,Object.assign({},opts,{headers:Object.assign({},opts.headers||{},{Authorization:'Bearer '+DRIVE.tok})}));
+  if(r.status===401){DRIVE.tok=null;sync.needAuth=true;paintSyncUI();throw gerr('auth','Signed out')}
+  if((r.status===429||r.status>=500)&&!again){await nap(900+Math.random()*900);return gfetch(url,opts,true)}
+  if(!r.ok){let reason='';try{const j=await r.clone().json();reason=(((j.error||{}).errors||[{}])[0]||{}).reason||''}catch(e){}
+    throw gerr(r.status===403&&/quota/i.test(reason)?'quota_exceeded':(r.status===403||r.status===429)?'rate_limited':'drive_'+r.status,'Drive '+r.status+(reason?' '+reason:''))}
+  return r;
+}
+async function listAll(){
+  const out=[];let tok='';
+  do{const u=GAPI+'/files?spaces=appDataFolder&pageSize=1000&fields='+encodeURIComponent('nextPageToken,files(id,name,modifiedTime,size)')+(tok?'&pageToken='+encodeURIComponent(tok):'');
+    const j=await (await gfetch(u)).json();out.push(...(j.files||[]));tok=j.nextPageToken||''}while(tok);
+  return out;
+}
+async function driveMeta(name){
+  const q=encodeURIComponent(`name='${name}' and trashed=false`);
+  const j=await (await gfetch(GAPI+'/files?spaces=appDataFolder&orderBy=modifiedTime%20desc&pageSize=1&fields='+encodeURIComponent('files(id,modifiedTime)')+'&q='+q)).json();
+  const f=(j.files||[])[0];if(f)DRIVE.idx[name]=f.id;return f||null;
+}
+function multipart(meta,blob){
+  const boundary='mg'+uid()+uid()+uid();
+  return{boundary,blob:new Blob([`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n--${boundary}\r\nContent-Type: ${blob.type||'application/octet-stream'}\r\n\r\n`,blob,`\r\n--${boundary}--`])};
+}
+async function writeItem(name,obj){
+  const cache=await cloudCache();
+  const id=DRIVE.idx[name]||(cache[name]&&cache[name].id)||((await driveMeta(name))||{}).id;
+  const b=multipart(id?{}:{name,parents:['appDataFolder']},new Blob([JSON.stringify(obj)],{type:'application/json'}));
+  const url=(id?`${GUP}/files/${id}`:`${GUP}/files`)+'?uploadType=multipart&fields=id,modifiedTime';
+  let r;
+  try{r=await gfetch(url,{method:id?'PATCH':'POST',headers:{'Content-Type':'multipart/related; boundary='+b.boundary},body:b.blob})}
+  catch(e){if(id&&e&&e.code==='drive_404'){delete DRIVE.idx[name];delete cache[name];return writeItem(name,obj)}throw e}
+  const j=await r.json();DRIVE.idx[name]=j.id;
+  cache[name]={id:j.id,mt:j.modifiedTime,content:cl(obj)};await idbPut('cloud',name,cache[name]).catch(()=>{});
+}
+const NAMERE=/^cp-([ectq])-(.+)$/;
+async function pushPass(){
+  const cache=await cloudCache();let n=0;
+  for(const k of CK)for(const it of S[ARR[k]]){
+    const name='cp-'+k+'-'+it.id,c=cache[name];
+    if(!c||c.content.deleted||(it.u||0)>(c.content.u||0)){await writeItem(name,it);n++}
+  }
+  for(const id of Object.keys(S.tomb||{})){
+    const t=S.tomb[id],name='cp-'+t.k+'-'+id,c=cache[name];
+    if(!c||!c.content.deleted||(c.content.u||0)<t.t){await writeItem(name,{deleted:true,id,k:t.k,u:t.t});n++}
+  }
+  return n;
+}
+async function fullPass(){
+  const cache=await cloudCache(),files=await listAll(),best={},dups=[];
+  files.filter(f=>NAMERE.test(f.name)).sort((a,b)=>a.modifiedTime<b.modifiedTime?1:-1).forEach(f=>{if(best[f.name])dups.push(f);else best[f.name]=f});
+  dups.forEach(f=>gfetch(GAPI+'/files/'+f.id,{method:'DELETE'}).catch(()=>{}));
+  DRIVE.idx={};Object.keys(best).forEach(n=>DRIVE.idx[n]=best[n].id);
+  for(const n of Object.keys(cache)){if(NAMERE.test(n)&&!best[n]){delete cache[n];idbDel('cloud',n).catch(()=>{})}}
+  const need=Object.keys(best).filter(n=>!cache[n]||cache[n].mt!==best[n].modifiedTime||cache[n].id!==best[n].id);
+  await pool(need,6,async n=>{
+    try{const content=await (await gfetch(GAPI+'/files/'+best[n].id+'?alt=media')).json();cache[n]={id:best[n].id,mt:best[n].modifiedTime,content};await idbPut('cloud',n,cache[n]).catch(()=>{})}
+    catch(e){if(e&&e.code==='auth')throw e;delete cache[n];logErr('read '+n,e)}
+  });
+  stampChanges();let changed=false;S.tomb=S.tomb||{};
+  for(const name of Object.keys(best)){
+    const c=cache[name];if(!c)continue;const m=NAMERE.exec(name),k=m[1],id=m[2],rem=c.content,arr=S[ARR[k]],loc=arr.find(x=>x.id===id);
+    if(rem.deleted){
+      if(loc&&(loc.u||0)<=(rem.u||0)){arr.splice(arr.indexOf(loc),1);IDS[k].delete(id);delete FP[id];S.tomb[id]={k,t:rem.u||Date.now()};changed=true}
+      else if(!loc&&!S.tomb[id]){S.tomb[id]={k,t:rem.u||Date.now()}}
+    }else if(!loc){
+      if(!(S.tomb[id]&&S.tomb[id].t>=(rem.u||0))){arr.push(cl(rem));IDS[k].add(id);FP[id]=fpOf(rem);delete S.tomb[id];changed=true}
+    }else if((rem.u||0)>(loc.u||0)){
+      Object.keys(loc).forEach(x=>delete loc[x]);Object.assign(loc,cl(rem));FP[id]=fpOf(loc);changed=true;
+    }
+  }
+  await pushPass();
+  try{const q=((await (await gfetch(`${GAPI}/about?fields=storageQuota`)).json()).storageQuota)||{};sync.usage={bytes:+(q.usage||0),maxBytes:+(q.limit||0)}}catch(e){}
+  return changed;
+}
+function syncSoon(ms,full){
+  if(!sync.on)return;
+  if(full)sync.wantFull=true;
+  clearTimeout(sync.timer);
+  sync.timer=setTimeout(()=>{const f=sync.wantFull;sync.wantFull=false;runSync(f)},ms);
+}
+async function runSync(full){
+  if(!sync.on||!S)return;
+  if(sync.running){sync.again=true;sync.againFull=sync.againFull||full;return}
+  sync.running=true;setSync('syncing','Syncing…');
+  let changed=false,failed=false;
+  try{
+    stampChanges();
+    if(full)changed=await fullPass();else await pushPass();
+    if(changed)await idbPut('state','main',S);
+    sync.last=Date.now();
+    setSync('ok','Synced '+new Date(sync.last).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+(sync.usage?' · Google Drive '+fmtSize(sync.usage.bytes)+(sync.usage.maxBytes?' of '+fmtSize(sync.usage.maxBytes):'')+' used':''));
+  }catch(e){
+    failed=true;logErr('sync',e);const c=e&&e.code;
+    setSync('error',c==='auth'?'Google sign-in expired. Tap Reconnect.':c==='quota_exceeded'?'Your Google Drive is full. Free up space and tap Sync now.':c==='rate_limited'?'Sync paused (too many requests). Retrying shortly.':'Could not sync ('+briefErr(e)+'). Retrying shortly.');
+    if(c!=='auth')syncSoon(120000,true);
+  }finally{sync.running=false}
+  if(!failed&&changed){if(document.querySelector('.bg'))sync.pendingRender=true;else render()}
+  if(sync.again){const f=sync.againFull;sync.again=false;sync.againFull=false;syncSoon(300,f)}
+}
+
+function afterSheetClose(){if(sync.pendingRender&&!document.querySelector('.bg')){sync.pendingRender=false;render()}}
+
+/* ---------- start-up ---------- */
+async function boot(){
+  $('#main').replaceChildren(el('div',{class:'empty',text:'Opening your journal…'}));
+  let st=null;try{st=await idbGet('state','main')}catch(e){logErr('load',e)}
+  S=upgrade(st||emptyState());
+  FP={};IDS={};CK.forEach(k=>{IDS[k]=new Set();S[ARR[k]].forEach(it=>{FP[it.id]=fpOf(it);IDS[k].add(it.id)})});
+  render();syncInit();
+  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+/* ---------- sample material ---------- */
+function addAllSamples(){
+  const sd=seed();
+  ['topics','clips','entries'].forEach(a=>{sd[a].forEach(it=>{if(!S[a].some(x=>x.id===it.id))S[a].push(it)})});
+  addSamples2(S);
+}
+
+/* ---------- back up and restore ---------- */
+function exportData(){
+  stampChanges();
+  const blob=new Blob([JSON.stringify({app:'commonplace',version:2,exported:Date.now(),state:S})],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='commonplace-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.append(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},3000);toast('Backup saved to your downloads');
+}
+function mergeIncoming(j){
+  const st=(j&&j.state)||j;
+  if(!st||!Array.isArray(st.entries)||!Array.isArray(st.clips))throw new Error('This is not a Commonplace backup.');
+  let added=0,updated=0;S.tomb=S.tomb||{};
+  ['topics','clips','entries','questions'].forEach(a=>{
+    (st[a]||[]).forEach(it=>{
+      if(!it||!it.id)return;const loc=S[a].find(x=>x.id===it.id);
+      if(!loc){S[a].push(it);added++}else if((it.u||0)>(loc.u||0)){Object.keys(loc).forEach(x=>delete loc[x]);Object.assign(loc,it);updated++}
+    });
+  });
+  upgrade(S);return{added,updated};
+}
+function openRestore(){
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Restore from a backup'}),el('button',{class:'ghost small',text:'Close',onclick:close})));
+    sh.append(el('p',{style:'line-height:1.55;font-size:.95rem',text:'Choose a backup file, or paste the text of one. Nothing is deleted: items are added, and newer versions replace older ones.'}));
+    const file=el('input',{type:'file',accept:'.json,application/json',style:'display:none'});
+    const ta=el('textarea',{class:'field',placeholder:'Or paste backup text here','aria-label':'Backup text',style:'min-height:110px'});
+    const go=async text=>{try{const r=mergeIncoming(JSON.parse(text));persist();close();render();toast(r.added+' added, '+r.updated+' updated')}catch(e){toast(/not a Commonplace/.test(e.message)?e.message:'That file could not be read.')}};
+    file.addEventListener('change',async()=>{const f=file.files[0];if(f)go(await f.text())});
+    sh.append(file,el('button',{class:'primary',text:'Choose a backup file',onclick:()=>file.click()}),el('div',{style:'height:12px'}),ta,el('button',{class:'ghost',style:'margin-top:8px',text:'Restore pasted text',onclick:()=>go(ta.value)}));
+  });
+}
+
+/* ---------- bring in from Marginalia (Drive, this device, or a file) ---------- */
+function marginaliaItems(j){
+  const data=j.data||{},docs=data.docs||[],out=[];
+  (data.annos||[]).filter(a=>!a.del&&a.type!=='ink').forEach(a=>{
+    const d=docs.find(x=>x.id===a.doc);if(!d)return;
+    let quote=a.text!=null?a.text:(d.text?d.text.slice(a.start,a.end):'');
+    quote=(quote||'').replace(/\s+/g,' ').trim();if(!quote)return;
+    let loc='';if(a.page)loc='p. '+a.page;else if(a.ch!=null)loc=(d.toc&&d.toc[a.ch])||('Section '+(a.ch+1));
+    out.push({id:a.id,doc:d.id,title:d.title||'Untitled',author:d.author||'',loc,quote,note:(a.note||'').trim()});
+  });
+  return out;
+}
+async function marginaliaFromDrive(){
+  const files=await listAll(),docs=[],annos=[];
+  await pool(files.filter(f=>/^d_.*\.json$/.test(f.name)),6,async f=>{const j=await (await gfetch(`${GAPI}/files/${f.id}?alt=media`)).json();if(!j.deleted)docs.push(Object.assign({id:f.name.slice(2,-5)},j))});
+  await pool(files.filter(f=>/^m_.*\.json$/.test(f.name)),6,async f=>{const j=await (await gfetch(`${GAPI}/files/${f.id}?alt=media`)).json();(j.annos||[]).forEach(a=>annos.push(a))});
+  const need=docs.filter(d=>d.kind!=='pdf'&&d.kind!=='epub'&&d.asset&&annos.some(a=>a.doc===d.id&&!a.del&&a.start!=null&&a.ch==null&&a.text==null));
+  await pool(need,3,async d=>{try{d.text=new TextDecoder().decode(await (await gfetch(`${GAPI}/files/${d.asset}?alt=media`)).arrayBuffer())}catch(e){logErr('marginalia text',e)}});
+  return{app:'marginalia',data:{docs,annos}};
+}
+function openImport(){
+  let items=[],picked=new Set(),onlyNotes=true,topicsSel=[],stage='source',err='';
+  let hasLocal=false;try{hasLocal=!!localStorage.getItem('marginalia:v1')}catch(e){}
+  sheet((sh,close)=>{
+    const body=el('div');
+    const take=j=>{items=marginaliaItems(j);if(!items.length){err='No highlights found there yet.';stage='source';paint();return}picked=new Set(items.filter(i=>i.note).map(i=>i.id));stage='pick';err='';paint()};
+    const loadFrom=async(fn,label)=>{body.replaceChildren(el('div',{class:'empty',text:'Reading '+label+'…'}));try{take(await fn())}catch(e){logErr('import',e);err='Could not read it: '+briefErr(e);stage='source';paint()}};
+    const paint=()=>{
+      body.replaceChildren();
+      if(stage==='source'){
+        const file=el('input',{type:'file',accept:'.json,application/json',style:'display:none'});
+        file.addEventListener('change',async()=>{const f=file.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j||j.app!=='marginalia')throw new Error('x');take(j)}catch(e){err='That file is not a Marginalia backup.';paint()}});
+        body.append(file,el('p',{style:'line-height:1.55;font-size:.95rem',text:'Pick the highlights and notes to bring in as evidence. Your Marginalia library is never changed.'}));
+        if(err)body.append(el('p',{style:'color:var(--chal);font-size:.9rem',text:err}));
+        if(sync.on)body.append(el('button',{class:'primary',style:'display:block;width:100%;margin:8px 0',text:'From your Google Drive',onclick:()=>loadFrom(marginaliaFromDrive,'your Google Drive')}));
+        if(hasLocal)body.append(el('button',{class:'ghost',style:'display:block;width:100%;margin:8px 0',text:'From Marginalia on this device',onclick:()=>loadFrom(async()=>({app:'marginalia',data:JSON.parse(localStorage.getItem('marginalia:v1'))}),'Marginalia')}));
+        body.append(el('button',{class:'ghost',style:'display:block;width:100%;margin:8px 0',text:'From a backup file',onclick:()=>file.click()}));
+        if(!sync.on&&!hasLocal)body.append(el('p',{class:'hint',style:'margin-top:8px',text:'Connect Google Drive in Settings to read your Marginalia library directly.'}));
+        return;
+      }
+      const shown=items.filter(i=>!onlyNotes||i.note);
+      body.append(el('div',{class:'chips',style:'margin-bottom:10px'},el('button',{class:'chip'+(onlyNotes?' on':''),text:'Only marks with a note',onclick:()=>{onlyNotes=!onlyNotes;paint()}}),el('button',{class:'chip',text:'Select all',onclick:()=>{shown.forEach(i=>picked.add(i.id));paint()}}),el('button',{class:'chip',text:'Select none',onclick:()=>{picked.clear();paint()}})));
+      body.append(el('label',{class:'lbl',text:'File them under'}),el('div',{class:'chips',style:'margin-bottom:10px'},topicChips(topicsSel),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(topicsSel,v=>{topicsSel=v;paint()})})));
+      if(!shown.length)body.append(el('div',{class:'empty',text:'No marks with notes. Turn off the filter to see all highlights.'}));
+      shown.forEach(i=>{const on=picked.has(i.id);body.append(el('div',{class:'brow',style:'align-items:flex-start'},
+        el('button',{class:'chk'+(on?' on':''),'aria-label':on?'Selected':'Not selected',text:on?'✓':'',onclick:()=>{if(on)picked.delete(i.id);else picked.add(i.id);paint()}}),
+        el('div',{class:'bt'},el('div',{text:'“'+(i.quote.length>150?i.quote.slice(0,150)+'…':i.quote)+'”'}),i.note?el('div',{style:'font-family:var(--sans);font-size:.84rem;margin-top:4px',text:'My note: '+i.note}):null,el('small',{style:'color:var(--muted);font-size:.76rem',text:[i.title,i.loc].filter(Boolean).join(', ')}))))});
+      body.append(el('button',{class:'primary',style:'margin-top:12px;width:100%',text:'Bring in '+picked.size+' highlight'+(picked.size===1?'':'s'),onclick:()=>{
+        let n=0,dup=0;
+        items.filter(i=>picked.has(i.id)).forEach(i=>{
+          if(S.clips.some(c=>c.from&&c.from.anno===i.id)){dup++;return}
+          S.clips.unshift({id:uid(),kind:'quote',text:i.quote,source:[i.title+(i.author?', '+i.author:''),i.loc].filter(Boolean).join(', '),url:'',topics:topicsSel.slice(),toread:false,quality:'unrated',mnote:i.note,from:{app:'marginalia',doc:i.doc,anno:i.id},created:Date.now(),u:Date.now()});n++});
+        persist();close();render();toast(n+' brought in'+(dup?', '+dup+' already here':''))}}));
+    };
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Bring in from Marginalia'}),el('button',{class:'ghost small',text:'Close',onclick:close})),body);paint();
+  },{full:true});
+}
+
+/* ---------- settings ---------- */
+async function diagReport(){
+  const L=[];
+  L.push('Commonplace build '+BUILD,'Device: '+navigator.userAgent,'Opened as installed app: '+((navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches))?'yes':'no (browser tab)'));
+  L.push('Saved here: '+S.entries.length+' entries, '+S.clips.length+' clips, '+S.topics.length+' topics, '+S.questions.length+' questions');
+  L.push('Google key set: '+((GCFG.clientId&&!/PASTE_YOUR/.test(GCFG.clientId))?'yes ('+GCFG.clientId.slice(0,10)+'…)':'NO (config.js)'));
+  L.push('Drive: '+(DRIVE.tok?'signed in':'not signed in')+', sync state: '+sync.state);
+  L.push('Service worker (offline): '+(navigator.serviceWorker?(navigator.serviceWorker.controller?'active':'not active yet'):'not supported'));
+  try{const e=await navigator.storage.estimate();L.push('Storage used: '+fmtSize(e.usage||0)+' of '+fmtSize(e.quota||0))}catch(e){}
+  try{L.push('Storage protected from clean-up: '+((await navigator.storage.persisted())?'yes':'no'))}catch(e){}
+  L.push(ERRLOG.length?'Recent errors:\n  '+ERRLOG.join('\n  '):'Recent errors: none');
+  return L.join('\n');
+}
+function openSettings(){
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Settings and sync'}),el('button',{class:'primary small',text:'Close',onclick:close})));
+    const card=el('div',{class:'gapcard',id:'cpsync'});sh.append(card);paintSyncCard(card);
+    sh.append(el('button',{class:'ghost',style:'margin:4px 0 10px;display:block',text:'Bring in highlights from Marginalia',onclick:()=>{close();setTimeout(openImport,60)}}));
+    sh.append(el('div',{class:'row',style:'margin-bottom:10px'},el('button',{class:'ghost',text:'Back up my data',onclick:exportData}),el('button',{class:'ghost',text:'Restore',onclick:()=>{close();setTimeout(openRestore,60)}})));
+    const hasSamples=S.entries.some(e=>e.sample)||S.clips.some(c=>c.sample)||S.topics.some(t=>t.sample)||S.questions.some(q=>q.sample);
+    if(!hasSamples)sh.append(el('button',{class:'ghost',style:'margin:0 0 10px;display:block',text:'Add sample material to explore',onclick:()=>{addAllSamples();persist();close();render();toast('Sample material added')}}));
+    else{
+      const n=S.entries.filter(e=>e.sample).length+S.clips.filter(c=>c.sample).length+S.topics.filter(t=>t.sample).length+S.questions.filter(q=>q.sample).length;
+      const b=el('button',{class:'ghost small danger',style:'margin:0 0 10px;display:block',text:'Remove sample data ('+n+' items)'});b.dataset.orig=b.textContent;
+      armDelete(b,'remove the samples',()=>{S.entries=S.entries.filter(e=>!e.sample);S.clips=S.clips.filter(c=>!c.sample);S.topics=S.topics.filter(t=>!t.sample);S.questions=S.questions.filter(q=>!q.sample);
+        S.entries.forEach(e=>{e.marks=e.marks.filter(m=>clipById(m.clip));e.links=e.links.filter(entryById);e.topics=e.topics.filter(topicById)});S.clips.forEach(c=>{c.topics=c.topics.filter(topicById)});S.questions.forEach(q=>{q.topics=q.topics.filter(topicById);q.refs=(q.refs||[]).filter(entryById)});
+        persist();close();nav.topic=null;render();toast('Sample data removed')});
+      sh.append(b);
+    }
+    const pre=el('pre',{style:'display:none;white-space:pre-wrap;word-break:break-word;font-size:.74rem;line-height:1.45;background:var(--soft);border-radius:10px;padding:10px;margin:8px 0'});
+    sh.append(el('div',{class:'row'},el('button',{class:'ghost small',text:'Diagnostics',onclick:async()=>{pre.style.display='block';pre.textContent=await diagReport()}}),
+      el('button',{class:'ghost small',text:'Copy report',onclick:async()=>{const t=await diagReport();pre.style.display='block';pre.textContent=t;try{navigator.clipboard.writeText(t).then(()=>toast('Report copied'),()=>toast('Press and hold the text to copy it'))}catch(e){toast('Press and hold the text to copy it')}}})),pre);
+    sh.append(el('p',{class:'hint',style:'margin-top:14px;line-height:1.5',text:'Your journal is saved on this device first, then copied to a private folder in your Google Drive. Changes made on two devices merge by newest edit.'}));
+  });
+}
+
+/* ---------- sample material and upgrades ---------- */
+function addSamples2(S){
+  const t=Date.now(),D=864e5;
+  const has=id=>S.topics.some(x=>x.id===id)||S.clips.some(x=>x.id===id)||S.entries.some(x=>x.id===id)||S.questions.some(x=>x.id===id);
+  const setq=(id,v)=>{const c=S.clips.find(x=>x.id===id);if(c&&c.sample&&!c.quality)c.quality=v};
+  setq('c_simon','expert');setq('c_data','primary');setq('c_counter','review');setq('c_read','unrated');setq('c_note','anecdote');
+  if(!has('t_att'))S.topics.push({id:'t_att',name:'Attention economy',color:PALETTE[5],desc:'Attention as a scarce resource that platforms compete to capture.',created:t,u:t,sample:true});
+  const simon=S.clips.find(x=>x.id==='c_simon');if(simon&&!simon.topics.includes('t_att'))simon.topics.push('t_att');
+  if(!has('c_notif'))S.clips.push({id:'c_notif',kind:'quote',text:'Sample: notification design borrows reward schedules from slot machines.',source:'Sample. Add your source here.',url:'',topics:['t_att'],toread:false,quality:'press',created:t-D,u:t-D,sample:true});
+  if(!has('e_att'))S.entries.push({id:'e_att',kind:'journal',claim:true,conf:4,title:'Platforms compete for attention, so product design follows',body:'If attention is the scarce input, features that capture it will survive, whatever they do to the people using them.',topics:['t_att'],marks:[{id:'m9',clip:'c_simon',role:'supports'},{id:'m10',clip:'c_notif',role:'supports'}],links:[],hist:[],log:[{t:t-6*D,k:'new',txt:'Started this entry'},{t:t-6*D,k:'claim',txt:'Marked as a claim'},{t:t-2*D,k:'mark',txt:'Earmarked as supports: A wealth of information creates a poverty of attention.'}],created:t-6*D,u:t-2*D,sample:true});
+  const c=S.entries.find(x=>x.id==='e_claim');
+  if(c&&c.sample&&!(c.log&&c.log.length)){
+    c.conf=3;c.hist=[{t:t-9*D,title:'Notifications might retrain reward systems',body:'Every buzz seems like a small reward. Maybe the brain expects the signal before the content.'}];
+    c.log=[{t:t-9*D,k:'new',txt:'Started this entry'},{t:t-8*D,k:'claim',txt:'Marked as a claim'},{t:t-8*D,k:'conf',txt:'Confidence set to Unsure'},{t:t-7*D,k:'mark',txt:'Earmarked as supports: Average daily phone pick-ups. Replace with a real figure.'},{t:t-4*D,k:'text',txt:'Edited the text (+31 words)'},{t:t-3*D,k:'mark',txt:'Earmarked as challenges: Sample counter-argument about the dopamine framing.'},{t:t-3*D,k:'conf',txt:'Confidence Unsure → Leaning'}];
+  }
+  [{id:'q_persist',text:'Does the effect persist after the phone is put away?',status:'open',topics:['t_dcs'],refs:['e_claim']},
+   {id:'q_fade',text:'How fast did earlier media panics fade?',status:'open',topics:['t_dcs'],refs:['e_press']},
+   {id:'q_dop',text:'Is “dopamine” even the right frame for this?',status:'parked',topics:['t_dcs','t_att'],refs:[]}
+  ].forEach(o=>{if(!has(o.id))S.questions.push(Object.assign({answer:'',created:t-2*D,u:t-2*D,sample:true},o))});
+}
+function upgrade(s){
+  s.questions=s.questions||[];
+  if(!s.v2){s.v2=true;if(s.entries.some(e=>e.sample)||s.clips.some(c=>c.sample))addSamples2(s)}
+  s.entries.forEach(e=>{e.hist=e.hist||[];e.log=e.log||[];if(e.conf==null)e.conf=0;e.links=e.links||[];e.marks=e.marks||[];e.topics=e.topics||[]});
+  s.clips.forEach(c=>{if(!c.quality)c.quality='unrated';c.topics=c.topics||[]});
+  return s;
+}
+
+boot();
+})();
+</script>
+</body>
+</html>
