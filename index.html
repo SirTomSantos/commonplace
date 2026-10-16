@@ -196,6 +196,89 @@ textarea.field{font-family:var(--serif);font-size:1.02rem;line-height:1.5;min-he
 .bridge .bt{font-family:var(--serif);font-size:1rem;line-height:1.35;margin-bottom:6px}
 .bridge small{color:var(--muted);font-size:.78rem}
 
+/* v3: trees, sorting, clusters, start sheet */
+.tnode{position:relative;margin:0 0 10px}
+.tchildren{margin:8px 0 0 5px;padding-left:15px}
+.tchildren>.tnode::before{content:"";position:absolute;left:-15px;top:21px;width:13px;border-top:2px solid var(--rc,var(--rule))}
+.tchildren>.tnode::after{content:"";position:absolute;left:-15px;top:-10px;bottom:-10px;border-left:2px solid var(--rc,var(--rule))}
+.tchildren>.tnode:last-child::after{bottom:auto;height:31px}
+.tchildren>.tnode.r-challenges::before{border-top-style:dashed}
+.tchildren>.tnode.r-challenges::after{border-left-style:dashed}
+.r-supports{--rc:var(--sup)} .r-challenges{--rc:var(--chal)} .r-context{--rc:var(--ctx)} .r-readmore{--rc:var(--read)} .r-q{--rc:var(--ctx)}
+.tcard{background:var(--sheet);border-radius:8px;padding:10px 12px;box-shadow:0 1px 0 var(--rule);display:flex;gap:10px;align-items:flex-start}
+.tcard .tb{flex:1;min-width:0}
+.tcard .tt{font-family:var(--serif);font-size:1.02rem;line-height:1.35;font-weight:500;text-align:left;background:none;border:0;padding:0;width:100%;color:var(--ink)}
+.tcard .ts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.tcard .chev{width:26px;height:26px;border-radius:7px;border:1px solid var(--rule);background:none;font-size:.8rem;flex:none;color:var(--muted)}
+.tcard.root{border-left:6px solid var(--tc,var(--navy));padding:12px 14px}
+.tcard.root .tt{font-size:1.2rem;font-weight:600}
+.tcard.claim{border-left:4px solid var(--navy)}
+.tcard.gap{background:transparent;border:1.5px dashed var(--chal);box-shadow:none}
+.tcard.gap .tt{color:var(--chal);font-family:var(--sans);font-size:.88rem;font-weight:500}
+.tcard.leaf{padding:8px 11px}
+.tcard.leaf .tt{font-size:.94rem;font-weight:400}
+.tcard.leaf.quote .tt{font-style:italic}
+.tcard small{color:var(--muted);font-size:.74rem;line-height:1.3}
+.qdot{width:12px;height:12px;border-radius:50%;flex:none;margin-top:4px;border:2px solid var(--ctx);background:none}
+.qdot.answered{background:var(--sup);border-color:var(--sup)} .qdot.parked{border-color:var(--muted)}
+.tmini{background:none;border:1px solid var(--rule);border-radius:999px;padding:2px 9px;font-size:.74rem;color:var(--ink)}
+.cluster{background:var(--sheet);border-radius:8px;padding:12px 14px;margin:0 0 12px;box-shadow:0 1px 0 var(--rule);border-top:4px solid var(--cc,var(--sun))}
+.cluster h4{font-family:var(--serif);font-size:1.15rem;margin:0 0 6px;font-weight:600}
+.cluster .mem{display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--rule);padding:8px 0;font-size:.92rem;line-height:1.4}
+.cluster .mem .ic{width:20px;flex:none;color:var(--muted);text-align:center}
+.cluster .mem button.tx{flex:1;text-align:left;background:none;border:0;padding:0;font-family:var(--serif);font-size:.98rem;line-height:1.4;color:var(--ink)}
+.cluster .mem button.x{background:none;border:0;color:var(--muted);font-size:1.15rem;line-height:1;padding:0 4px}
+.sortcard{background:var(--sheet);border-radius:14px;padding:18px;font-family:var(--serif);font-size:1.18rem;line-height:1.55;box-shadow:0 1px 0 var(--rule),0 14px 30px -20px rgba(22,33,46,.4);margin:8px 0 14px;white-space:pre-wrap}
+.sortcard small{display:block;font-family:var(--sans);font-size:.76rem;color:var(--muted);margin-bottom:6px}
+.chip.big{padding:9px 14px;font-size:.92rem}
+.progress{height:5px;background:var(--soft);border-radius:3px;margin:4px 0 6px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--navy);border-radius:3px}
+.banner{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--soft);border-radius:12px;padding:10px 14px;margin:0 0 12px;font-size:.9rem}
+.startlist{margin:0 0 4px}
+.startlist label{font-family:var(--serif);font-size:1.15rem;font-weight:600;display:block;margin:16px 0 4px}
+
+/* v4: matrix, debate, timelines, landscape, recall */
+.vcats{display:flex;gap:6px;margin:0 0 8px}
+.vcats button{flex:1;background:var(--soft);border:0;border-radius:10px;padding:8px 4px;font-size:.84rem;color:var(--muted)}
+.vcats button.on{background:var(--navy);color:var(--navy-ink);font-weight:600}
+.mx{overflow-x:auto;background:var(--sheet);border-radius:8px;box-shadow:0 1px 0 var(--rule);margin:0 0 10px;-webkit-overflow-scrolling:touch}
+.mxt{border-collapse:separate;border-spacing:0;font-size:.82rem}
+.mxt th,.mxt td{padding:0;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);vertical-align:middle}
+.mxt .rh{position:sticky;left:0;z-index:2;background:var(--sheet);min-width:136px;max-width:148px;padding:8px 10px;text-align:left;font-family:var(--serif);font-size:.88rem;line-height:1.3;font-weight:500}
+.mxt .rh button{background:none;border:0;padding:0;text-align:left;font:inherit;color:var(--ink)}
+.mxt .rh .pill{display:inline-block;margin-top:5px}
+.mxt thead th{vertical-align:bottom;background:var(--sheet)}
+.mxt .ch{writing-mode:vertical-rl;transform:rotate(180deg);height:124px;width:44px;padding:8px 2px;font-size:.74rem;line-height:1.2;text-align:left;background:none;border:0;overflow:hidden;color:var(--ink)}
+.mxt tfoot td{text-align:center;font-size:.72rem;color:var(--muted);padding:6px 2px}
+.mxt tfoot td.hot{color:var(--navy);font-weight:700}
+.mxc{width:44px;height:44px;border:0;background:none;font-size:1.05rem;display:block}
+.mxc.supports{background:rgba(47,143,107,.24);color:var(--sup)} .mxc.challenges{background:rgba(200,69,47,.22);color:var(--chal)}
+.mxc.context{background:rgba(59,111,182,.2);color:var(--ctx)} .mxc.readmore{background:rgba(201,141,11,.24);color:var(--read)}
+.mxt tr.bare .rh{border-left:3px dashed var(--chal)}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.dside h4{margin:0 0 8px;font-family:var(--serif);font-size:1.05rem}
+.dside.for h4{color:var(--sup)} .dside.against h4{color:var(--chal)}
+.dcard{background:var(--sheet);border-radius:8px;padding:9px 10px;margin:0 0 8px;box-shadow:0 1px 0 var(--rule);font-size:.9rem;line-height:1.35;cursor:pointer;border-top:3px solid var(--rc)}
+.dside.for .dcard{--rc:var(--sup)} .dside.against .dcard{--rc:var(--chal)}
+.dcard .dt{font-family:var(--serif);font-size:.94rem;display:block;text-align:left;background:none;border:0;padding:0;width:100%;color:var(--ink)}
+.dcard small{display:block;color:var(--muted);font-size:.72rem;margin-top:4px}
+.balance{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--soft);margin:6px 0}
+.balance i{display:block;height:100%} .balance .b1{background:var(--sup)} .balance .b2{background:var(--chal)}
+.tlv{border-left:2px solid var(--rule);margin:8px 0 8px 10px;padding-left:16px}
+.tlv .yr{position:relative;margin:0 0 6px}
+.tlv .yr::before{content:"";position:absolute;left:-23px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--navy)}
+.tlv .yr h5{font-family:var(--serif);font-size:1.3rem;margin:0 0 6px;font-weight:600}
+.tlv .gapmark{margin:4px 0 14px;color:var(--chal);font-size:.8rem;border:1.5px dashed var(--chal);border-radius:8px;padding:6px 10px;display:inline-block}
+.growth{background:var(--sheet);border-radius:8px;padding:6px;box-shadow:0 1px 0 var(--rule);margin-bottom:10px}
+.growth svg{width:100%;height:auto;display:block}
+.growth text{font-family:var(--sans);font-size:9px;fill:var(--muted)}
+.recallbox{background:var(--sheet);border-radius:14px;padding:16px;margin:8px 0 14px;box-shadow:0 1px 0 var(--rule),0 14px 30px -20px rgba(22,33,46,.4)}
+.recallbox .q{font-family:var(--serif);font-size:1.25rem;line-height:1.4;font-weight:600;margin:0 0 10px}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.rate button{border:0;border-radius:12px;padding:12px 4px;font-weight:600;font-size:.9rem;color:#fff}
+.rate .r0{background:var(--chal)} .rate .r1{background:var(--read)} .rate .r2{background:var(--sup)}
+.island text{font-family:var(--sans)}
+
 .syncbtn{position:relative}
 .syncdot{position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:var(--muted);border:2px solid var(--paper);display:inline-block}
 .syncdot.ok{background:var(--sup)}.syncdot.syncing,.syncdot.needconnect{background:var(--sun)}.syncdot.error{background:var(--chal)}
@@ -362,7 +445,7 @@ function fill(node,...kids){node.replaceChildren(...kids.flat(Infinity).filter(k
 function autogrow(ta){const f=()=>{ta.style.height='auto';ta.style.height=Math.max(ta.scrollHeight,150)+'px'};ta.addEventListener('input',f);setTimeout(f,0)}
 
 /* ---------- navigation ---------- */
-let nav={tab:'journal',topic:null,tsub:'overview',filter:'all',sfilter:'all',qfilter:'open',q:'',node:null};
+let nav={tab:'journal',topic:null,tsub:'overview',filter:'all',sfilter:'all',qfilter:'open',q:'',node:null,view:'argument',cscope:'pile',collapsed:new Set(),cx:new Set()};
 function render(){
   const m=$('#main');m.replaceChildren();
   const t=nav.tab;
@@ -397,6 +480,7 @@ function vJournal(m){
   const unsorted=S.entries.filter(e=>e.kind==='dump'&&!e.topics.length).length;
   const FL=[['all','All'],['unsorted','Unsorted'+(unsorted?' ('+unsorted+')':'')],['claims','Claims'],['gaps','Needs evidence']];
   m.append(el('div',{class:'filters'},FL.map(([k,l])=>el('button',{class:'chip'+(nav.filter===k?' on':''),text:l,onclick:()=>{nav.filter=k;render()}}))));
+  {const pn=pileItems().length;if(pn>=2)m.append(el('div',{class:'banner'},el('span',{text:pn+' loose items are waiting to be sorted.'}),el('button',{class:'primary small',text:'Sort the pile',onclick:openSort})))}
   let list=S.entries.slice().sort((a,b)=>b.created-a.created);
   if(nav.filter==='unsorted')list=list.filter(e=>e.kind==='dump'&&!e.topics.length);
   if(nav.filter==='claims')list=list.filter(e=>e.claim);
@@ -443,9 +527,10 @@ function openEntry(id,kind,opts){
     const paintConf=()=>{confBox.replaceChildren();if(!e.claim)return;
       confBox.append(el('div',{class:'sec',text:'How sure are you?'}),el('div',{class:'chips'},[1,2,3,4,5].map(v=>el('button',{class:'chip'+(e.conf===v?' on':''),text:CONF[v],onclick:()=>{if(e.conf===v)return;const prev=e.conf;e.conf=v;logEv(e,'conf',prev?'Confidence '+CONF[prev]+' → '+CONF[v]:'Confidence set to '+CONF[v]);touch();paintConf()}}))))};
     const paintFlags=()=>{flags.replaceChildren(
-      el('button',{class:'chip'+(e.claim?' on':''),text:e.claim?'This is a claim':'Mark as a claim',onclick:()=>{e.claim=!e.claim;logEv(e,'claim',e.claim?'Marked as a claim':'No longer a claim');touch();paintFlags();paintConf();paintMarks()}}),
+      el('button',{class:'chip'+(e.claim?' on':''),text:e.claim?'This is a claim':'Mark as a claim',onclick:()=>{e.claim=!e.claim;logEv(e,'claim',e.claim?'Marked as a claim':'No longer a claim');touch();paintFlags();paintConf();pbox.repaint();paintMarks()}}),
       el('button',{class:'chip'+(e.kind==='dump'?' on':''),text:e.kind==='dump'?'Quick dump':'Journal entry',onclick:()=>{e.kind=e.kind==='dump'?'journal':'dump';touch();paintFlags()}}))};
-    paintFlags();sh.append(flags,confBox);paintConf();
+    const pbox=parentClaimBox(e,touch);
+    paintFlags();sh.append(flags,confBox,pbox);paintConf();
     sh.append(el('div',{class:'sec',text:'Topics'}));
     const tbox=el('div',{class:'chips'});
     const paintTopics=()=>{fill(tbox,topicChips(e.topics),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(e.topics,v=>{e.topics=v;touch();paintTopics()})}))};
@@ -484,7 +569,7 @@ function openEntry(id,kind,opts){
     };
     paintLinks();sh.append(lbox);
     const del=el('button',{class:'ghost small danger',style:'margin-top:22px',text:'Delete entry'});del.dataset.orig='Delete entry';
-    armDelete(del,'delete for good',()=>{S.entries=S.entries.filter(x=>x!==e);S.entries.forEach(x=>{x.links=(x.links||[]).filter(i=>i!==e.id)});S.questions.forEach(q=>{q.refs=(q.refs||[]).filter(i=>i!==e.id)});saved=false;skipSnap=true;e.marks=[];e.title='';e.body='';persist();close();toast('Entry deleted')});
+    armDelete(del,'delete for good',()=>{S.entries=S.entries.filter(x=>x!==e);S.entries.forEach(x=>{x.links=(x.links||[]).filter(i=>i!==e.id);if(x.parent===e.id){delete x.parent;delete x.prole}});S.questions.forEach(q=>{q.refs=(q.refs||[]).filter(i=>i!==e.id)});saved=false;skipSnap=true;e.marks=[];e.title='';e.body='';persist();close();toast('Entry deleted')});
     if(id)sh.append(del);
     if(opts.save)touch();
     if(!id&&!opts.title&&!opts.body)setTimeout(()=>b.focus(),60);
@@ -627,6 +712,7 @@ function openClip(id,opts){
         file.addEventListener('change',()=>{const f=file.files[0];if(f)readImage(f,d=>{c.img=d;paint()})});
         body.append(file,c.img?el('img',{src:c.img,alt:'Preview',style:'width:100%;border-radius:8px;margin:8px 0'}):el('div',{class:'empty',style:'padding:18px',text:'Add a photo, screenshot or chart.'}),el('button',{class:'ghost small',text:c.img?'Change image':'Choose an image',onclick:()=>file.click()}),...F('Caption','text','What is this?'),...F('Source','source','Where it came from'));
       }
+      body.append(...F('When (optional)','when','e.g. 1971, or March 2020'));
       body.append(el('label',{class:'lbl',text:'How strong is this source?'}),el('div',{class:'chips'},QUAL_KEYS.map(k=>el('button',{class:'chip'+((c.quality||'unrated')===k?' on':''),text:QUAL[k].label,onclick:()=>{c.quality=k;paint()}}))),el('p',{class:'hint',style:'margin-top:4px',text:'Stronger sources count for more when a claim is weighed.'}));
       body.append(el('label',{class:'lbl',text:'Topics'}));
       body.append(el('div',{class:'chips'},topicChips(c.topics),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(c.topics,v=>{c.topics=v;paint()})})),el('div',{class:'row',style:'margin-top:12px'},el('button',{class:'chip'+(c.toread?' on':''),text:'Flag to read later',onclick:()=>{c.toread=!c.toread;paint()}})));
@@ -660,7 +746,8 @@ function openClipView(id){
 function vTopics(m){
   m.append(header('Topics',S.topics.length?'Your lines of inquiry':'Group everything by question'));
   if(!S.topics.length){m.append(el('div',{class:'empty',text:'A topic is a question you are chasing. Create one and file entries and clips under it.'}));return}
-  m.append(el('button',{class:'primary',style:'margin:0 0 14px',text:'See the whole landscape',onclick:()=>{nav.topic='all';nav.tsub='map';render()}}));
+  m.append(el('button',{class:'primary',style:'margin:0 0 14px',text:'See the whole landscape',onclick:()=>{nav.topic='all';nav.tsub='views';nav.view='islands';render()}}));
+  {const pn=pileItems().length;m.append(el('div',{class:'row',style:'margin:0 0 14px'},el('button',{class:'ghost',text:'Sort the pile'+(pn?' ('+pn+')':''),onclick:openSort}),el('button',{class:'ghost',text:'Find clusters',onclick:()=>{nav.topic='all';nav.tsub='views';nav.view='clusters';render()}})))}
   if(S.topics.length>1){
     m.append(el('div',{class:'sec',text:'Bridges'}));
     const br=bridges();
@@ -681,7 +768,7 @@ function openTopic(id){
   const t=id?Object.assign({},topicById(id)):{id:uid(),name:'',desc:'',color:PALETTE[S.topics.length%PALETTE.length],created:Date.now(),u:Date.now()};
   sheet((sh,close)=>{
     sh.append(el('div',{class:'bar'},el('strong',{text:id?'Edit topic':'New topic'}),el('div',{class:'row'},el('button',{class:'ghost small',text:'Cancel',onclick:close}),el('button',{class:'primary small',text:'Save',onclick:()=>{
-      if(!t.name.trim()){toast('Give the topic a name.');return}t.u=Date.now();const i=S.topics.findIndex(x=>x.id===t.id);if(i>=0)S.topics[i]=t;else S.topics.push(t);persist();close();if(!id){nav.topic=t.id;nav.tsub='overview'}render()}}))));
+      if(!t.name.trim()){toast('Give the topic a name.');return}t.u=Date.now();const i=S.topics.findIndex(x=>x.id===t.id);if(i>=0)S.topics[i]=t;else S.topics.push(t);persist();close();if(!id){nav.topic=t.id;nav.tsub='overview';render();setTimeout(()=>openStart(t.id),250);return}render()}}))));
     const n=el('input',{class:'field',placeholder:'e.g. Digital culture shock','aria-label':'Topic name'});n.value=t.name;n.addEventListener('input',()=>t.name=n.value);
     const d=el('textarea',{class:'field',placeholder:'The question or angle you are chasing','aria-label':'Description'});d.value=t.desc||'';d.addEventListener('input',()=>t.desc=d.value);
     sh.append(el('label',{class:'lbl',text:'Name'}),n,el('label',{class:'lbl',text:'What are you trying to understand?'}),d,el('label',{class:'lbl',text:'Color'}));
@@ -693,12 +780,13 @@ function vTopic(m){
   const all=nav.topic==='all',t=all?{id:'all',name:'The whole landscape',desc:'Every topic, entry and clip, and how they connect.',color:'#4a5568'}:topicById(nav.topic);
   m.append(el('div',{class:'top'},el('button',{class:'ibtn','aria-label':'Back to topics',onclick:()=>go('topics'),html:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'}),el('div',{class:'ttl'},el('h1',{style:'font-size:1.6rem',text:t.name})),all?null:el('button',{class:'ibtn','aria-label':'Edit topic',onclick:()=>openTopic(t.id)},svgIcon('gear'))));
   if(t.desc)m.append(el('p',{class:'hint',style:'margin:0 0 12px',text:t.desc}));
-  const subs=all?[['overview','Overview'],['map','Map'],['entries','Entries'],['clips','Clips']]:[['overview','Overview'],['map','Map'],['entries','Entries'],['clips','Clips'],['build','Build']];
+  if(nav.tsub==='map')nav.tsub='views';
+  const subs=all?[['overview','Overview'],['views','Views'],['entries','Entries'],['clips','Clips']]:[['overview','Overview'],['views','Views'],['entries','Entries'],['clips','Clips'],['build','Build']];
   if(all&&nav.tsub==='build')nav.tsub='overview';
   m.append(el('div',{class:'seg'},subs.map(([k,l])=>el('button',{class:nav.tsub===k?'on':'',text:l,onclick:()=>{nav.tsub=k;nav.node=null;render()}}))));
   const ents=all?S.entries:S.entries.filter(e=>e.topics.includes(t.id)),cl=all?S.clips:S.clips.filter(c=>c.topics.includes(t.id));
   if(nav.tsub==='overview')vOverview(m,ents,cl,t,all);
-  if(nav.tsub==='map')vMap(m,t.id);
+  if(nav.tsub==='views')vViews(m,t,all);
   if(nav.tsub==='build'&&!all)vBuild(m,t);
   if(nav.tsub==='entries'){if(!ents.length)m.append(el('div',{class:'empty',text:'No entries in this topic yet.'}));let last='';ents.slice().sort((a,b)=>b.created-a.created).forEach(e=>{const d=dayLabel(e.created);if(d!==last){last=d;m.append(el('div',{class:'day',text:d}))}m.append(entryCard(e))})}
   if(nav.tsub==='clips')m.append(clipGrid(cl.slice().sort((a,b)=>b.created-a.created),'No clips in this topic yet.'));
@@ -707,6 +795,7 @@ function vOverview(m,ents,cl,t,all){
   const qs=S.questions.filter(q=>all||q.topics.includes(t.id));
   m.append(el('div',{class:'row',style:'margin:0 0 14px;gap:18px'},
     el('span',{class:'stat'},el('b',{text:ents.length}),' entries'),el('span',{class:'stat'},el('b',{text:cl.length}),' clips'),el('span',{class:'stat'},el('b',{text:ents.filter(e=>e.claim).length}),' claims'),el('span',{class:'stat'},el('b',{text:qs.filter(q=>q.status==='open').length}),' open questions')));
+  if(!all)m.append(el('div',{class:'row',style:'margin:0 0 12px'},el('button',{class:'ghost small',text:'Start sheet',onclick:()=>openStart(t.id)}),el('button',{class:'ghost small',text:'Argument tree',onclick:()=>{nav.tsub='views';nav.view='argument';render()}}),el('button',{class:'ghost small',text:'Question tree',onclick:()=>{nav.tsub='views';nav.view='qtree';render()}})));
   const toRead=cl.filter(c=>c.toread||S.entries.some(e=>e.marks.some(x=>x.clip===c.id&&x.role==='readmore')));
   const groups=[
     ['Claims without evidence',ents.filter(isUnsupported),e=>({t:entryTitle(e),f:()=>openEntry(e.id)}),'Add a supporting earmark, or reconsider the claim.'],
@@ -725,7 +814,7 @@ function vOverview(m,ents,cl,t,all){
   if(evs.length){any=true;m.append(el('div',{class:'gapcard'},el('h4',{text:'How your thinking has moved'}),el('p',{class:'hint',style:'margin-bottom:4px',text:'Recent changes of confidence and evidence.'}),
     evs.slice(0,6).map(({e,x})=>el('button',{class:'it',onclick:()=>openEntry(e.id)},el('span',{style:'color:var(--muted);font-size:.76rem',text:new Date(x.t).toLocaleDateString([],{month:'short',day:'numeric'})+'  '}),entryTitle(e).slice(0,50)+': '+x.txt))))}
   if(!all){
-    const br=bridges().filter(b=>b.topics.some(tt=>tt.id===t.id)&&b.topics.length>1);
+    const br=bridges().filter(b=>b.topics.includes(t.id)&&b.topics.length>1);
     if(br.length){any=true;m.append(el('div',{class:'sec',text:'Bridges to other topics'}));br.slice(0,5).forEach(b=>m.append(bridgeRow(b)))}
   }
   if(!any)m.append(el('div',{class:'empty',text:ents.length||cl.length?'Nothing flagged. Every claim has support and every clip is in use.':'Write a claim and earmark evidence to see where your argument is thin.'}));
@@ -745,6 +834,7 @@ function buildOutline(t){
     L.push(`## ${n}. ${entryTitle(e)}`);
     L.push('('+[e.conf?'Confidence: '+CONF[e.conf]:'',s.label].filter(Boolean).join('. ')+')','');
     const first=(e.body||'').trim().split('\n')[0];if(first)L.push(first.slice(0,260),'');
+    if(e.verdict)L.push('Where I land: '+e.verdict,'');
     const by=r=>e.marks.filter(m=>m.role===r).map(m=>clipById(m.clip)).filter(Boolean);
     const cite=c=>{const q=qOf(c).label,src=clipSource(c);if(src&&!srcs.has(src))srcs.set(src,q);return (c.kind==='quote'?'“'+clipText(c)+'”':clipText(c))+(src?' ('+src+')':'')+' ['+q+']'};
     const sup=by('supports');if(sup.length){L.push('Evidence for:');sup.forEach(c=>L.push('- '+cite(c)));L.push('')}
@@ -897,7 +987,7 @@ function openQuestion(id){
     const paintSt=()=>{fill(st,['open','answered','parked'].map(s=>el('button',{class:q.status===s?'on':'',text:s[0].toUpperCase()+s.slice(1),onclick:()=>{q.status=s;commit();paintSt();paintAns()}})))};
     paintSt();paintAns();sh.append(st,ans);
     sh.append(el('div',{class:'sec',text:'Topics'}));
-    const tb=el('div',{class:'chips'}),paintT=()=>{fill(tb,topicChips(q.topics),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(q.topics,v=>{q.topics=v;commit();paintT()})}))};paintT();sh.append(tb);
+    const tb=el('div',{class:'chips'}),paintT=()=>{fill(tb,topicChips(q.topics),el('button',{class:'chip',text:'＋ Topic',onclick:()=>pickTopics(q.topics,v=>{q.topics=v;commit();paintT()})}))};paintT();sh.append(tb);sh.append(qTreeBox(q,commit,close));
     sh.append(el('div',{class:'row spread'},el('div',{class:'sec',text:'Related thoughts'}),el('button',{class:'ghost small',text:'＋ Link a thought',onclick:()=>pickEntry({id:'_'},x=>{q.refs=q.refs||[];if(!q.refs.includes(x.id))q.refs.push(x.id);commit();paintR()})})));
     const rb=el('div'),paintR=()=>{rb.replaceChildren();const es=(q.refs||[]).map(entryById).filter(Boolean);
       es.forEach(x=>rb.append(el('div',{class:'mark'},el('div',{class:'mb',onclick:()=>{close();setTimeout(()=>openEntry(x.id),60)}},el('div',{class:'mt',text:entryTitle(x)}),el('small',{text:dayLabel(x.created)})),el('button',{class:'x',text:'×','aria-label':'Unlink thought',onclick:()=>{q.refs=q.refs.filter(i=>i!==x.id);commit();paintR()}}))));
@@ -906,7 +996,7 @@ function openQuestion(id){
     sh.append(el('button',{class:'primary',style:'margin-top:10px',text:'Start an entry on this question',onclick:()=>{
       if(!q.text.trim()){toast('Write the question first.');return}commit();close();
       setTimeout(()=>openEntry(null,'journal',{title:q.text,topics:q.topics,save:true,afterCreate:e=>{q.refs=q.refs||[];q.refs.push(e.id);q.u=Date.now();persist()}}),60)}}));
-    if(id){const del=el('button',{class:'ghost small danger',style:'margin-top:20px;display:block',text:'Delete question'});del.dataset.orig='Delete question';armDelete(del,'delete for good',()=>{S.questions=S.questions.filter(x=>x!==q);saved=false;persist();close();toast('Question deleted')});sh.append(del)}
+    if(id){const del=el('button',{class:'ghost small danger',style:'margin-top:20px;display:block',text:'Delete question'});del.dataset.orig='Delete question';armDelete(del,'delete for good',()=>{S.questions=S.questions.filter(x=>x!==q);S.questions.forEach(x=>{if(x.parent===q.id)delete x.parent});saved=false;persist();close();toast('Question deleted')});sh.append(del)}
   },{full:true,onClose:()=>{if(saved&&!q.text.trim()){S.questions=S.questions.filter(x=>x!==q);persist()}render()}});
 }
 
@@ -1140,7 +1230,7 @@ async function boot(){
 function addAllSamples(){
   const sd=seed();
   ['topics','clips','entries'].forEach(a=>{sd[a].forEach(it=>{if(!S[a].some(x=>x.id===it.id))S[a].push(it)})});
-  addSamples2(S);
+  addSamples2(S);addSamples3(S);addSamples4(S);
 }
 
 /* ---------- back up and restore ---------- */
@@ -1268,6 +1358,601 @@ function openSettings(){
   });
 }
 
+/* ---------- v3: start sheet, sorting, clusters, argument and question trees ---------- */
+const topicColorOf=id=>{const t=topicById(id);return t?t.color:'#667385'};
+function newClaim(title,topics,parent,prole){
+  const t=Date.now();
+  const e={id:uid(),kind:'journal',title,body:'',claim:true,conf:0,topics:topics.slice(),marks:[],links:[],hist:[],log:[{t,k:'new',txt:'Started this entry'},{t,k:'claim',txt:'Marked as a claim'}],created:t,u:t};
+  if(parent){e.parent=parent;e.prole=prole||'supports'}
+  S.entries.unshift(e);persist();return e;
+}
+function newQuestion(text,topics,parent){
+  const q={id:uid(),text,status:'open',topics:topics.slice(),refs:[],answer:'',created:Date.now(),u:Date.now()};
+  if(parent)q.parent=parent;S.questions.unshift(q);persist();return q;
+}
+function pickText(title,placeholder,cb,opts){
+  opts=opts||{};let role='supports';
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:title}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    if(opts.roles)sh.append(el('div',{class:'seg'},[['supports','Supports it'],['challenges','Challenges it']].map(([k,l])=>el('button',{class:role===k?'on':'','data-r':k,text:l,onclick:()=>{role=k;sh.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.r===k))}}))));
+    const ta=el('textarea',{class:'field',placeholder,'aria-label':title,style:'min-height:84px'});
+    sh.append(ta,el('button',{class:'primary',text:opts.button||'Add',onclick:()=>{const v=ta.value.trim();if(!v){toast('Write something first.');return}close();cb(v,role)}}));
+    setTimeout(()=>ta.focus(),80);
+  });
+}
+function descendantsOfEntry(id,seen){seen=seen||new Set();S.entries.forEach(x=>{if(x.parent===id&&!seen.has(x.id)){seen.add(x.id);descendantsOfEntry(x.id,seen)}});return seen}
+function descendantsOfQ(id,seen){seen=seen||new Set();S.questions.forEach(x=>{if(x.parent===id&&!seen.has(x.id)){seen.add(x.id);descendantsOfQ(x.id,seen)}});return seen}
+function pickClaim(from,cb){
+  let role='supports';const bad=descendantsOfEntry(from.id);bad.add(from.id);
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Part of which claim?'}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    sh.append(el('div',{class:'seg'},[['supports','Supports it'],['challenges','Challenges it']].map(([k,l])=>el('button',{class:role===k?'on':'','data-r':k,text:l,onclick:()=>{role=k;sh.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.r===k))}}))));
+    const cs=S.entries.filter(e=>e.claim&&!bad.has(e.id));
+    if(!cs.length)sh.append(el('p',{class:'hint',text:'No other claims yet. Mark another entry as a claim first.'}));
+    cs.forEach(c=>sh.append(el('button',{class:'pickrow',onclick:()=>{close();cb(c,role)}},el('div',{class:'pt',text:entryTitle(c)}),el('small',{text:(c.topics.map(topicById).filter(Boolean).map(t=>t.name).join(', '))}))));
+  });
+}
+function pickQuestionParent(q,cb){
+  const bad=descendantsOfQ(q.id);bad.add(q.id);
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Part of which question?'}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    const qs=S.questions.filter(x=>!bad.has(x.id));
+    if(!qs.length)sh.append(el('p',{class:'hint',text:'No other questions yet.'}));
+    qs.forEach(x=>sh.append(el('button',{class:'pickrow',onclick:()=>{close();cb(x)}},el('div',{class:'pt',text:x.text}))));
+  });
+}
+function parentClaimBox(e,touch,paintAfter){
+  const box=el('div');
+  const paint=()=>{
+    box.replaceChildren();if(!e.claim)return;
+    const p=e.parent&&entryById(e.parent);
+    box.append(el('div',{class:'sec',text:'Where it sits in the argument'}));
+    if(p){const rc=e.prole==='challenges'?'--chal':'--sup';
+      box.append(el('div',{class:'mark'},el('span',{class:'role',style:`color:var(${rc})`,text:e.prole==='challenges'?'Challenges':'Supports'}),el('div',{class:'mb'},el('div',{class:'mt',text:entryTitle(p)})),el('button',{class:'x','aria-label':'Detach from this claim',text:'×',onclick:()=>{delete e.parent;delete e.prole;touch();paint()}})));
+    }else box.append(el('button',{class:'ghost small',text:'＋ Make it part of a bigger claim',onclick:()=>pickClaim(e,(c,role)=>{e.parent=c.id;e.prole=role;logEv(e,'link',(role==='challenges'?'Now challenges':'Now supports')+' “'+entryTitle(c).slice(0,50)+'”');touch();paint()})}));
+  };
+  paint();box.repaint=paint;return box;
+}
+function qTreeBox(q,commit,close){
+  const box=el('div');
+  const paint=()=>{
+    box.replaceChildren();
+    const p=q.parent&&questionById(q.parent);
+    box.append(el('div',{class:'row spread'},el('div',{class:'sec',text:'In the question tree'}),null));
+    if(p)box.append(el('div',{class:'mark'},el('span',{class:'role',style:'color:var(--ctx)',text:'Part of'}),el('div',{class:'mb',onclick:()=>{close();setTimeout(()=>openQuestion(p.id),60)}},el('div',{class:'mt',text:p.text})),el('button',{class:'x','aria-label':'Detach',text:'×',onclick:()=>{delete q.parent;commit();paint()}})));
+    else box.append(el('button',{class:'ghost small',style:'margin:0 8px 8px 0',text:'＋ Part of a bigger question',onclick:()=>{if(!q.text.trim()){toast('Write the question first.');return}commit();pickQuestionParent(q,x=>{q.parent=x.id;commit();paint()})}}));
+    const kids=S.questions.filter(x=>x.parent===q.id);
+    kids.forEach(k=>box.append(el('div',{class:'mark'},el('span',{class:'role',style:'color:var(--muted)',text:'Sub'}),el('div',{class:'mb',onclick:()=>{close();setTimeout(()=>openQuestion(k.id),60)}},el('div',{class:'mt',text:k.text})))));
+    box.append(el('button',{class:'ghost small',text:'＋ Break it into a sub-question',onclick:()=>{if(!q.text.trim()){toast('Write the question first.');return}commit();pickText('Sub-question','What smaller question would help answer this?',v=>{newQuestion(v,q.topics,q.id);paint()},{button:'Add sub-question'})}}));
+  };
+  paint();return box;
+}
+
+/* ---------- start sheet ---------- */
+function openStart(tid){
+  const t=topicById(tid);if(!t)return;
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Start “'+t.name+'”'}),el('button',{class:'ghost small',text:'Skip for now',onclick:close})));
+    sh.append(el('p',{class:'hint',style:'line-height:1.5',text:'Get the first things down, one per line. Rough is fine. You can sort, link and refine them later.'}));
+    const S3=[['think','I think…','Digital devices are changing how we pay attention\nConstant alerts make focus harder'],['wonder','I wonder…','Does the effect last after the phone is put away?\nHow did earlier generations cope with new media?'],['find','I need to find…','Data on daily screen time\nA study on notifications and attention']];
+    const tas={};
+    S3.forEach(([k,l,ph])=>{sh.append(el('label',{class:'startlist'},el('span',{style:'font-family:var(--serif);font-size:1.15rem;font-weight:600;display:block;margin:14px 0 4px',text:l})));const ta=el('textarea',{class:'field',placeholder:ph,'aria-label':l,style:'min-height:92px'});tas[k]=ta;sh.append(ta)});
+    sh.append(el('button',{class:'primary',style:'width:100%;margin-top:6px',text:'Create them',onclick:()=>{
+      const lines=k=>tas[k].value.split('\n').map(s=>s.trim()).filter(Boolean);
+      const th=lines('think'),wo=lines('wonder'),fi=lines('find');
+      if(!th.length&&!wo.length&&!fi.length){toast('Write at least one line.');return}
+      th.forEach(x=>newClaim(x,[tid]));wo.forEach(x=>newQuestion(x,[tid]));
+      fi.forEach(x=>S.clips.unshift({id:uid(),kind:'note',text:'To find: '+x,source:'',url:'',topics:[tid],toread:true,quality:'unrated',created:Date.now(),u:Date.now()}));
+      persist();close();nav.topic=tid;nav.tab='topics';nav.tsub='views';nav.view=th.length?'argument':wo.length?'qtree':'clusters';render();window.scrollTo(0,0);
+      toast([th.length&&th.length+' claim'+(th.length>1?'s':''),wo.length&&wo.length+' question'+(wo.length>1?'s':''),fi.length&&fi.length+' to find'].filter(Boolean).join(', ')+' added');
+    }}));
+  },{full:true});
+}
+
+/* ---------- sort the pile ---------- */
+function pileItems(){
+  const out=[];
+  S.entries.filter(e=>e.kind==='dump'&&!e.topics.length&&!e.claim&&!e.marks.length).forEach(e=>out.push({kind:'entry',id:e.id}));
+  S.questions.filter(q=>!q.topics.length&&q.status!=='answered').forEach(q=>out.push({kind:'question',id:q.id}));
+  S.clips.filter(c=>!topicsOfClip(c).length).forEach(c=>out.push({kind:'clip',id:c.id}));
+  return out;
+}
+const pileObj=it=>it.kind==='entry'?entryById(it.id):it.kind==='question'?questionById(it.id):clipById(it.id);
+function openSort(){
+  let queue=pileItems(),idx=0,claimFlag=false,done=0;const undo=[];
+  sheet((sh,close)=>{
+    const paint=()=>{
+      while(idx<queue.length&&!pileObj(queue[idx]))idx++;
+      sh.replaceChildren(el('div',{class:'grab'}),el('div',{class:'bar'},el('strong',{text:'Sort the pile'}),el('button',{class:'ghost small',text:'Close',onclick:close})));
+      if(idx>=queue.length){
+        sh.append(el('div',{class:'empty',text:queue.length?'Pile sorted. '+done+' filed away.':'Nothing is waiting to be sorted. New dumps and clips with no topic will show up here.'}));
+        const row=el('div',{class:'row',style:'justify-content:center'});
+        if(undo.length)row.append(el('button',{class:'ghost',text:'Undo last',onclick:undoLast}));
+        row.append(el('button',{class:'primary',text:'Find clusters',onclick:()=>{close();nav.tab='topics';nav.topic='all';nav.tsub='views';nav.view='clusters';nav.cscope='all';render();window.scrollTo(0,0)}}));
+        sh.append(row);return;
+      }
+      const it=queue[idx],o=pileObj(it);
+      sh.append(el('div',{class:'hint',text:(idx+1)+' of '+queue.length}),el('div',{class:'progress'},el('i',{style:'width:'+Math.round(idx/queue.length*100)+'%'})));
+      if(it.kind==='entry')sh.append(el('div',{class:'sortcard'},el('small',{text:'Dumped '+dayLabel(o.created)+', '+timeLabel(o.created)}),o.body||o.title));
+      else if(it.kind==='question')sh.append(el('div',{class:'sortcard'},el('small',{text:'Question'}),o.text));
+      else sh.append(el('div',{class:'masonry',style:'columns:1;margin:8px 0 14px'},clipCard(o)));
+      sh.append(el('div',{class:'sec',style:'margin-top:4px',text:'Where does it belong?'}));
+      if(it.kind==='entry')sh.append(el('div',{class:'chips',style:'margin-bottom:10px'},el('button',{class:'chip'+(claimFlag?' on':''),text:claimFlag?'Treating it as a claim':'It is a claim',onclick:()=>{claimFlag=!claimFlag;paint()}}),el('button',{class:'chip',text:'It is really a question',onclick:toQuestion})));
+      const tr=el('div',{class:'chips'});
+      S.topics.forEach(t=>tr.append(el('button',{class:'chip big',onclick:()=>assign(t.id)},el('i',{style:'background:'+t.color}),t.name)));
+      sh.append(tr);
+      const inp=el('input',{class:'field',placeholder:'New topic name','aria-label':'New topic name',style:'margin-top:10px'});
+      sh.append(el('div',{class:'row',style:'flex-wrap:nowrap'},inp,el('button',{class:'primary',text:'Create and file',onclick:()=>{const n=inp.value.trim();if(!n){toast('Name the topic first.');return}const t={id:uid(),name:n,color:PALETTE[S.topics.length%PALETTE.length],desc:'',created:Date.now(),u:Date.now()};S.topics.push(t);persist();assign(t.id)}})));
+      const row=el('div',{class:'row',style:'margin-top:16px'},el('button',{class:'ghost',text:'Skip for now',onclick:()=>{undo.push({fn:()=>{},idx,queue:queue.slice(),done});idx++;claimFlag=false;paint()}}));
+      if(undo.length)row.append(el('button',{class:'ghost',text:'Undo last',onclick:undoLast}));
+      sh.append(row);
+    };
+    const assign=tid=>{
+      const it=queue[idx],o=pileObj(it),prev={topics:o.topics.slice(),claim:o.claim,kind:o.kind};
+      if(!o.topics.includes(tid))o.topics.push(tid);
+      if(it.kind==='entry'&&claimFlag){o.claim=true;o.kind='journal';logEv(o,'claim','Marked as a claim while sorting')}
+      o.u=Date.now();persist();
+      undo.push({fn:()=>{o.topics=prev.topics;if(it.kind==='entry'){o.claim=prev.claim;o.kind=prev.kind}o.u=Date.now();persist()},idx,queue:queue.slice(),done});
+      done++;idx++;claimFlag=false;paint();
+    };
+    const toQuestion=()=>{
+      const e=entryById(queue[idx].id);if(!e)return;
+      const q=newQuestion((e.body||e.title||'').trim(),[],null),pos=S.entries.indexOf(e);S.entries.splice(pos,1);persist();
+      undo.push({fn:()=>{S.questions=S.questions.filter(x=>x!==q);S.entries.splice(pos,0,e);persist()},idx,queue:queue.slice(),done});
+      queue[idx]={kind:'question',id:q.id};claimFlag=false;paint();
+    };
+    const undoLast=()=>{const u=undo.pop();if(!u)return;u.fn();queue=u.queue;idx=u.idx;done=u.done;claimFlag=false;paint()};
+    paint();
+  },{full:true,onClose:()=>render()});
+}
+
+/* ---------- clusters: scattered things grouped by what they share ---------- */
+function clusterPool(scope){
+  const items=[];
+  const addE=e=>items.push({kind:'entry',id:e.id,text:entryTitle(e)+' '+(e.body||''),label:entryTitle(e),topics:e.topics});
+  const addQ=q=>items.push({kind:'question',id:q.id,text:q.text+' '+(q.answer||''),label:q.text,topics:q.topics});
+  const addC=c=>items.push({kind:'clip',id:c.id,text:clipText(c)+' '+(c.mnote||'')+' '+(c.source||''),label:clipPreview(c),topics:topicsOfClip(c)});
+  if(scope==='pile'){pileItems().forEach(it=>{const o=pileObj(it);if(!o)return;it.kind==='entry'?addE(o):it.kind==='question'?addQ(o):addC(o)})}
+  else if(scope==='all'){S.entries.forEach(addE);S.questions.forEach(addQ);S.clips.forEach(addC)}
+  else{S.entries.filter(e=>e.topics.includes(scope)).forEach(addE);S.questions.filter(q=>q.topics.includes(scope)).forEach(addQ);S.clips.filter(c=>c.topics.includes(scope)).forEach(addC)}
+  return items;
+}
+function makeClusters(items,excluded){
+  const N=items.length,toks=items.map(it=>tokens(it.text));
+  const df=new Map();toks.forEach(s=>s.forEach(w=>df.set(w,(df.get(w)||0)+1)));
+  const maxdf=Math.max(2,Math.floor(N*.6));
+  const un=new Set();items.forEach((it,i)=>{if(!excluded.has(it.kind+':'+it.id))un.add(i)});
+  const clusters=[];
+  for(;;){
+    const cnt=new Map();un.forEach(i=>toks[i].forEach(w=>{const d=df.get(w);if(d>=2&&d<=maxdf)cnt.set(w,(cnt.get(w)||0)+1)}));
+    let best=null,bs=0;cnt.forEach((c,w)=>{if(c>=2){const s=c*Math.log(1+N/df.get(w));if(s>bs){bs=s;best=w}}});
+    if(!best)break;
+    const mem=[...un].filter(i=>toks[i].has(best));
+    const second=new Map();mem.forEach(i=>toks[i].forEach(w=>{if(w!==best)second.set(w,(second.get(w)||0)+1)}));
+    const terms=[best];[...second.entries()].sort((a,b)=>b[1]-a[1]).forEach(([w,c])=>{if(terms.length<3&&c>=2&&c>=mem.length*.6)terms.push(w)});
+    mem.forEach(i=>un.delete(i));clusters.push({terms,members:mem});
+  }
+  clusters.sort((a,b)=>b.members.length-a.members.length);
+  return{clusters,rest:[...un]};
+}
+const CTYPE={entry:'▤',question:'?',clip:'❝'};
+function openClusterItem(it){it.kind==='entry'?openEntry(it.id):it.kind==='question'?openQuestion(it.id):openClipView(it.id)}
+function claimFromCluster(items,cl,scope){
+  const mem=cl.members.map(i=>items[i]),label=cl.terms.join(', ');
+  const ts=scope==='all'||scope==='pile'?[...new Set(mem.flatMap(m=>m.topics||[]))].slice(0,2):[scope];
+  const lines=mem.map(m=>'- '+(m.kind==='clip'?'“'+m.label+'”':m.label)).join('\n');
+  const e=newClaim('',ts);e.body='Gathered around “'+label+'”:\n'+lines+'\n\nWhat is the claim these point to?';
+  mem.forEach(m=>{
+    if(m.kind==='clip')e.marks.push({id:uid(),clip:m.id,role:'context'});
+    if(m.kind==='entry'&&!e.links.includes(m.id))e.links.push(m.id);
+    if(m.kind==='question'){const q=questionById(m.id);if(q){q.refs=q.refs||[];if(!q.refs.includes(e.id))q.refs.push(e.id)}}
+  });
+  persist();openEntry(e.id);
+}
+function vClusters(m,scope0){
+  let scope=scope0;
+  if(scope0==='all')scope=nav.cscope==='all'?'all':'pile';
+  if(scope0==='all')m.append(el('div',{class:'seg'},[['pile','Unsorted pile'],['all','Everything']].map(([k,l])=>el('button',{class:nav.cscope===k?'on':'',text:l,onclick:()=>{nav.cscope=k;nav.cx=new Set();render()}}))));
+  const items=clusterPool(scope);
+  m.append(el('p',{class:'hint',style:'margin:0 0 12px;line-height:1.5',text:'Grouped by the words things share, not by meaning, so treat these as suggestions. Remove anything that does not belong, then file the group or turn it into a claim.'}));
+  if(items.length<3){m.append(el('div',{class:'empty',text:scope==='pile'?'Not enough loose material yet. Dump a few thoughts and clips, and groups will appear here.':'Add a few more entries, clips or questions to find groups.'}));return}
+  const {clusters,rest}=makeClusters(items,nav.cx);
+  m.append(el('p',{class:'hint',style:'margin:0 0 10px',text:clusters.length?clusters.length+' group'+(clusters.length>1?'s':'')+' found among '+items.length+' items.':'No shared themes found among '+items.length+' items.'}));
+  clusters.forEach((cl,ci)=>{
+    const card=el('div',{class:'cluster',style:'--cc:'+PALETTE[ci%PALETTE.length]});
+    card.append(el('h4',{text:cl.terms.map(w=>w[0].toUpperCase()+w.slice(1)).join(' · ')}),el('div',{class:'hint',style:'margin-bottom:4px',text:cl.members.length+' items'}));
+    cl.members.forEach(i=>{const it=items[i];card.append(el('div',{class:'mem'},el('span',{class:'ic',text:CTYPE[it.kind]}),el('button',{class:'tx',text:it.label.length>110?it.label.slice(0,110)+'…':it.label,onclick:()=>openClusterItem(it)}),el('button',{class:'x','aria-label':'Does not belong',text:'×',onclick:()=>{nav.cx.add(it.kind+':'+it.id);render()}})))});
+    card.append(el('div',{class:'row',style:'margin-top:10px'},
+      scope==='pile'||scope==='all'?el('button',{class:'primary small',text:'File under a topic',onclick:()=>pickTopics([],v=>{if(!v.length)return;cl.members.map(i=>items[i]).forEach(it=>{const o=pileObj(it);if(o){v.forEach(t=>{if(!o.topics.includes(t))o.topics.push(t)});o.u=Date.now()}});persist();render();toast('Filed '+cl.members.length+' items')})}):null,
+      el('button',{class:scope==='pile'||scope==='all'?'ghost small':'primary small',text:'Start a claim from this',onclick:()=>claimFromCluster(items,cl,scope)})));
+    m.append(card);
+  });
+  if(rest.length){
+    m.append(el('div',{class:'sec',text:'Not grouped ('+rest.length+')'}));
+    rest.forEach(i=>{const it=items[i];m.append(el('button',{class:'pickrow',onclick:()=>openClusterItem(it)},el('div',{class:'pt',text:CTYPE[it.kind]+'  '+it.label})))});
+  }
+}
+
+/* ---------- argument tree ---------- */
+const colTog=key=>{if(nav.collapsed.has(key))nav.collapsed.delete(key);else nav.collapsed.add(key);render()};
+function attachClip(c,t){
+  let role='supports';
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Earmark this on a claim'}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    sh.append(el('div',{class:'seg'},ROLE_KEYS.map(r=>el('button',{class:role===r?'on':'','data-r':r,text:ROLES[r].label,onclick:()=>{role=r;sh.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.r===r))}}))));
+    sh.append(el('div',{class:'cardhint',style:'margin:0 0 8px'}));
+    const cs=S.entries.filter(e=>e.claim&&e.topics.includes(t.id));
+    if(!cs.length)sh.append(el('p',{class:'hint',text:'No claims in this topic yet.'}));
+    cs.forEach(e=>sh.append(el('button',{class:'pickrow',onclick:()=>{const e2=entryById(e.id);e2.marks.push({id:uid(),clip:c.id,role});logEv(e2,'mark','Earmarked as '+ROLES[role].label.toLowerCase()+': '+clipPreview(c).slice(0,60));e2.u=Date.now();persist();close();render();toast('Earmarked')}},el('div',{class:'pt',text:entryTitle(e)}))));
+  });
+}
+function argNode(e,claims,seen,role){
+  seen=new Set(seen);seen.add(e.id);
+  const kids=claims.filter(x=>x.parent===e.id&&!seen.has(x.id)),key='a:'+e.id,col=nav.collapsed.has(key);
+  const s=strength(e),node=el('div',{class:'tnode'+(role?' r-'+role:'')});
+  const hasSupportKid=kids.some(k=>k.prole!=='challenges');
+  const bare=roleCount(e,'supports')===0&&!hasSupportKid;
+  const ev=e.marks.filter(mk=>clipById(mk.clip));
+  const stat=el('div',{class:'ts'});
+  stat.append(el('span',{class:'pill',text:s.label||'Claim'}));
+  if(e.conf)stat.append(el('span',{class:'pill',text:CONF[e.conf]}));
+  if(kids.length||ev.length)stat.append(el('span',{class:'pill',text:(kids.length?kids.length+' sub-claim'+(kids.length>1?'s':''):'')+(kids.length&&ev.length?', ':'')+(ev.length?ev.length+' evidence':'')}));
+  stat.append(el('button',{class:'tmini',text:'＋ evidence',onclick:()=>pickClip(e,(c,r)=>{e.marks.push({id:uid(),clip:c.id,role:r});logEv(e,'mark','Earmarked as '+ROLES[r].label.toLowerCase()+': '+clipPreview(c).slice(0,60));e.u=Date.now();persist();render()})}),
+    el('button',{class:'tmini',text:'＋ sub-claim',onclick:()=>pickText('Sub-claim','A smaller claim that supports or challenges this one',(v,r)=>{newClaim(v,e.topics,e.id,r);render()},{roles:true,button:'Add sub-claim'})}));
+  node.append(el('div',{class:'tcard claim'},(kids.length||ev.length)?el('button',{class:'chev','aria-label':col?'Expand':'Collapse',text:col?'▸':'▾',onclick:()=>colTog(key)}):null,
+    el('div',{class:'tb'},el('button',{class:'tt',text:entryTitle(e),onclick:()=>openEntry(e.id)}),stat)));
+  if(!col){
+    const ch=el('div',{class:'tchildren'});
+    kids.forEach(k=>ch.append(argNode(k,claims,seen,k.prole==='challenges'?'challenges':'supports')));
+    ev.forEach(mk=>{const c=clipById(mk.clip);ch.append(el('div',{class:'tnode r-'+mk.role},el('div',{class:'tcard leaf '+c.kind},el('div',{class:'tb'},el('button',{class:'tt',text:clipPreview(c),onclick:()=>openClipView(c.id)}),el('div',{class:'ts'},el('small',{text:[ROLES[mk.role].label,clipSource(c),qOf(c).label].filter(Boolean).join('. ')}))))))});
+    if(bare)ch.append(el('div',{class:'tnode r-challenges'},el('div',{class:'tcard gap'},el('div',{class:'tb'},el('button',{class:'tt',text:'No support yet. Tap to add evidence.',onclick:()=>pickClip(e,(c,r)=>{e.marks.push({id:uid(),clip:c.id,role:r});logEv(e,'mark','Earmarked as '+ROLES[r].label.toLowerCase()+': '+clipPreview(c).slice(0,60));e.u=Date.now();persist();render()})})))));
+    if(ch.children.length)node.append(ch);
+  }
+  return node;
+}
+function vArgTree(m,t){
+  const claims=S.entries.filter(e=>e.claim&&e.topics.includes(t.id));
+  const roots=claims.filter(e=>!e.parent||!claims.some(x=>x.id===e.parent));
+  m.append(el('p',{class:'hint',style:'margin:0 0 12px;line-height:1.5',text:'Your argument, built from your claims and earmarks. Green lines support, dashed red lines challenge. A dashed box shows where a claim has no support yet.'}));
+  const root=el('div',{class:'tnode'});
+  root.append(el('div',{class:'tcard root',style:'--tc:'+t.color},el('div',{class:'tb'},el('button',{class:'tt',text:t.name,onclick:()=>openTopic(t.id)}),t.desc?el('small',{text:t.desc}):null,el('div',{class:'ts'},el('button',{class:'tmini',text:'＋ claim',onclick:()=>pickText('New claim','Something you believe or want to argue',v=>{newClaim(v,[t.id]);render()},{button:'Add claim'})})))));
+  const ch=el('div',{class:'tchildren'});
+  roots.forEach(c=>ch.append(argNode(c,claims,new Set(),null)));
+  if(!roots.length)ch.append(el('div',{class:'tnode'},el('div',{class:'tcard gap'},el('div',{class:'tb'},el('button',{class:'tt',text:'No claims yet. Tap to write your first one, or open the start sheet.',onclick:()=>openStart(t.id)})))));
+  root.append(ch);m.append(root);
+  // scattered material not yet in the argument
+  const loose=S.clips.filter(c=>c.topics.includes(t.id)&&!usedIn(c.id).length);
+  const thoughts=S.entries.filter(e=>e.topics.includes(t.id)&&!e.claim&&e.kind!=='dump'&&!(e.links||[]).length);
+  if(loose.length||thoughts.length){
+    m.append(el('div',{class:'sec',text:'Not in the argument yet'}),el('p',{class:'hint',style:'margin-bottom:8px',text:'Scattered material waiting for a claim.'}));
+    loose.slice(0,8).forEach(c=>m.append(el('div',{class:'tcard leaf',style:'margin-bottom:8px'},el('div',{class:'tb'},el('button',{class:'tt',text:clipPreview(c),onclick:()=>openClipView(c.id)}),el('div',{class:'ts'},el('small',{text:clipSource(c)}),el('button',{class:'tmini',text:'Earmark on a claim',onclick:()=>attachClip(c,t)}))))));
+    thoughts.slice(0,6).forEach(e=>m.append(el('div',{class:'tcard leaf',style:'margin-bottom:8px'},el('div',{class:'tb'},el('button',{class:'tt',text:entryTitle(e),onclick:()=>openEntry(e.id)}),el('div',{class:'ts'},el('small',{text:'A thought'}))))));
+  }
+}
+
+/* ---------- question tree ---------- */
+function qStats(q){
+  const ids=[...descendantsOfQ(q.id)].map(questionById).filter(Boolean);
+  return{total:ids.length,done:ids.filter(x=>x.status==='answered').length};
+}
+function qNode(q,pool,seen){
+  seen=new Set(seen);seen.add(q.id);
+  const kids=pool.filter(x=>x.parent===q.id&&!seen.has(x.id)),key='q:'+q.id,col=nav.collapsed.has(key);
+  const st=qStats(q),refs=(q.refs||[]).map(entryById).filter(Boolean);
+  const node=el('div',{class:'tnode r-q'});
+  const stat=el('div',{class:'ts'});
+  stat.append(el('span',{class:'pill',text:q.status[0].toUpperCase()+q.status.slice(1)}));
+  if(st.total)stat.append(el('span',{class:'pill',text:st.done+' of '+st.total+' sub-questions answered'}));
+  if(refs.length)stat.append(el('span',{class:'pill',text:refs.length+' thought'+(refs.length>1?'s':'')}));
+  stat.append(el('button',{class:'tmini',text:'＋ sub-question',onclick:()=>pickText('Sub-question','What smaller question would help answer this?',v=>{newQuestion(v,q.topics,q.id);render()},{button:'Add sub-question'})}));
+  node.append(el('div',{class:'tcard'},(kids.length||refs.length)?el('button',{class:'chev','aria-label':col?'Expand':'Collapse',text:col?'▸':'▾',onclick:()=>colTog(key)}):null,el('span',{class:'qdot '+q.status}),
+    el('div',{class:'tb'},el('button',{class:'tt',text:q.text,onclick:()=>openQuestion(q.id)}),stat)));
+  if(!col){
+    const ch=el('div',{class:'tchildren'});
+    kids.forEach(k=>ch.append(qNode(k,pool,seen)));
+    refs.forEach(e=>{const s=e.claim?strength(e).label:'';ch.append(el('div',{class:'tnode r-supports'},el('div',{class:'tcard leaf'},el('div',{class:'tb'},el('button',{class:'tt',text:entryTitle(e),onclick:()=>openEntry(e.id)}),el('div',{class:'ts'},el('small',{text:e.claim?('A claim. '+s):'A thought'}))))))});
+    if(ch.children.length)node.append(ch);
+  }
+  return node;
+}
+function vQTree(m,t){
+  const pool=S.questions.filter(q=>q.topics.includes(t.id));
+  const roots=pool.filter(q=>!q.parent||!pool.some(x=>x.id===q.parent));
+  m.append(el('p',{class:'hint',style:'margin:0 0 12px;line-height:1.5',text:'Break the big question into smaller ones you can answer. Thoughts linked to a question appear beneath it, so you can see what you have so far.'}));
+  const root=el('div',{class:'tnode'});
+  root.append(el('div',{class:'tcard root',style:'--tc:'+t.color},el('div',{class:'tb'},el('button',{class:'tt',text:t.name,onclick:()=>openTopic(t.id)}),t.desc?el('small',{text:t.desc}):null,el('div',{class:'ts'},el('button',{class:'tmini',text:'＋ question',onclick:()=>pickText('New question','What do you want to find out?',v=>{newQuestion(v,[t.id]);render()},{button:'Add question'})})))));
+  const ch=el('div',{class:'tchildren'});
+  roots.forEach(q=>ch.append(qNode(q,pool,new Set())));
+  if(!roots.length)ch.append(el('div',{class:'tnode'},el('div',{class:'tcard gap'},el('div',{class:'tb'},el('button',{class:'tt',text:'No questions yet. Tap to ask your first one, or open the start sheet.',onclick:()=>openStart(t.id)})))));
+  root.append(ch);m.append(root);
+}
+
+/* ---------- v4: matrix, debate, landscape, timelines, recall ---------- */
+const VIEWS={qtree:['Explore','Question tree'],clusters:['Explore','Clusters'],timeline:['Explore','Timeline'],growth:['Explore','Growth'],argument:['Argue','Argument tree'],matrix:['Argue','Evidence matrix'],debate:['Argue','Debate board'],islands:['See','Landscape'],map:['See','Network'],recall:['Study','Recall']};
+const TOPIC_ONLY=['qtree','argument','matrix','debate'],VCATS=['Explore','Argue','See','Study'];
+const inScopeClip=(c,t,all)=>all||c.topics.includes(t.id)||topicsOfClip(c).includes(t.id);
+function vViews(m,t,all){
+  const avail=Object.keys(VIEWS).filter(k=>!all||!TOPIC_ONLY.includes(k));
+  if(!avail.includes(nav.view))nav.view=all?'islands':'argument';
+  const cat=VIEWS[nav.view][0],cats=VCATS.filter(c=>avail.some(k=>VIEWS[k][0]===c));
+  const due=dueItems(all?'all':t.id).length;
+  m.append(el('div',{class:'vcats'},cats.map(c=>el('button',{class:cat===c?'on':'',text:c,onclick:()=>{if(cat!==c){nav.view=avail.find(k=>VIEWS[k][0]===c);nav.node=null;render()}}}))));
+  m.append(el('div',{class:'filters'},avail.filter(k=>VIEWS[k][0]===cat).map(k=>el('button',{class:'chip'+(nav.view===k?' on':''),text:VIEWS[k][1]+(k==='recall'&&due?' ('+due+')':''),onclick:()=>{nav.view=k;nav.node=null;render()}}))));
+  const v=nav.view;
+  if(v==='argument')vArgTree(m,t);else if(v==='qtree')vQTree(m,t);else if(v==='matrix')vMatrix(m,t);else if(v==='debate')vDebate(m,t);
+  else if(v==='clusters')vClusters(m,all?'all':t.id);else if(v==='timeline')vTimeline(m,t,all);else if(v==='growth')vGrowth(m,t,all);
+  else if(v==='islands')vIslands(m);else if(v==='recall')vRecall(m,t,all);else vMap(m,t.id);
+}
+
+/* ---------- evidence matrix ---------- */
+const MXROLES=[null,'supports','challenges','context','readmore'];
+function vMatrix(m,t){
+  const claims=S.entries.filter(e=>e.claim&&e.topics.includes(t.id)).sort((a,b)=>a.created-b.created);
+  m.append(el('p',{class:'hint',style:'margin:0 0 10px;line-height:1.5',text:'Claims down the side, sources across the top. Tap a cell to cycle it: supports, challenges, background, to read, empty. Look for sources that speak to many claims, and for claims that no source touches.'}));
+  if(!claims.length){m.append(el('div',{class:'empty',text:'No claims in this topic yet. Mark an entry as a claim, or open the start sheet.'}),el('div',{style:'text-align:center'},el('button',{class:'primary small',text:'Open the start sheet',onclick:()=>openStart(t.id)})));return}
+  nav.mxExtra=nav.mxExtra||new Set();
+  const used=new Set();claims.forEach(e=>e.marks.forEach(mk=>{if(clipById(mk.clip))used.add(mk.clip)}));
+  const cols=S.clips.filter(c=>used.has(c.id)||nav.mxExtra.has(c.id)||(nav.mxAll&&c.topics.includes(t.id)));
+  const span=c=>claims.filter(e=>e.marks.some(mk=>mk.clip===c.id)).length;
+  cols.sort((a,b)=>span(b)-span(a)||b.created-a.created);
+  m.append(el('div',{class:'chips',style:'margin-bottom:10px'},el('button',{class:'chip'+(nav.mxAll?' on':''),text:'Include unused clips from this topic',onclick:()=>{nav.mxAll=!nav.mxAll;render()}}),el('button',{class:'chip',text:'＋ Add a source',onclick:()=>pickClip({topics:[t.id]},c=>{nav.mxExtra.add(c.id);render()})})));
+  if(!cols.length){m.append(el('div',{class:'empty',text:'No sources earmarked yet. Add a source column, then tap cells to link it to claims.'}));return}
+  const tbl=el('table',{class:'mxt'}),head=el('tr',null,el('th',{class:'rh',text:''}));
+  cols.forEach(c=>head.append(el('th',null,el('button',{class:'ch','aria-label':clipPreview(c),text:(c.when?c.when+' · ':'')+clipPreview(c).slice(0,60),onclick:()=>openClipView(c.id)}))));
+  tbl.append(el('thead',null,head));
+  const body=el('tbody');
+  claims.forEach(e=>{
+    const s=strength(e),tr=el('tr',{class:e.marks.length?'':'bare'});
+    tr.append(el('th',{class:'rh'},el('button',{text:entryTitle(e),onclick:()=>openEntry(e.id)}),el('span',{class:'pill',text:s.label||'Claim'})));
+    cols.forEach(c=>{
+      const mk=e.marks.find(x=>x.clip===c.id),role=mk?mk.role:null;
+      tr.append(el('td',null,el('button',{class:'mxc'+(role?' '+role:''),'aria-label':(role?ROLES[role].label:'Empty')+'. Tap to change.',text:role?ROLES[role].icon:'',onclick:()=>{
+        const nx=MXROLES[(MXROLES.indexOf(role)+1)%MXROLES.length],pv=clipPreview(c).slice(0,60);
+        if(!mk&&nx){e.marks.push({id:uid(),clip:c.id,role:nx});logEv(e,'mark','Earmarked as '+ROLES[nx].label.toLowerCase()+': '+pv)}
+        else if(mk&&nx){mk.role=nx;logEv(e,'mark','Changed an earmark to '+ROLES[nx].label.toLowerCase()+': '+pv)}
+        else if(mk){e.marks=e.marks.filter(x=>x!==mk);logEv(e,'mark','Removed an earmark: '+pv)}
+        e.u=Date.now();const w=document.querySelector('.mx');nav.mxScroll=w?w.scrollLeft:0;persist();render()}})));
+    });
+    body.append(tr);
+  });
+  tbl.append(body);
+  const foot=el('tr',null,el('td',{class:'rh',style:'font-family:var(--sans);font-size:.74rem;color:var(--muted)',text:'Claims touched'}));
+  cols.forEach(c=>{const n=span(c);foot.append(el('td',{class:n>=3?'hot':''},n>=3?n+' ★':String(n)))});
+  tbl.append(el('tfoot',null,foot));
+  const wrap=el('div',{class:'mx'},tbl);m.append(wrap);
+  if(nav.mxScroll)setTimeout(()=>{wrap.scrollLeft=nav.mxScroll},0);
+  const bare=claims.filter(e=>!e.marks.length).length,wh=cols.filter(c=>span(c)>=3).length;
+  m.append(el('p',{class:'hint',text:(wh?wh+' source'+(wh>1?'s':'')+' speak to three or more claims (★). ':'')+(bare?bare+' claim'+(bare>1?'s have':' has')+' no sources at all (dashed edge).':'Every claim has at least one source.')}));
+}
+
+/* ---------- debate board ---------- */
+function vDebate(m,t){
+  const claims=S.entries.filter(e=>e.claim&&e.topics.includes(t.id)).sort((a,b)=>(isContested(b)?1:0)-(isContested(a)?1:0)||b.created-a.created);
+  if(!claims.length){m.append(el('div',{class:'empty',text:'No claims yet. A debate board weighs the evidence on both sides of one claim.'}),el('div',{style:'text-align:center'},el('button',{class:'primary small',text:'Open the start sheet',onclick:()=>openStart(t.id)})));return}
+  const e=claims.find(x=>x.id===nav.debate)||claims[0];nav.debate=e.id;
+  m.append(el('div',{class:'filters'},claims.map(c=>el('button',{class:'chip'+(c.id===e.id?' on':''),text:entryTitle(c).length>30?entryTitle(c).slice(0,30)+'…':entryTitle(c),onclick:()=>{nav.debate=c.id;render()}}))));
+  const s=strength(e),kids=S.entries.filter(x=>x.parent===e.id&&x.claim);
+  m.append(el('h2',{style:'font-family:var(--serif);font-size:1.4rem;line-height:1.25;margin:4px 0 6px',text:entryTitle(e)}));
+  const tot=s.sup+s.chal;
+  m.append(el('div',{class:'balance'},el('i',{class:'b1',style:'width:'+(tot?Math.round(s.sup/tot*100):50)+'%'}),el('i',{class:'b2',style:'width:'+(tot?100-Math.round(s.sup/tot*100):50)+'%'})),el('div',{class:'row spread'},el('small',{style:'color:var(--sup)',text:'For '+s.sup.toFixed(1)}),el('small',{style:'color:var(--muted)',text:s.label}),el('small',{style:'color:var(--chal)',text:'Against '+s.chal.toFixed(1)})));
+  const side=(role,title,cls)=>{
+    const col=el('div',{class:'dside '+cls},el('h4',{text:title}));
+    kids.filter(k=>(k.prole||'supports')===role).forEach(k=>col.append(el('div',{class:'dcard',onclick:()=>openEntry(k.id)},el('button',{class:'dt',text:entryTitle(k)}),el('small',{text:'A sub-claim. '+strength(k).label}))));
+    e.marks.filter(mk=>mk.role===role).forEach(mk=>{const c=clipById(mk.clip);if(c)col.append(el('div',{class:'dcard',onclick:()=>openClipView(c.id)},el('button',{class:'dt',text:clipPreview(c)}),el('small',{text:[clipSource(c),qOf(c).label].filter(Boolean).join('. ')})))});
+    if(col.children.length===1)col.append(el('p',{class:'hint',text:'Nothing here yet.'}));
+    col.append(el('button',{class:'ghost small',text:'＋ '+(role==='supports'?'For':'Against'),onclick:()=>pickClip(e,c=>{e.marks.push({id:uid(),clip:c.id,role});logEv(e,'mark','Earmarked as '+ROLES[role].label.toLowerCase()+': '+clipPreview(c).slice(0,60));e.u=Date.now();persist();render()})}));
+    return col;
+  };
+  m.append(el('div',{class:'debate'},side('supports','For','for'),side('challenges','Against','against')));
+  const weak=s.sup<s.chal?'supports':'challenges';
+  if(tot>0&&Math.abs(s.sup-s.chal)>=.5)m.append(el('div',{class:'banner'},el('span',{text:'One side is thinner. Make the strongest case for it before you decide.'}),el('button',{class:'primary small',text:'Steelman',onclick:()=>pickText('The strongest case for '+(weak==='supports'?'the claim':'the other side'),'Argue it as well as its best defender would',v=>{const c={id:uid(),kind:'note',text:'Steelman: '+v,source:'My own reasoning',url:'',topics:e.topics.slice(),toread:false,quality:'anecdote',created:Date.now(),u:Date.now()};S.clips.unshift(c);e.marks.push({id:uid(),clip:c.id,role:weak});logEv(e,'mark','Wrote a steelman '+(weak==='supports'?'for':'against')+' the claim');e.u=Date.now();persist();render()},{button:'Add to the board'})})));
+  m.append(el('div',{class:'sec',text:'Where I land'}));
+  const ta=el('textarea',{class:'field',placeholder:'Weigh it in your own words. What do you conclude for now?','aria-label':'Where I land',style:'min-height:90px'});ta.value=e.verdict||'';
+  ta.addEventListener('input',()=>{e.verdict=ta.value;e.u=Date.now();persist()});m.append(ta);
+  m.append(el('div',{class:'chips'},[1,2,3,4,5].map(v=>el('button',{class:'chip'+(e.conf===v?' on':''),text:CONF[v],onclick:()=>{if(e.conf===v)return;const pv=e.conf;e.conf=v;logEv(e,'conf',pv?'Confidence '+CONF[pv]+' → '+CONF[v]:'Confidence set to '+CONF[v]);e.u=Date.now();persist();render()}}))));
+}
+
+/* ---------- landscape of islands ---------- */
+function islandData(){
+  return S.topics.map(t=>{
+    const ents=S.entries.filter(e=>e.topics.includes(t.id)),cl=S.clips.filter(c=>c.topics.includes(t.id)),qs=S.questions.filter(q=>q.topics.includes(t.id));
+    const claims=ents.filter(e=>e.claim),solid=claims.filter(e=>{const l=strength(e).label;return l==='Moderate support'||l==='Strong support'}).length;
+    const loose=cl.filter(c=>!usedIn(c.id).length).length;
+    const fogC=claims.length?1-solid/claims.length:.55,fogL=cl.length?loose/cl.length:0;
+    return{t,ents,cl,qs,claims,items:ents.length+cl.length+qs.length,fog:Math.min(.92,.72*fogC+.28*fogL),solid,loose,r:20+8.5*Math.sqrt(ents.length+cl.length+qs.length)};
+  });
+}
+function layoutIslands(is,pairs,W,H){
+  const n=is.length;
+  is.forEach((o,i)=>{const a=i/n*Math.PI*2;o.x=W/2+Math.cos(a)*W*.25;o.y=H/2+Math.sin(a)*H*.22});
+  for(let it=0;it<320;it++){
+    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const a=is[i],b=is[j];let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.01;const mn=a.r+b.r+16;if(d<mn){const f=(mn-d)/2;dx/=d;dy/=d;a.x-=dx*f;a.y-=dy*f;b.x+=dx*f;b.y+=dy*f}}
+    pairs.forEach(p=>{const a=is[p.i],b=is[p.j];let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.01;const f=(d-(a.r+b.r+30))*.02;dx/=d;dy/=d;a.x+=dx*f;a.y+=dy*f;b.x-=dx*f;b.y-=dy*f});
+    is.forEach(o=>{o.x+=(W/2-o.x)*.01;o.y+=(H/2-o.y)*.01});
+  }
+  const x0=Math.min(...is.map(o=>o.x-o.r)),x1=Math.max(...is.map(o=>o.x+o.r)),y0=Math.min(...is.map(o=>o.y-o.r)),y1=Math.max(...is.map(o=>o.y+o.r+20));
+  const k=Math.min((W-30)/Math.max(x1-x0,1),(H-30)/Math.max(y1-y0,1),1.7),cx=(x0+x1)/2,cy=(y0+y1)/2;
+  is.forEach(o=>{o.x=W/2+(o.x-cx)*k;o.y=H/2+(o.y-cy)*k;o.r*=k});
+}
+function vIslands(m){
+  if(!S.topics.length){m.append(el('div',{class:'empty',text:'The landscape appears once you have topics. Each topic becomes an island.'}));return}
+  const is=islandData(),idx=new Map(is.map((o,i)=>[o.t.id,i]));
+  const bc=new Map();bridges().forEach(b=>{const ids=b.topics.slice();for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++){const k=[ids[i],ids[j]].sort().join('|');bc.set(k,(bc.get(k)||0)+1)}});
+  const pairs=[...bc.entries()].map(([k,c])=>{const [a,b]=k.split('|');return{i:idx.get(a),j:idx.get(b),c}}).filter(p=>p.i!=null&&p.j!=null);
+  const W=360,H=440;layoutIslands(is,pairs,W,H);
+  const svg=se('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Landscape of your topics as islands'});
+  const defs=se('defs',{});const f=se('filter',{id:'fogblur',x:'-30%',y:'-30%',width:'160%',height:'160%'});f.append(se('feGaussianBlur',{stdDeviation:'5'}));defs.append(f);svg.append(defs);
+  svg.append(se('rect',{x:0,y:0,width:W,height:H,rx:8,fill:'var(--soft)'}));
+  pairs.forEach(p=>{
+    const a=is[p.i],b=is[p.j];let dx=b.x-a.x,dy=b.y-a.y;const d=Math.hypot(dx,dy)||1;dx/=d;dy/=d;
+    const x1=a.x+dx*a.r,y1=a.y+dy*a.r,x2=b.x-dx*b.r,y2=b.y-dy*b.r;
+    svg.append(se('line',{x1,y1,x2,y2,stroke:'var(--sun)','stroke-width':1.5+Math.min(p.c,4),'stroke-dasharray':'6 4','stroke-linecap':'round'}));
+    const mx=(x1+x2)/2,my=(y1+y2)/2,lab=p.c+(p.c>1?' bridges':' bridge'),w=lab.length*5+10;
+    svg.append(se('rect',{x:mx-w/2,y:my-17,width:w,height:13,rx:6.5,fill:'var(--paper)',stroke:'var(--sun)','stroke-width':1}));
+    const tx=se('text',{x:mx,y:my-7.5,'text-anchor':'middle',style:'font-size:8.5px;font-weight:700;fill:var(--ink)'});tx.textContent=lab;svg.append(tx);
+  });
+  const col={'Strong support':'var(--sup)','Moderate support':'var(--ctx)','Thin support':'var(--read)','Contested':'var(--chal)','No support':'var(--chal)'};
+  is.forEach(o=>{
+    const g=se('g',{class:'island',style:'cursor:pointer',tabindex:'0',role:'button','aria-label':o.t.name});
+    g.append(se('circle',{cx:o.x,cy:o.y,r:o.r,fill:o.t.color,opacity:.2}),se('circle',{cx:o.x,cy:o.y,r:o.r*.82,fill:o.t.color,opacity:.38}),se('circle',{cx:o.x,cy:o.y,r:o.r,fill:'none',stroke:o.t.color,'stroke-width':1.5}));
+    const N=Math.max(o.claims.length,1);
+    o.claims.forEach((e,i)=>{const ang=i*2.399963,rad=.6*o.r*Math.sqrt((i+.5)/N),x=o.x+Math.cos(ang)*rad,y=o.y+Math.sin(ang)*rad,l=strength(e).label,c=col[l]||'var(--muted)';
+      g.append(se('rect',{x:x-4,y:y-4,width:8,height:8,rx:1.5,fill:c,transform:`rotate(45 ${x} ${y})`,stroke:l==='No support'?'var(--chal)':'none','stroke-width':1}))});
+    o.cl.slice(0,18).forEach((c,i)=>{const ang=i*.9+1,x=o.x+Math.cos(ang)*o.r*.9,y=o.y+Math.sin(ang)*o.r*.9;g.append(se('circle',{cx:x,cy:y,r:2.2,fill:usedIn(c.id).length?'var(--ink)':'none',stroke:'var(--ink)','stroke-width':.8,opacity:.6}))});
+    g.append(se('circle',{cx:o.x,cy:o.y,r:o.r*1.08,fill:'var(--paper)',opacity:o.fog*.85,filter:'url(#fogblur)',style:'pointer-events:none'}));
+    const tx=se('text',{x:o.x,y:o.y+o.r+13,'text-anchor':'middle',style:'font-size:10.5px;font-weight:600;fill:var(--ink)'});tx.textContent=o.t.name.length>22?o.t.name.slice(0,21)+'…':o.t.name;g.append(tx);
+    const t2=se('text',{x:o.x,y:o.y+o.r+24,'text-anchor':'middle',style:'font-size:8.5px;fill:var(--muted)'});t2.textContent=o.items+' items, '+Math.round((1-o.fog)*100)+'% clear';g.append(t2);
+    g.append(se('circle',{cx:o.x,cy:o.y,r:o.r+6,fill:'transparent'}));
+    g.addEventListener('click',()=>{nav.topic=o.t.id;nav.tab='topics';nav.tsub='overview';nav.node=null;render();window.scrollTo(0,0)});
+    svg.append(g);
+  });
+  m.append(el('div',{class:'map'},svg));
+  m.append(el('p',{class:'hint',style:'line-height:1.5',text:'Each island is a topic, sized by how much you have gathered. Diamonds are claims: green for strong support, blue for moderate, amber for thin, red for none. Fog gathers over ground that is thinly supported or full of unused clips. Gold dashed lines are bridges where topics share material. Tap an island to open it.'}));
+}
+
+/* ---------- timeline of the field ---------- */
+const whenYear=c=>{const m=/\b(1[0-9]{3}|20[0-9]{2})\b/.exec(c.when||'');return m?+m[1]:null};
+function vTimeline(m,t,all){
+  const cl=S.clips.filter(c=>inScopeClip(c,t,all)),dated=cl.filter(c=>whenYear(c)!=null).sort((a,b)=>whenYear(a)-whenYear(b)),und=cl.filter(c=>whenYear(c)==null);
+  m.append(el('p',{class:'hint',style:'margin:0 0 10px;line-height:1.5',text:'When things happened in the field itself: studies, events, publications. Give a clip a date in its "When" field and it appears here.'}));
+  m.append(el('div',{class:'row',style:'margin-bottom:12px'},el('button',{class:'primary small',text:'＋ Add an event or source',onclick:()=>openClip(null,{topics:all?[]:[t.id]})})));
+  if(!dated.length){m.append(el('div',{class:'empty',text:'Nothing dated yet. Add a year to a clip, for example 1971 or March 2020, to place it on the timeline.'}));}
+  else{
+    let big={gap:0,a:0,b:0};for(let i=1;i<dated.length;i++){const g=whenYear(dated[i])-whenYear(dated[i-1]);if(g>big.gap)big={gap:g,a:whenYear(dated[i-1]),b:whenYear(dated[i])}}
+    if(big.gap>=10)m.append(el('div',{class:'banner'},el('span',{text:'Longest quiet stretch: '+big.a+' to '+big.b+' ('+big.gap+' years) with nothing collected. A gap in the field, or in your reading?'})));
+    const tl=el('div',{class:'tlv'});let prev=null;
+    const byYear=new Map();dated.forEach(c=>{const y=whenYear(c);if(!byYear.has(y))byYear.set(y,[]);byYear.get(y).push(c)});
+    [...byYear.keys()].sort((a,b)=>a-b).forEach(y=>{
+      if(prev!=null&&y-prev>=10)tl.append(el('div',{class:'gapmark',text:(y-prev)+' quiet years'}));
+      const box=el('div',{class:'yr'},el('h5',{text:String(y)}));
+      box.append(el('div',{class:'masonry',style:'columns:1'},byYear.get(y).map(clipCard)));tl.append(box);prev=y;
+    });
+    m.append(tl);
+  }
+  if(und.length){m.append(el('div',{class:'sec',text:'Undated ('+und.length+')'}),el('p',{class:'hint',style:'margin-bottom:8px',text:'Tap one to add a date.'}));und.slice(0,10).forEach(c=>m.append(el('button',{class:'pickrow',onclick:()=>openClip(c.id)},el('div',{class:'pt',text:clipPreview(c)}),el('small',{text:clipSource(c)}))))}
+}
+
+/* ---------- growth of your own thinking ---------- */
+function growthEvents(t,all){
+  const ev=[],inT=o=>all||o.topics.includes(t.id);
+  S.entries.filter(inT).forEach(e=>{
+    ev.push({t:e.created,type:'thought',e});
+    (e.log||[]).forEach(x=>{if(x.k==='mark')ev.push({t:x.t,type:'evidence',e,txt:x.txt});if(x.k==='conf')ev.push({t:x.t,type:'conf',e,txt:x.txt});if(x.k==='claim'&&/Marked/.test(x.txt))ev.push({t:x.t,type:'claim',e,txt:x.txt})});
+  });
+  S.clips.filter(c=>inScopeClip(c,t,all)).forEach(c=>ev.push({t:c.created,type:'clip',c}));
+  S.questions.filter(inT).forEach(q=>{ev.push({t:q.created,type:'question',q});if(q.status==='answered')ev.push({t:q.u||q.created,type:'answered',q})});
+  return ev.filter(x=>x.t).sort((a,b)=>a.t-b.t);
+}
+function vGrowth(m,t,all){
+  const ev=growthEvents(t,all);
+  m.append(el('p',{class:'hint',style:'margin:0 0 10px;line-height:1.5',text:'How your thinking grew over time: what you wrote, collected and asked, and when evidence and confidence shifted.'}));
+  if(ev.length<3){m.append(el('div',{class:'empty',text:'Add a few entries, clips and questions and the story of your thinking will take shape here.'}));return}
+  const TY=[['thought','Thoughts','var(--navy)'],['clip','Clips','var(--sun)'],['question','Questions','var(--ctx)'],['evidence','Evidence','var(--sup)'],['conf','Confidence','var(--read)']];
+  const t0=ev[0].t,t1=Date.now(),span=Math.max(t1-t0,864e5),nb=Math.min(20,Math.max(4,Math.ceil(span/864e5))),bw=span/nb;
+  const bins=Array.from({length:nb},()=>({thought:0,clip:0,question:0,evidence:0,conf:0}));
+  ev.forEach(x=>{const k=TY.find(a=>a[0]===x.type)?x.type:(x.type==='claim'?'thought':x.type==='answered'?'question':null);if(!k)return;if(x.type==='claim'||x.type==='answered')return;const i=Math.min(nb-1,Math.floor((x.t-t0)/bw));bins[i][k]++});
+  const W=360,H=150,pl=8,pb=22,mx=Math.max(1,...bins.map(b=>TY.reduce((s,a)=>s+b[a[0]],0))),bwp=(W-pl*2)/nb;
+  const svg=se('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Activity over time'});
+  bins.forEach((b,i)=>{let y=H-pb;TY.forEach(([k,,c])=>{const h=b[k]/mx*(H-pb-14);if(h>0){y-=h;svg.append(se('rect',{x:pl+i*bwp+1.5,y,width:Math.max(2,bwp-3),height:h,rx:1.5,fill:c}))}})});
+  svg.append(se('line',{x1:pl,x2:W-pl,y1:H-pb,y2:H-pb,stroke:'var(--rule)'}));
+  const fd=x=>new Date(x).toLocaleDateString([],{month:'short',day:'numeric'});
+  const a=se('text',{x:pl,y:H-6});a.textContent=fd(t0);const b2=se('text',{x:W-pl,y:H-6,'text-anchor':'end'});b2.textContent='Today';svg.append(a,b2);
+  m.append(el('div',{class:'growth'},svg));
+  m.append(el('div',{class:'legend'},TY.map(([k,l,c])=>el('span',{html:'<i style="border-color:'+c+';border-top-width:6px"></i>'+l}))));
+  const first=(type,f)=>ev.find(x=>x.type===type&&(!f||f(x)));
+  const miles=[];
+  const fc=first('claim');if(fc)miles.push([fc.t,'First claim: '+entryTitle(fc.e)]);
+  const fch=ev.find(x=>x.type==='evidence'&&/challenges/.test(x.txt||''));if(fch)miles.push([fch.t,'First challenge to your thinking: '+entryTitle(fch.e)]);
+  const fa=first('answered');if(fa)miles.push([fa.t,'First question answered: '+fa.q.text]);
+  const busy=bins.map((b,i)=>[TY.reduce((s,a)=>s+b[a[0]],0),i]).sort((x,y)=>y[0]-x[0])[0];if(busy&&busy[0]>2)miles.push([t0+busy[1]*bw,'Busiest stretch: '+busy[0]+' additions']);
+  miles.sort((x,y)=>x[0]-y[0]);
+  if(miles.length){m.append(el('div',{class:'sec',text:'Milestones'}));const tl=el('div',{class:'tl'});miles.forEach(([tt,tx])=>tl.append(el('div',{class:'ev claim'},el('small',{text:fd(tt)}),el('p',{text:tx}))));m.append(tl)}
+  const shifts=ev.filter(x=>x.type==='conf'||x.type==='evidence').slice(-6).reverse();
+  if(shifts.length){m.append(el('div',{class:'sec',text:'Recent shifts'}));const tl=el('div',{class:'tl'});shifts.forEach(x=>tl.append(el('div',{class:'ev '+(x.type==='conf'?'conf':'mark')},el('small',{text:fd(x.t)+'. '+entryTitle(x.e).slice(0,40)}),el('p',{text:x.txt}))));m.append(tl)}
+}
+
+/* ---------- recall: test yourself on your own research ---------- */
+function recallPool(scope){
+  const all=scope==='all',inT=o=>all||o.topics.includes(scope);
+  return [...S.entries.filter(e=>e.claim&&inT(e)).map(o=>({kind:'claim',o})),...S.questions.filter(q=>inT(q)&&(q.status==='answered'||(q.refs||[]).length)).map(o=>({kind:'question',o}))];
+}
+function dueItems(scope){const now=Date.now();return recallPool(scope).filter(x=>!x.o.recall||x.o.recall.next<=now)}
+function rateRecall(o,score){
+  const r=o.recall||{n:0,int:0,streak:0,hist:[]},now=Date.now();let days;
+  if(score===0){days=1;r.streak=0}else if(score===1){days=Math.max(2,Math.round((r.int||1)*1.3))}else{r.streak=(r.streak||0)+1;days=r.streak===1?3:Math.round((r.int||3)*2.4)}
+  r.int=days;r.next=now+days*864e5;r.last=now;r.n=(r.n||0)+1;r.hist=(r.hist||[]).concat([{t:now,s:score}]).slice(-20);
+  o.recall=r;o.u=now;persist();
+}
+function openRecall(scope){
+  let queue=dueItems(scope),idx=0,revealed=false,got=0;
+  sheet((sh,close)=>{
+    const paint=()=>{
+      sh.replaceChildren(el('div',{class:'grab'}),el('div',{class:'bar'},el('strong',{text:'Recall'}),el('button',{class:'ghost small',text:'Close',onclick:close})));
+      if(idx>=queue.length){sh.append(el('div',{class:'empty',text:queue.length?'Done. You recalled '+got+' of '+queue.length+' well. The rest will come back sooner.':'Nothing is due right now. Come back later.'}),el('div',{class:'row',style:'justify-content:center'},el('button',{class:'primary',text:'Close',onclick:close})));return}
+      const it=queue[idx],o=it.o;
+      sh.append(el('div',{class:'hint',text:(idx+1)+' of '+queue.length}),el('div',{class:'progress'},el('i',{style:'width:'+Math.round(idx/queue.length*100)+'%'})));
+      const box=el('div',{class:'recallbox'});
+      if(it.kind==='claim')box.append(el('small',{style:'color:var(--muted)',text:'Claim'}),el('p',{class:'q',text:entryTitle(o)}),el('p',{class:'hint',text:'What evidence do you remember for it, and against it? Say it aloud or jot it down, then reveal.'}));
+      else box.append(el('small',{style:'color:var(--muted)',text:'Question'}),el('p',{class:'q',text:o.text}),el('p',{class:'hint',text:'What do you already know about this? Say it aloud or jot it down, then reveal.'}));
+      if(!revealed){
+        const ta=el('textarea',{class:'field',placeholder:'Optional: write what you recall','aria-label':'What you recall',style:'min-height:80px;margin-top:8px'});box.append(ta,el('button',{class:'primary',style:'width:100%;margin-top:8px',text:'Reveal',onclick:()=>{revealed=true;paint()}}));
+      }else{
+        const list=el('div',{style:'margin-top:8px'});
+        if(it.kind==='claim'){
+          ['supports','challenges','context'].forEach(r=>{const ms=o.marks.filter(mk=>mk.role===r&&clipById(mk.clip));if(ms.length){list.append(el('div',{class:'sec',style:'color:var(--'+(r==='supports'?'sup':r==='challenges'?'chal':'ctx')+');font-size:.95rem',text:ROLES[r].label}));ms.forEach(mk=>{const c=clipById(mk.clip);list.append(el('div',{class:'mark'},el('div',{class:'mb'},el('div',{class:'mt',text:clipPreview(c)}),el('small',{text:[clipSource(c),qOf(c).label].filter(Boolean).join('. ')}))))})}});
+          if(o.verdict)list.append(el('div',{class:'sec',text:'Where you landed'}),el('p',{style:'font-family:var(--serif);line-height:1.5',text:o.verdict}));
+          if(!o.marks.length)list.append(el('p',{class:'hint',text:'No evidence attached yet.'}));
+        }else{
+          if(o.answer)list.append(el('div',{class:'sec',text:'Your answer'}),el('p',{style:'font-family:var(--serif);line-height:1.5',text:o.answer}));
+          (o.refs||[]).map(entryById).filter(Boolean).forEach(e=>list.append(el('div',{class:'mark'},el('div',{class:'mb'},el('div',{class:'mt',text:entryTitle(e)})))));
+        }
+        box.append(list,el('div',{class:'sec',text:'How did you do?'}),el('div',{class:'rate'},[['r0','Missed it'],['r1','Partly'],['r2','Got it']].map(([c,l],sc)=>el('button',{class:c,text:l,onclick:()=>{rateRecall(o,sc);if(sc===2)got++;idx++;revealed=false;paint()}}))));
+      }
+      sh.append(box);
+    };
+    paint();
+  },{full:true,onClose:()=>render()});
+}
+function vRecall(m,t,all){
+  const scope=all?'all':t.id,pool=recallPool(scope),due=dueItems(scope),now=Date.now();
+  m.append(el('p',{class:'hint',style:'margin:0 0 12px;line-height:1.5',text:'Reading again feels like learning but is weaker than pulling it from memory. Recall hides your evidence, asks you to remember it, then reveals it. Things you miss come back sooner.'}));
+  if(!pool.length){m.append(el('div',{class:'empty',text:'Recall works on claims and on questions you have answered or linked thoughts to. Add some to this topic first.'}));return}
+  const learned=pool.filter(x=>x.o.recall&&(x.o.recall.streak||0)>=3).length;
+  m.append(el('div',{class:'row',style:'gap:18px;margin:0 0 12px'},el('span',{class:'stat'},el('b',{text:due.length}),' due now'),el('span',{class:'stat'},el('b',{text:pool.length}),' in this set'),el('span',{class:'stat'},el('b',{text:learned}),' well learned')));
+  m.append(el('button',{class:'primary',style:'width:100%;margin-bottom:14px',text:due.length?'Start recall ('+due.length+')':'Nothing due. Practise anyway',onclick:()=>{if(!due.length){pool.forEach(x=>{x.due=1});}openRecall(scope)}}));
+  const up=pool.filter(x=>x.o.recall&&x.o.recall.next>now).sort((a,b)=>a.o.recall.next-b.o.recall.next).slice(0,6);
+  if(up.length){m.append(el('div',{class:'sec',text:'Coming up'}));up.forEach(x=>{const d=Math.max(1,Math.round((x.o.recall.next-now)/864e5));m.append(el('div',{class:'pickrow',style:'cursor:default'},el('div',{class:'pt',text:x.kind==='claim'?entryTitle(x.o):x.o.text}),el('small',{text:'In '+d+' day'+(d>1?'s':'')+(x.o.recall.streak?'. '+x.o.recall.streak+' in a row':'')})))})}
+}
+/* ---------- extra sample material ---------- */
+function addSamples4(S){
+  const when={c_simon:'1971',c_data:'2020',c_counter:'2018',c_read:'2023',c_notif:'2016'};
+  S.clips.forEach(c=>{if(c.sample&&when[c.id]&&!c.when)c.when=when[c.id]});
+  const mkC=(id,kind,text,w,tid)=>{if(!S.clips.some(x=>x.id===id))S.clips.push({id,kind,text,source:'Sample. Add your source here.',url:'',topics:[tid],toread:false,quality:'review',when:w,created:Date.now()-5*864e5,u:Date.now(),sample:true})};
+  mkC('c_early','note','Sample: an early warning about information overload.','1964','t_dcs');
+  mkC('c_study','quote','Sample: a lab study on interruptions and focus.','2008','t_dcs');
+  const g=S.entries.find(e=>e.id==='e_gap');if(g&&g.sample&&!g.marks.some(m=>m.clip==='c_early')){g.marks.push({id:'m20',clip:'c_early',role:'context'},{id:'m21',clip:'c_study',role:'supports'})}
+  const c=S.entries.find(e=>e.id==='e_claim');if(c&&c.sample&&!c.verdict)c.verdict='Leaning yes for now. The data is thin and the counter-argument deserves a proper test.';
+  if(c&&c.sample&&!c.marks.some(m=>m.clip==='c_study'))c.marks.push({id:'m22',clip:'c_study',role:'supports'});
+}
+
+/* ---------- extra sample material ---------- */
+function addSamples3(S){
+  const t=Date.now(),D=864e5,H=36e5;
+  const has=id=>S.topics.some(x=>x.id===id)||S.clips.some(x=>x.id===id)||S.entries.some(x=>x.id===id)||S.questions.some(x=>x.id===id);
+  const mkE=o=>{if(!has(o.id))S.entries.push(Object.assign({kind:'journal',claim:false,conf:0,topics:[],marks:[],links:[],hist:[],log:[],created:t,u:t,sample:true},o))};
+  mkE({id:'e_sub1',claim:true,conf:3,title:'Unpredictable rewards are especially habit-forming',body:'Variable schedules keep us checking.',topics:['t_dcs'],parent:'e_claim',prole:'supports',marks:[{id:'m11',clip:'c_notif',role:'supports'}],log:[{t:t-5*D,k:'new',txt:'Started this entry'}],created:t-5*D,u:t-5*D});
+  mkE({id:'e_sub2',claim:true,conf:2,title:'Habits fade once the cues are removed',body:'',topics:['t_dcs'],parent:'e_claim',prole:'challenges',marks:[{id:'m12',clip:'c_counter',role:'challenges'}],log:[{t:t-4*D,k:'new',txt:'Started this entry'}],created:t-4*D,u:t-4*D});
+  mkE({id:'e_sub3',claim:true,conf:0,title:'Heavy users show stronger cue reactions',body:'',topics:['t_dcs'],parent:'e_sub1',prole:'supports',log:[{t:t-3*D,k:'new',txt:'Started this entry'}],created:t-3*D,u:t-3*D});
+  const dumps=[['e_d1','Scrolling feels like pulling a slot machine lever, you never know what you will get.',-5*H],['e_d2','Variable rewards might explain why feeds are so hard to put down.',-4*H],['e_d3','Interview someone who quit social media for a year.',-3*H],['e_d4','Quit social media experiments: how long before the urge fades?',-2*H],['e_d5','Ask a neuroscientist about reward prediction and notifications.',-1*H]];
+  dumps.forEach(([id,body,off])=>mkE({id,kind:'dump',body,created:t+off,u:t+off,log:[{t:t+off,k:'new',txt:'Dumped a thought'}]}));
+  const mkQ=o=>{if(!has(o.id))S.questions.push(Object.assign({answer:'',refs:[],topics:['t_dcs'],status:'open',created:t-3*D,u:t-3*D,sample:true},o))};
+  mkQ({id:'q_root',text:'What exactly is digital culture shock, and is it new?',refs:['e_gap']});
+  mkQ({id:'q_data',text:'What would a good measurement of the effect look like?',parent:'q_persist'});
+  mkQ({id:'q_hist',text:'Which earlier media panics proved right, and which were wrong?',parent:'q_fade',status:'answered',answer:'Mixed. Worth a closer look.'});
+  ['q_persist','q_fade','q_dop'].forEach(id=>{const q=S.questions.find(x=>x.id===id);if(q&&q.sample&&q.parent===undefined)q.parent='q_root'});
+}
+
+
 /* ---------- sample material and upgrades ---------- */
 function addSamples2(S){
   const t=Date.now(),D=864e5;
@@ -1291,6 +1976,8 @@ function addSamples2(S){
 function upgrade(s){
   s.questions=s.questions||[];
   if(!s.v2){s.v2=true;if(s.entries.some(e=>e.sample)||s.clips.some(c=>c.sample))addSamples2(s)}
+  if(!s.v3){s.v3=true;if(s.entries.some(e=>e.sample)||s.clips.some(c=>c.sample))addSamples3(s)}
+  if(!s.v4){s.v4=true;if(s.entries.some(e=>e.sample)||s.clips.some(c=>c.sample))addSamples4(s)}
   s.entries.forEach(e=>{e.hist=e.hist||[];e.log=e.log||[];if(e.conf==null)e.conf=0;e.links=e.links||[];e.marks=e.marks||[];e.topics=e.topics||[]});
   s.clips.forEach(c=>{if(!c.quality)c.quality='unrated';c.topics=c.topics||[]});
   return s;

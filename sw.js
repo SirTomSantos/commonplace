@@ -1,7 +1,7 @@
 // Commonplace service worker: keeps the app working offline.
 // It only ever touches caches whose names start with "commonplace-", so it cannot disturb other apps on this site.
 // To force every device to refresh the app files, change the version below.
-const V = 'commonplace-shell-v1';
+const V = 'commonplace-shell-v3';
 const FONTS = 'commonplace-fonts';
 const SHELL = ['./', 'index.html', 'config.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {
