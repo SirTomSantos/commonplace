@@ -294,6 +294,18 @@ textarea.field{font-family:var(--serif);font-size:1.02rem;line-height:1.5;min-he
 .fab::after{content:"";position:absolute;right:11px;top:10px;width:7px;height:7px;border-radius:50%;background:var(--sun)}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:9px 14px;border-radius:10px;font-size:.86rem;z-index:80;opacity:0;pointer-events:none;transition:opacity .2s;max-width:88vw}
 #toast.on{opacity:1}
+.stcard{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:16px;margin:0 0 12px}
+.stname{font-family:var(--serif);font-size:1.45rem;font-weight:600;margin:12px 0 6px;letter-spacing:-.01em}
+.sttopic{font-family:var(--serif);font-size:1.25rem;font-weight:600;line-height:1.3}
+.strule{margin:10px 0 0;font-size:.92rem;line-height:1.5;color:var(--ink);border-left:3px solid var(--sun);padding-left:10px}
+.stwell{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:16px;margin:0 0 12px}
+.stwell h3{font-family:var(--serif);font-size:1.25rem;margin:0}
+.stp{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px}
+.stchk{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--muted);background:none;font-weight:600;color:var(--muted);padding:0}
+.stchk.on{background:var(--sup);border-color:var(--sup);color:#fff}
+.stbody{flex:1;min-width:0}
+.stt{font-size:.95rem;line-height:1.45;margin:3px 0 6px}
+.stp.done .stt{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -316,6 +328,7 @@ const ICON={
  journal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4z"/><path d="M9 9h6M9 13h4"/></svg>',
  scrap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="10" height="9" rx="1.5"/><rect x="15" y="4" width="6" height="6" rx="1.5"/><rect x="3" y="15" width="6" height="5" rx="1.5"/><rect x="11" y="12" width="10" height="8" rx="1.5"/></svg>',
  topics:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>',
+ study:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.1" fill="currentColor"/><circle cx="15" cy="9" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="9" cy="15" r="1.1" fill="currentColor"/><circle cx="15" cy="15" r="1.1" fill="currentColor"/></svg>',
  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
  questions:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2 1-1.2 1.8"/><circle cx="12" cy="17" r=".7" fill="currentColor"/></svg>',
  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
@@ -449,7 +462,7 @@ let nav={tab:'journal',topic:null,tsub:'overview',filter:'all',sfilter:'all',qfi
 function render(){
   const m=$('#main');m.replaceChildren();
   const t=nav.tab;
-  if(t==='journal')vJournal(m);else if(t==='scrap')vScrap(m);else if(t==='questions')vQuestions(m);
+  if(t==='journal')vJournal(m);else if(t==='scrap')vScrap(m);else if(t==='questions')vQuestions(m);else if(t==='study')vStudy(m);
   else if(t==='topics')(nav.topic&&(nav.topic==='all'||topicById(nav.topic))?vTopic(m):(nav.topic=null,vTopics(m)));
   else vSearch(m);
   paintTabs();paintFab();
@@ -457,7 +470,7 @@ function render(){
 function go(tab,topic){nav.tab=tab;nav.topic=topic||null;nav.tsub='overview';nav.node=null;render();window.scrollTo(0,0)}
 function paintTabs(){
   const t=$('#tabin');t.replaceChildren();
-  [['journal','Journal','journal'],['scrap','Scrapbook','scrap'],['questions','Questions','questions'],['topics','Topics','topics'],['search','Search','search']].forEach(([k,l,ic])=>{
+  [['journal','Journal','journal'],['scrap','Scrapbook','scrap'],['questions','Questions','questions'],['topics','Topics','topics'],['study','Study','study'],['search','Search','search']].forEach(([k,l,ic])=>{
     t.append(el('button',{class:'tab'+(nav.tab===k?' on':''),onclick:()=>{if(nav.tab===k&&k==='topics'&&nav.topic)go('topics');else go(k)}},svgIcon(ic),l))});
 }
 function paintFab(){
@@ -477,6 +490,7 @@ function vJournal(m){
   const save=()=>{const v=ta.value.trim();if(!v)return;S.entries.unshift({id:uid(),kind:'dump',title:'',body:v,claim:false,topics:[],marks:[],links:[],created:Date.now(),u:Date.now()});persist();ta.value='';render();toast('Dumped. Sort it whenever you like.')};
   ta.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter')save()});
   m.append(el('div',{class:'dump'},ta,el('div',{class:'row spread'},el('p',{class:'hint',text:'No title, no folder. Sort it later.'}),el('button',{class:'primary',text:'Dump it',onclick:save}))));
+  studyBanner(m);
   const unsorted=S.entries.filter(e=>e.kind==='dump'&&!e.topics.length).length;
   const FL=[['all','All'],['unsorted','Unsorted'+(unsorted?' ('+unsorted+')':'')],['claims','Claims'],['gaps','Needs evidence']];
   m.append(el('div',{class:'filters'},FL.map(([k,l])=>el('button',{class:'chip'+(nav.filter===k?' on':''),text:l,onclick:()=>{nav.filter=k;render()}}))));
@@ -1038,9 +1052,9 @@ const idbDel=(st,k)=>idb().then(db=>new Promise((res,rej)=>{const t=db.transacti
 const idbAll=st=>idb().then(db=>new Promise((res,rej)=>{const out={},q=db.transaction(st,'readonly').objectStore(st).openCursor();q.onsuccess=()=>{const c=q.result;if(c){out[c.key]=c.value;c.continue()}else res(out)};q.onerror=()=>rej(q.error)}));
 
 /* ---------- saving: every change is stamped, stored here, and queued for Drive ---------- */
-const ARR={e:'entries',c:'clips',t:'topics',q:'questions'},CK=Object.keys(ARR);
+const ARR={e:'entries',c:'clips',t:'topics',q:'questions',s:'studies'},CK=Object.keys(ARR);
 let FP={},IDS={},saveTimer=null;
-const emptyState=()=>({topics:[],clips:[],entries:[],questions:[],tomb:{},v:2,v2:true});
+const emptyState=()=>({topics:[],clips:[],entries:[],questions:[],studies:[],tomb:{},v:2,v2:true});
 const fpOf=it=>{const c=Object.assign({},it);delete c.u;return JSON.stringify(c)};
 function stampChanges(){
   const now=Date.now();S.tomb=S.tomb||{};
@@ -1147,7 +1161,7 @@ async function writeItem(name,obj){
   const j=await r.json();DRIVE.idx[name]=j.id;
   cache[name]={id:j.id,mt:j.modifiedTime,content:cl(obj)};await idbPut('cloud',name,cache[name]).catch(()=>{});
 }
-const NAMERE=/^cp-([ectq])-(.+)$/;
+const NAMERE=/^cp-([ectqs])-(.+)$/;
 async function pushPass(){
   const cache=await cloudCache();let n=0;
   for(const k of CK)for(const it of S[ARR[k]]){
@@ -1952,6 +1966,264 @@ function addSamples3(S){
   ['q_persist','q_fade','q_dop'].forEach(id=>{const q=S.questions.find(x=>x.id===id);if(q&&q.sample&&q.parent===undefined)q.parent='q_root'});
 }
 
+/* ---------- study: two wells of research, and the rules of whatever you draw ---------- */
+const WELLS=[
+ {id:'phil',name:'Philosophy of research',blurb:'Nine ways of studying. Each has its own rules.',color:'#3b6fb6'},
+ {id:'star',name:'Pole star research',blurb:'Five modes of work. Each has its own rules.',color:'#c98d0b'}];
+const S_=(t,f)=>Object.assign({t},f||{});
+const RECIPES=[
+ {id:'quest',well:'phil',name:'Philosophy of questioning',uncover:['A concept','An abstract idea','A topic within the walls of an intellectual domain','A historical event','An ideology','A school of thought'],
+  steps:[S_('Name what you are questioning: a concept, an abstract idea, a topic inside an intellectual domain, a historical event, an ideology or a school of thought.'),S_('Write every question it raises, as many as you can. One per line.',{q:1}),S_('Pick the question that cuts deepest, and sit with it. What would answering it change?')]},
+ {id:'dtbms',well:'phil',name:'Design thinking: blocks, models, systems',uncover:['A domain or discipline','A topic with models, systems or blocks'],
+  steps:[S_('Pick a domain or discipline, and a topic that has models, systems or blocks.'),S_('Break down the existing one: its etymology, its philosophical approach, and its practical approach.'),S_('State your hypothesis.',{h:1}),S_('Make your arguments.'),S_('Reach a conclusion: an addition, a subtraction, or a change. Critique it.'),S_('Design the conclusion.')]},
+ {id:'infer',well:'phil',name:'Drawing an inference',uncover:['A troubling topic that needs to be proved, or otherwise'],
+  steps:[S_('Pick a troubling topic, one that needs to be proved or otherwise.'),S_('Create an interconnection between two or more schools of thought.'),S_('Build a block of question matrix. One question per line.',{q:1}),S_('Ask why an inference is built here, and understand it at the stage of each school of thought.')]},
+ {id:'story',well:'phil',name:'Carve out a story',uncover:['The unnoticed happening inside a historical event','The specific story within a story','The etymological birth of a concept'],
+  variants:[
+   {name:'From a historical event',steps:[S_('Divide the historical event into its parts.'),S_('Pick the historical event you will work on.'),S_('Find an unnoticed happening and its significant impact on the event.'),S_('Find the specific story within the story, and tell it.')]},
+   {name:'From a concept',steps:[S_('Pick a concept or topic, especially from an intellectual domain or discipline.'),S_('Trace the etymological birth of the concept and its importance to its world.'),S_('Build a matrix of questions about the artistic composition of its story. One per line.',{q:1}),S_('Choose your point of view: the inceptual POV, or the fun-fact POV. Then tell it.')]}]},
+ {id:'dataviz',well:'phil',name:'Telling a story with data and visualization',uncover:['An instinctual notion that can be proved right or wrong','The alignment of the concept of the data with the visualization'],
+  steps:[S_('State the instinctual notion that can be proved right or wrong.',{h:1}),S_('Align the concept of the data with the visualization you imagine.'),S_('Research to get the actual data.'),S_('Build the visualization. What did it prove?')]},
+ {id:'deepc',well:'phil',name:'Diving deep into a concept',uncover:['A concept or topic within the intellectual walls of a domain or discipline'],
+  steps:[S_('Pick a concept or topic within the intellectual walls of a domain or discipline. A university brochure is a good place to look.'),S_('Take a deep-dive class into it.'),S_('Isolating learning: study it alone, on its own terms.'),S_('Associative learning: connect it to everything else you know.')]},
+ {id:'divphil',well:'phil',name:'Division of philosophy',uncover:['A division of philosophy, or a division of a school of thought or domain','An interest within it'],
+  steps:[S_('Pick a division of philosophy (ethics, metaphysics and so on), or a division of a school of thought or domain.'),S_('Pick an interest within it.'),S_('Study it across philosophers.'),S_('Study it across associative and dissociative arguments.')]},
+ {id:'country',well:'phil',name:'Digging deep into a country',uncover:['History','Culture','Geography','Economy','War','Education','The etymology of its foreign trade and relations'],
+  steps:[S_('Pick a country.'),S_('Study its history, culture, geography, economy, war and education.'),S_('Study the etymology of its foreign trade, its relations, and so on.')]},
+ {id:'bible',well:'phil',name:'Digging into the Bible',draft:true,uncover:['A passage, a book or a theme'],
+  note:'You have not told me your own steps for this one yet, so this is a starting draft. Edit it to match how you really dig.',
+  steps:[S_('Pick a passage, a book or a theme.'),S_('Read it in its context: who wrote it, to whom, when, and why.'),S_('Study its key words and where they come from.'),S_('Follow its cross-references.'),S_('Ask your questions of it. One per line.',{q:1}),S_('Write what it says, what it means, and what it asks of you.')]},
+ {id:'disc',well:'star',name:'Discovery',rule:'Uncover patterns, changes, developments and realities that sit with our existence and evolution.',note:'Your definition of Discovery was cut off after “our existence, evolution and…”. Edit the rule to finish the sentence.',
+  steps:[S_('Pick an area to explore.'),S_('Look for patterns.'),S_('Look for changes.'),S_('Look for developments.'),S_('Note the realities you uncover.')]},
+ {id:'doc',well:'star',name:'Documentation',rule:'The rigorous pen-down of thoughts, insights, knowledge and discoveries of what is being researched.',
+  steps:[S_('Pick what you have been researching.'),S_('Pen down your thoughts.'),S_('Pen down your insights.'),S_('Pen down the knowledge and the discoveries, rigorously.'),S_('Mark what is still unproven.')]},
+ {id:'anal',well:'star',name:'Analysis and Breakdown',rule:'Tear findings down through data, questions, known truths, facts and, most importantly, verifiable observations, to comment on causality, inference and correlation.',
+  steps:[S_('Pick the findings to tear down.'),S_('Test them against data.'),S_('Test them against questions. One per line.',{q:1}),S_('Test them against known truths and facts.'),S_('Keep only the verifiable observations.'),S_('Comment on causality, inference and correlation.')]},
+ {id:'teach',well:'star',name:'Teach',rule:'Build horizontal and vertical understanding of a concept, topic, domain or theory by teaching it from a reverse and an inverse point of view.',
+  steps:[S_('Pick the concept, topic, domain or theory.'),S_('Teach it horizontally: how it sits among related ideas.'),S_('Teach it vertically: from its foundations up.'),S_('Teach it from the reverse point of view.'),S_('Teach it from the inverse point of view.')]},
+ {id:'tell',well:'star',name:'Tell a story',rule:'Narrate a simple story on complex ideas.',
+  steps:[S_('Pick the complex idea.'),S_('Find the simple story inside it.'),S_('Narrate it, simply.'),S_('Check that the idea survived the telling.')]}];
+const LIB={
+ concept:['Justice','Freedom','Truth','Time','Power','Beauty','Identity','Causality','Meaning','Trust','Scarcity','Value','Authority','Tradition','Progress','Equality','Consciousness','Free will','Emergence','Entropy','Reciprocity','Legitimacy','Sovereignty','Memory','The common good','Suffering','Evil','Wisdom','Nothingness','Language and thought'],
+ idea:['The unconscious','Infinity','The sublime','The absurd','Natural law','The invisible hand','Fate','The arrow of time','Originality','The social contract','Rationality','Human nature'],
+ domain:['Economics: opportunity cost','Economics: comparative advantage','Political science: the social contract','Sociology: social capital','Anthropology: kinship systems','Psychology: cognitive dissonance','Linguistics: how meaning changes','Physics: the arrow of time','Biology: natural selection','Mathematics: infinity','History: periodization','Law: precedent','Theology: the problem of evil','Geography: why cities form where they do','Statistics: correlation and causation','Education: how people learn','Marketing: consumer behavior','Data analytics: attribution','Computer science: algorithms and bias'],
+ event:['The Peace of Westphalia (1648)','The fall of Constantinople (1453)','The Haitian Revolution (1791–1804)','The Meiji Restoration (1868)','The Congress of Vienna (1814–15)','The Berlin Conference (1884–85)','The Partition of India (1947)','The Black Death (1347–51)','The Council of Nicaea (325)','The Protestant Reformation (1517)','The Opium Wars (1839–60)','The Bretton Woods conference (1944)','The Suez Crisis (1956)','The fall of the Berlin Wall (1989)','The 1918 influenza pandemic','The Atlantic slave trade','The Green Revolution','Mansa Musa’s pilgrimage (1324)','The Scramble for Africa','The Russian Revolution (1917)','Gutenberg’s printing press (c. 1455)','The Thirty Years’ War (1618–48)','The founding of the United Nations (1945)','The Rwandan genocide (1994)','The Great Famine in Ireland (1845–52)','The Taiping Rebellion (1850–64)','The Nigerian civil war (1967–70)','The Cuban Missile Crisis (1962)','The Arab Spring (2010–12)','The Industrial Revolution in Britain'],
+ school:['Stoicism','Epicureanism','Existentialism','Utilitarianism','Pragmatism','Empiricism','Rationalism','Phenomenology','Structuralism','Post-structuralism','Marxism','Liberalism','Confucianism','Daoism','Ubuntu philosophy','Scholasticism','Absurdism','Logical positivism','Critical theory','Skepticism','Nihilism','Idealism','Materialism','Humanism'],
+ ideology:['Liberalism','Conservatism','Socialism','Communism','Fascism','Anarchism','Nationalism','Pan-Africanism','Capitalism','Environmentalism','Feminism','Libertarianism','Theocracy','Colonialism','Technocracy'],
+ model:['Marketing: the funnel','Marketing analytics: attribution models','Economics: supply and demand','Ecology: food webs','Systems thinking: feedback loops','Cybernetics: the control loop','Game theory: the prisoner’s dilemma','Statistics: regression','Network science: scale-free networks','Epidemiology: the SIR model','Organization design: Conway’s law','Product analytics: the AARRR pirate metrics','Design thinking: empathize, define, ideate, prototype, test','Economics: the Solow growth model','Psychology: Maslow’s hierarchy','Law: the separation of powers','Biology: the central dogma','Education: Bloom’s taxonomy','Urban planning: central place theory','Information theory: the Shannon model'],
+ trouble:['Does free will exist?','Is morality universal, or made?','Can data ever be neutral?','Is progress inevitable?','Does inequality drive growth, or hold it back?','Can a war ever be just?','Is technology neutral?','Does the market allocate fairly?','Does language shape thought, or thought shape language?','Can we really know the past?','Is there such a thing as a self?','Does suffering have meaning?','Do institutions shape people, or people shape institutions?','Is correlation ever enough to act on?','Can a nation be a moral agent?','Why do societies forget?','Is truth discovered, or constructed?','Does knowledge always liberate?'],
+ etym:['Economy','Democracy','Analytics','Attribution','Algorithm','Capital','Culture','Nation','Science','History','Philosophy','Theory','Education','Market','Currency','Metric','Strategy','Customer','Conversion','Data','Story','Pattern','Inference','Model','System','Discipline','University','Salary','Trade','Politics'],
+ notion:['Countries that trade more with each other fight each other less','Higher education spending leads to faster growth','Faster pages convert better','Cities with more cycle lanes have fewer road deaths','Ageing populations slow innovation','More screen time means less sleep','Remittances reduce poverty more than aid does','Literacy rises before incomes do','Wars are shorter than they used to be','Urbanisation lowers birth rates','Religious attendance falls as incomes rise','Free shipping lifts conversion more than discounts','Population density predicts innovation'],
+ deep:['Entropy (physics)','Moral hazard (economics)','Attribution (marketing analytics)','Recursion (computer science)','The phoneme (linguistics)','Homeostasis (biology)','Anomie (sociology)','Hegemony (political science)','The Overton window (political science)','Opportunity cost (economics)','Bayesian updating (statistics)','Survivorship bias (statistics)','The Gettier problem (epistemology)','Cognitive load (psychology)','Path dependence (history and economics)','Externalities (economics)','Cohort analysis (analytics)','Confounding (statistics)','Emergence (systems science)','Syncretism (religious studies)','Dialectic (philosophy)','Latency (computing)'],
+ country:['Nigeria','Ghana','Ethiopia','Kenya','South Africa','Egypt','Morocco','Senegal','Rwanda','Tanzania','Uganda','DR Congo','Zimbabwe','Botswana','Brazil','Mexico','Argentina','Colombia','Chile','Cuba','Haiti','Canada','United States','United Kingdom','France','Germany','Italy','Spain','Portugal','Netherlands','Sweden','Norway','Poland','Russia','Ukraine','Turkey','Greece','Iran','Iraq','Israel','Saudi Arabia','India','Pakistan','Bangladesh','Sri Lanka','China','Japan','South Korea','Vietnam','Indonesia','Philippines','Singapore','Thailand','Australia','New Zealand','Switzerland'],
+ passage:['Genesis 1–3: creation and the fall','Genesis 11: Babel','Exodus 3: the burning bush','Deuteronomy 6: the Shema','Job 38–42: the answer from the whirlwind','Psalm 23','Psalm 139','Proverbs 8: wisdom speaks','Ecclesiastes 1–3','Isaiah 53: the suffering servant','Jeremiah 29: the letter to the exiles','Daniel 2: the statue','Jonah','Matthew 5–7: the Sermon on the Mount','Luke 15: the lost things','John 1: the Word','John 11: Lazarus','Acts 17: Paul in Athens','Romans 8','1 Corinthians 13','1 Corinthians 15','Philippians 2: the self-emptying','Hebrews 11: faith','James 2: faith and works','Revelation 21: a new heaven and earth'],
+ theme:['Justice and mercy','Wisdom versus knowledge','Suffering and hope','Work and rest','Kingship and kingdom','Exile and return','Covenant','Grace','Truth','Faith and doubt','Power and humility','Money and trust','Names and naming','Light and darkness','Forgiveness'],
+ area:['How a language changes over a century','Why some institutions last','How a belief spreads through a community','How a country’s population shifts over fifty years','How a word’s meaning drifted','How trade routes moved over time','Patterns in how empires end','How cities change after a disruption','How a technology changes daily habits','Why some ideas are rediscovered','How a market’s customers change over a decade','How religions adapt to new societies','Patterns in how revolutions begin','How education systems shape economies','How memory is kept without writing']};
+const DIV={Ethics:['moral luck','virtue','duty','consequences','the good life','forgiveness'],Metaphysics:['causation','time','personal identity','being and nothingness','universals','necessity'],Epistemology:['knowledge and belief','testimony','skepticism','justification','memory','intuition'],Logic:['paradox','validity','induction','fallacies','the liar paradox'],Aesthetics:['beauty','the sublime','taste','art and morality','interpretation','authenticity'],'Political philosophy':['legitimacy','justice','liberty','property','the state','revolution'],'Philosophy of mind':['consciousness','intentionality','free will','the self','other minds','emotion'],'Philosophy of language':['meaning','reference','speech acts','metaphor','translation','names'],'Philosophy of science':['explanation','falsification','paradigms','induction','models','objectivity'],'Philosophy of religion':['the problem of evil','faith and reason','revelation','miracles','the divine attributes','religious language']};
+const PHILOSOPHERS=['Socrates','Plato','Aristotle','Epicurus','Epictetus','Augustine','Avicenna','Aquinas','Descartes','Spinoza','Locke','Hume','Kant','Hegel','Kierkegaard','Mill','Nietzsche','Peirce','Wittgenstein','Heidegger','Arendt','Camus','Beauvoir','Rawls','Confucius','Mencius','Zhuangzi','Ibn Khaldun','Kwasi Wiredu','Achille Mbembe'];
+/* ---------- recipes, with your edits on top ---------- */
+const studies=()=>S.studies||(S.studies=[]);
+const stKind=k=>studies().filter(x=>x.kind===k);
+const sRand=()=>(typeof window.__rand==='function'?window.__rand():Math.random());
+const sPick=a=>a[Math.floor(sRand()*a.length)];
+const dKey=t=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function recipeOf(id){
+  const base=RECIPES.find(r=>r.id===id);if(!base)return null;
+  const ov=studies().find(x=>x.kind==='recipe'&&x.ap===id);
+  if(!ov)return base;
+  return Object.assign({},base,{steps:ov.steps||base.steps,uncover:ov.uncover||base.uncover,rule:ov.rule!=null?ov.rule:base.rule,edited:true,note:ov.edited?null:base.note,variants:ov.variants||(ov.steps?undefined:base.variants)});
+}
+const recipes=()=>RECIPES.map(r=>recipeOf(r.id));
+/* ---------- picking a topic ---------- */
+function recentTopics(n){return stKind('draw').sort((a,b)=>b.created-a.created).slice(0,n).map(d=>String(d.topic||'').toLowerCase())}
+function fresh(list,textOf){const rt=new Set(recentTopics(30));const f=list.filter(x=>!rt.has(String(textOf?textOf(x):x).toLowerCase()));return f.length?f:list}
+function ownTopics(){return S.topics.filter(t=>!t.sample)}
+function topicWeight(t){return S.entries.filter(e=>e.topics.includes(t.id)).length+S.clips.filter(c=>(c.topics||[]).includes(t.id)).length+S.questions.filter(q=>q.topics.includes(t.id)).length}
+function pickTopic(ap,vi){
+  const id=ap.id,mine=stKind('bank').filter(b=>!(b.aps||[]).length||b.aps.includes(id));
+  if(mine.length&&sRand()<.4){const b=sPick(fresh(mine,x=>x.text));return{topic:b.text,src:'yours',hint:'From your own ideas.'}}
+  const lib=(k)=>sPick(fresh(LIB[k]));
+  if(id==='quest'){const k=sPick(['concept','idea','domain','event','ideology','school']);const lab={concept:'A concept',idea:'An abstract idea',domain:'A topic within a domain',event:'A historical event',ideology:'An ideology',school:'A school of thought'}[k];return{topic:lib(k),src:'library',hint:lab+'.'}}
+  if(id==='dtbms')return{topic:lib('model'),src:'library',hint:'An existing model or system to break down.'};
+  if(id==='infer'){const a=sPick(LIB.school);let b=sPick(LIB.school);for(let i=0;i<8&&b===a;i++)b=sPick(LIB.school);return{topic:lib('trouble'),src:'library',hint:'Connect these schools of thought: '+a+' and '+b+'.'}}
+  if(id==='story'){return vi===0?{topic:lib('event'),src:'library',hint:'Find what went unnoticed inside it.'}:{topic:lib('etym'),src:'library',hint:'Trace where the word was born, then tell the concept’s story.'}}
+  if(id==='dataviz')return{topic:lib('notion'),src:'library',hint:'An instinct to prove right or wrong with data.'};
+  if(id==='deepc')return{topic:lib('deep'),src:'library',hint:'Find it in a university brochure, then go deep.'};
+  if(id==='divphil'){const d=sPick(Object.keys(DIV)),i=sPick(DIV[d]),ps=[];while(ps.length<3){const p=sPick(PHILOSOPHERS);if(!ps.includes(p))ps.push(p)}return{topic:d+': '+i,src:'library',hint:'Start with '+ps.join(', ')+'.'}}
+  if(id==='country')return{topic:lib('country'),src:'library',hint:'History, culture, geography, economy, war, education, and its trade.'};
+  if(id==='bible'){return sRand()<.6?{topic:lib('passage'),src:'library',hint:'A passage to dig into.'}:{topic:lib('theme'),src:'library',hint:'A theme to follow through the text.'}}
+  const own=ownTopics();
+  if(id==='disc'){const oq=S.questions.filter(q=>q.status==='open'&&!q.sample);if(oq.length&&sRand()<.4){const q=sPick(fresh(oq,x=>x.text));return{topic:q.text,src:'journal',qid:q.id,hint:'One of your own open questions.'}}return{topic:lib('area'),src:'library',hint:'An area to explore for patterns and changes.'}}
+  if(id==='doc'&&own.length){const t=sPick(fresh(own,x=>x.name));return{topic:t.name,src:'journal',topicId:t.id,hint:'Pen down everything you have on it.'}}
+  if(id==='anal'){const weak=S.entries.filter(e=>e.claim&&!e.sample&&(typeof isUnsupported==='function'?isUnsupported(e):true));if(weak.length){const e=sPick(fresh(weak,x=>x.title));return{topic:e.title,src:'journal',entryId:e.id,topicId:(e.topics||[])[0]||null,hint:'One of your own claims with thin support. Tear it down.'}}return{topic:lib('notion'),src:'library',hint:'Tear it down against data, questions and facts.'}}
+  if(id==='teach'&&own.length){const rich=own.slice().sort((a,b)=>topicWeight(b)-topicWeight(a)).slice(0,5);const t=sPick(fresh(rich,x=>x.name));return{topic:t.name,src:'journal',topicId:t.id,hint:'You know it well enough to teach it.'}}
+  if(id==='tell'&&own.length){const rich=own.slice().sort((a,b)=>topicWeight(b)-topicWeight(a)).slice(0,5);const t=sPick(fresh(rich,x=>x.name));return{topic:t.name,src:'journal',topicId:t.id,hint:'Find the simple story inside it.'}}
+  if(id==='doc'||id==='teach')return{topic:lib('concept'),src:'library',hint:id==='doc'?'Pen down what you know.':'Teach it, even to nobody.'};
+  return{topic:lib('event'),src:'library',hint:'Find the simple story inside it.'};
+}
+const daysSince=t=>(Date.now()-t)/864e5;
+function weightOf(ap){
+  const used=stKind('draw').filter(d=>d.ap===ap.id).sort((a,b)=>b.created-a.created)[0];
+  return used?Math.min(10,1+daysSince(used.created)/3):10;
+}
+function drawNow(opts){
+  opts=opts||{};
+  let pool=recipes(),well=opts.well||null;
+  if(!opts.ap&&!well){const avg=w=>{const l=pool.filter(r=>r.well===w);return l.reduce((x,r)=>x+weightOf(r),0)/l.length};const pw=avg('phil'),sw=avg('star');well=sRand()<pw/(pw+sw)?'phil':'star'}
+  if(opts.ap)pool=pool.filter(r=>r.id===opts.ap);
+  else if(well)pool=pool.filter(r=>r.well===well);
+  const last=stKind('draw').sort((a,b)=>b.created-a.created)[0];
+  if(pool.length>1&&last)pool=pool.filter(r=>r.id!==last.ap);
+  const ws=pool.map(weightOf),tot=ws.reduce((a,b)=>a+b,0);let x=sRand()*tot,ap=pool[pool.length-1];
+  for(let i=0;i<pool.length;i++){x-=ws[i];if(x<=0){ap=pool[i];break}}
+  const vi=ap.variants?Math.floor(sRand()*ap.variants.length):null,pk=pickTopic(ap,vi),now=Date.now();
+  const stp=(ap.variants?ap.variants[vi].steps:ap.steps).map(x=>x.t);
+  const d={id:uid(),kind:'draw',day:dKey(now),well:ap.well,ap:ap.id,variant:vi,topic:pk.topic,src:pk.src,hint:pk.hint||'',topicId:pk.topicId||null,srcEntry:pk.entryId||null,entryId:null,notes:{},done:[],apName:ap.name,stepsText:stp,status:'open',created:now,u:now};
+  studies().unshift(d);persist();return d;
+}
+const openDraw=()=>stKind('draw').filter(d=>d.status==='open').sort((a,b)=>b.created-a.created)[0]||null;
+const stepsOf=(ap,d)=>(ap.variants?ap.variants[d.variant||0].steps:ap.steps);
+
+/* ---------- study: the screens ---------- */
+const stShort=id=>(RECIPES.find(r=>r.id===id)||{}).name||id;
+function stepLines(steps){return steps.map(s=>s.t+(s.q?' (questions)':s.h?' (claim)':'')).join('\n')}
+function parseStepLines(txt,prev){
+  return txt.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
+    const m=/\s*\((questions?|claims?)\)\s*$/i.exec(l),t=l.replace(/\s*\((questions?|claims?)\)\s*$/i,'').trim();
+    const o={t};if(m){if(/^q/i.test(m[1]))o.q=1;else o.h=1}else{const old=(prev||[]).find(p=>p.t===t);if(old){if(old.q)o.q=1;if(old.h)o.h=1}}return o;
+  });
+}
+function studyPrompt(d){
+  const ap=recipeOf(d.ap),steps=stepsOf(ap,d),first=steps.find((s,i)=>!d.done.includes(i))||steps[0];
+  return 'I am studying “'+d.topic+'” with my “'+ap.name+'” method'+(ap.variants?' ('+ap.variants[d.variant||0].name.toLowerCase()+')':'')+'.\n\nThe rules of this method, in order:\n'+steps.map((s,i)=>(i+1)+'. '+s.t).join('\n')+'\n\nHelp me with this step: '+first.t+'\nGive me: (a) five sharp angles or questions, (b) the key terms and where they come from, (c) three sources worth reading, and (d) one thing most people overlook. Be accurate, and tell me where you are unsure.';
+}
+function copyText(txt){
+  try{navigator.clipboard.writeText(txt).then(()=>toast('Copied. Paste it into Claude.'),()=>stShowText(txt))}catch(e){stShowText(txt)}
+}
+function stShowText(txt){sheet((sh,close)=>{sh.append(el('div',{class:'bar'},el('strong',{text:'Copy this'}),el('button',{class:'ghost small',text:'Close',onclick:close})));const ta=el('textarea',{class:'field',rows:'12'});ta.value=txt;sh.append(ta);setTimeout(()=>{try{ta.select()}catch(e){}},50)},{full:true})}
+function studyBanner(m){
+  const d=openDraw(),ap=d&&recipeOf(d.ap);
+  m.append(el('div',{class:'banner studyb',style:'cursor:pointer',onclick:()=>go('study')},el('span',{text:d?'Today’s study: '+ap.name+' · '+d.topic:'Draw today’s study from your two wells'}),el('button',{class:'primary small',text:d?'Open':'Draw'})));
+}
+function finishDraw(d){
+  const ap=recipeOf(d.ap),steps=stepsOf(ap,d),now=Date.now(),vname=ap.variants?ap.variants[d.variant||0].name:null;
+  const filled=steps.map((s,i)=>({s,i,txt:(d.notes[i]||'').trim()})).filter(x=>x.txt||d.done.includes(x.i));
+  if(!filled.length){toast('Write something, or tick a step, first.');return}
+  let tid=d.topicId&&topicById(d.topicId)?d.topicId:null;
+  if(!tid){const ex=S.topics.find(t=>t.name.toLowerCase()===String(d.topic).toLowerCase());if(ex)tid=ex.id;else{const t={id:uid(),name:d.topic,color:PALETTE[S.topics.length%PALETTE.length],desc:'Studied through '+ap.name+'.',created:now,u:now};S.topics.push(t);tid=t.id}}
+  const body=[ap.name+(vname?' ('+vname+')':''),'Topic: '+d.topic,''].concat(filled.map(x=>(x.i+1)+'. '+x.s.t+(x.txt?'\n'+x.txt:'')+'\n')).join('\n');
+  const e={id:uid(),kind:'journal',title:ap.name+': '+d.topic,body,claim:false,conf:0,topics:[tid],marks:[],links:[],hist:[],log:[{t:now,k:'new',txt:'Written in a study session'}],created:now,u:now};
+  S.entries.unshift(e);
+  let nq=0,nc=0;
+  filled.forEach(x=>{const lines=x.txt.split('\n').map(l=>l.trim()).filter(Boolean);if(x.s.q)lines.forEach(l=>{newQuestion(l,[tid]);nq++});if(x.s.h)lines.forEach(l=>{newClaim(l,[tid]);nc++})});
+  d.status='done';d.entryId=e.id;d.topicId=tid;d.finished=now;d.counts={q:nq,c:nc};persist();
+  nav.studyDone=d.id;render();window.scrollTo(0,0);
+  toast('Saved to your journal'+(nq||nc?'. '+[nq&&nq+' question'+(nq>1?'s':''),nc&&nc+' claim'+(nc>1?'s':'')].filter(Boolean).join(', ')+' added.':'.'));
+}
+function drawCard(m,d){
+  const ap=recipeOf(d.ap),well=WELLS.find(w=>w.id===d.well),steps=stepsOf(ap,d),vname=ap.variants?ap.variants[d.variant||0].name:null,other=WELLS.find(w=>w.id!==d.well);
+  const src={yours:'From your ideas',journal:'From your journal',library:'From the library'}[d.src]||'';
+  const card=el('div',{class:'stcard'});
+  card.append(el('div',{class:'row'},el('span',{class:'chip',style:'background:'+well.color+';color:#fff;border-color:'+well.color,text:well.name}),vname?el('span',{class:'chip',text:vname}):null,el('span',{class:'chip',text:src})),
+    el('h2',{class:'stname',text:ap.name}),el('div',{class:'sttopic',text:d.topic}),d.hint?el('p',{class:'hint',style:'margin-top:6px;line-height:1.45',text:d.hint}):null);
+  if(ap.rule)card.append(el('p',{class:'strule',text:ap.rule}));
+  else if((ap.uncover||[]).length)card.append(el('div',{class:'row',style:'margin-top:10px'},el('span',{class:'hint',text:'You uncover'}),...ap.uncover.map(u=>el('span',{class:'pill',text:u}))));
+  if(ap.note)card.append(el('div',{class:'banner',style:'margin-top:12px'},el('span',{text:ap.note}),el('button',{class:'ghost small',text:'Edit',onclick:()=>openRecipeEdit(ap.id)})));
+  m.append(card);
+  m.append(el('div',{class:'sec',text:'The rules'}));
+  const list=el('div');
+  steps.forEach((s,i)=>{
+    const done=d.done.includes(i),row=el('div',{class:'stp'+(done?' done':'')}),btn=el('button',{class:'stchk'+(done?' on':''),'aria-label':'Step '+(i+1)+' done',text:done?'✓':String(i+1)});
+    btn.addEventListener('click',()=>{const k=d.done.indexOf(i);if(k>=0)d.done.splice(k,1);else d.done.push(i);persist();btn.classList.toggle('on');btn.textContent=btn.classList.contains('on')?'✓':String(i+1);row.classList.toggle('done')});
+    const ta=el('textarea',{class:'field',rows:'2','aria-label':'Notes for step '+(i+1),placeholder:s.q?'One question per line. Each becomes a question.':s.h?'Write it as a claim. It becomes a claim.':'Your notes'});
+    ta.value=d.notes[i]||'';ta.addEventListener('input',()=>{d.notes[i]=ta.value;persist()});
+    row.append(btn,el('div',{class:'stbody'},el('div',{class:'stt',text:s.t}),s.q?el('div',{class:'hint',text:'Becomes questions'}):s.h?el('div',{class:'hint',text:'Becomes a claim'}):null,ta));
+    list.append(row);
+  });
+  m.append(list);
+  m.append(el('div',{class:'row',style:'margin:14px 0 6px'},el('button',{class:'primary',text:'Finish and save to my journal',onclick:()=>finishDraw(d)})));
+  m.append(el('div',{class:'row'},
+    el('button',{class:'ghost small',text:'Redraw',onclick:()=>{d.status='skipped';drawNow({well:d.well});render()}}),
+    el('button',{class:'ghost small',text:'Draw from '+other.name,onclick:()=>{d.status='skipped';drawNow({well:other.id});render()}}),
+    el('button',{class:'ghost small',text:'Copy a prompt for Claude',onclick:()=>copyText(studyPrompt(d))}),
+    el('button',{class:'ghost small',text:'Copy for Quarters',onclick:()=>copyText('Study: '+d.topic+' ('+ap.name+')')}),
+    el('button',{class:'ghost small',text:'Skip',onclick:()=>{d.status='skipped';persist();render()}})));
+}
+function vStudy(m){
+  m.append(header('Study','Draw from your two wells',[el('button',{class:'ibtn','aria-label':'Study ideas and recipes',onclick:openStudyMenu},svgIcon('gear'))]));
+  const d=openDraw();
+  if(d){drawCard(m,d);return}
+  const done=nav.studyDone&&stKind('draw').find(x=>x.id===nav.studyDone);
+  if(done&&done.status==='done'&&done.entryId){
+    const c=done.counts||{};
+    m.append(el('div',{class:'stcard'},el('div',{class:'sttopic',text:'Saved to your journal'}),el('p',{class:'hint',style:'margin:6px 0 10px;line-height:1.5',text:recipeOf(done.ap).name+': '+done.topic+(c.q||c.c?' · '+[c.q&&c.q+' question'+(c.q>1?'s':''),c.c&&c.c+' claim'+(c.c>1?'s':'')].filter(Boolean).join(', ')+' added':'')}),el('div',{class:'row'},el('button',{class:'primary',text:'Open the entry',onclick:()=>openEntry(done.entryId)}),el('button',{class:'ghost',text:'Open the topic',onclick:()=>go('topics',done.topicId)}))));
+  }
+  WELLS.forEach(w=>{
+    m.append(el('div',{class:'stwell',style:'border-top:4px solid '+w.color},el('h3',{text:w.name}),el('p',{class:'hint',style:'margin:2px 0 10px;line-height:1.45',text:w.blurb}),el('div',{class:'row',style:'margin-bottom:12px'},...recipes().filter(r=>r.well===w.id).map(r=>el('span',{class:'pill',text:r.name}))),el('button',{class:'primary',text:'Draw from this well',onclick:()=>{drawNow({well:w.id});nav.studyDone=null;render()}})));
+  });
+  m.append(el('div',{class:'row',style:'justify-content:center;margin:4px 0 14px'},el('button',{class:'ghost',text:'Surprise me, from either well',onclick:()=>{drawNow();nav.studyDone=null;render()}})));
+  const cut=Date.now()-30*864e5,counts={};stKind('draw').filter(x=>x.created>cut&&x.status!=='skipped').forEach(x=>counts[x.ap]=(counts[x.ap]||0)+1);
+  m.append(el('div',{class:'sec',text:'Last 30 days'}),el('div',{class:'row',style:'margin-bottom:10px'},...recipes().map(r=>el('span',{class:'chip'+(counts[r.id]?' on':''),text:r.name.replace('Philosophy of ','').replace('Design thinking: ','Design: ')+(counts[r.id]?' · '+counts[r.id]:'')}))),
+    el('p',{class:'hint',style:'line-height:1.45',text:'Highlighted ones you have studied. The draw leans toward the ones you have not.'}));
+  const recent=stKind('draw').filter(x=>x.status==='done').sort((a,b)=>b.created-a.created).slice(0,8);
+  if(recent.length){m.append(el('div',{class:'sec',text:'Recent studies'}));recent.forEach(x=>m.append(el('div',{class:'scrap',onclick:()=>{if(x.entryId)openEntry(x.entryId)}},el('div',{style:'font-weight:600',text:recipeOf(x.ap).name}),el('div',{text:x.topic}),el('div',{class:'hint',text:new Date(x.created).toLocaleDateString([],{month:'short',day:'numeric'})+' · '+'Saved to journal'}))))}
+}
+function openStudyMenu(){
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Study'}),el('button',{class:'ghost small',text:'Close',onclick:close})));
+    const pick=(t,sub,fn)=>el('button',{class:'ghost',style:'display:block;width:100%;text-align:left;margin:0 0 8px;padding:12px 14px',onclick:()=>{close();setTimeout(fn,40)}},el('div',{style:'font-weight:600',text:t}),el('div',{class:'hint',text:sub}));
+    sh.append(pick('Your topic ideas','Add topics you want to study. The draw mixes them in.',openBank),pick('Edit the recipes','Change the rules of any approach, or finish the Bible and Discovery ones.',openRecipes),
+      el('p',{class:'hint',style:'line-height:1.5;margin-top:8px',text:'Two wells: Philosophy of research (nine approaches) and Pole star research (five modes). A draw picks one, gives you a topic, and shows the rules of what you drew. Finishing saves a topic and an entry to your journal, plus questions and claims where a step asks for them. Topics come from your own ideas, your own journal, or the built-in library.'}));
+  });
+}
+function openBank(){
+  let sel=null;
+  sheet((sh,close)=>{
+    const body=el('div');
+    const paint=()=>{
+      const ta=el('textarea',{class:'field',rows:'3','aria-label':'Topic ideas',placeholder:'One topic idea per line'});
+      const chips=el('div',{class:'row',style:'margin:8px 0'},el('button',{class:'chip'+(sel==null?' on':''),text:'Any approach',onclick:()=>{sel=null;paint()}}),...RECIPES.map(r=>el('button',{class:'chip'+(sel===r.id?' on':''),text:stShort(r.id),onclick:()=>{sel=r.id;paint()}})));
+      const items=stKind('bank').sort((a,b)=>b.created-a.created);
+      fill2(body,el('p',{class:'hint',style:'margin-bottom:8px;line-height:1.45',text:'Topics you want to study. Pick an approach if an idea belongs to one, or leave it open for any.'}),ta,chips,el('button',{class:'primary',text:'Add them',onclick:()=>{const lines=ta.value.split('\n').map(s=>s.trim()).filter(Boolean);if(!lines.length){toast('Write at least one idea.');return}lines.forEach(t=>studies().unshift({id:uid(),kind:'bank',text:t,aps:sel?[sel]:[],created:Date.now(),u:Date.now()}));persist();toast(lines.length+' added');paint()}}),
+        el('div',{class:'sec',text:items.length?'Your ideas ('+items.length+')':'No ideas yet'}),
+        ...items.map(b=>el('div',{class:'scrap'},el('div',{text:b.text}),el('div',{class:'row spread'},el('span',{class:'hint',text:(b.aps||[]).length?stShort(b.aps[0]):'Any approach'}),el('button',{class:'ghost small',text:'Remove',onclick:()=>{S.studies=studies().filter(x=>x.id!==b.id);persist();paint()}})))));
+    };
+    sh.append(el('div',{class:'bar'},el('strong',{text:'Your topic ideas'}),el('button',{class:'ghost small',text:'Done',onclick:close})),body);paint();
+  },{full:true});
+}
+function fill2(node,...kids){node.replaceChildren(...kids.flat().filter(k=>k!=null))}
+function openRecipes(){
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:'The recipes'}),el('button',{class:'ghost small',text:'Done',onclick:close})));
+    WELLS.forEach(w=>{sh.append(el('div',{class:'sec',text:w.name}));recipes().filter(r=>r.well===w.id).forEach(r=>sh.append(el('div',{class:'scrap'},el('div',{style:'font-weight:600',text:r.name}),el('div',{class:'row spread'},el('span',{class:'hint',text:(r.edited?'Edited by you':r.draft?'Draft':'Original')}),el('button',{class:'ghost small',text:'Edit',onclick:()=>{close();setTimeout(()=>openRecipeEdit(r.id),40)}})))))});
+  },{full:true});
+}
+function openRecipeEdit(id){
+  const r=recipeOf(id),base=RECIPES.find(x=>x.id===id);
+  sheet((sh,close)=>{
+    sh.append(el('div',{class:'bar'},el('strong',{text:r.name}),el('button',{class:'ghost small',text:'Cancel',onclick:close})));
+    sh.append(el('p',{class:'hint',style:'margin-bottom:6px;line-height:1.45',text:'One step per line. End a line with (questions) to turn what you write there into questions, or (claim) to turn it into a claim.'}));
+    const rule=el('textarea',{class:'field',rows:'2','aria-label':'Rule'});rule.value=r.rule||'';
+    const unc=el('textarea',{class:'field',rows:'3','aria-label':'What you uncover'});unc.value=(r.uncover||[]).join('\n');
+    const tas=[];
+    if(r.rule!=null||base.rule!=null)sh.append(el('label',{class:'hint',text:'The rule'}),rule);
+    else sh.append(el('label',{class:'hint',text:'What you uncover, one per line'}),unc);
+    if(r.variants){r.variants.forEach((v,i)=>{const nm=el('input',{class:'field','aria-label':'Path '+(i+1)+' name'});nm.value=v.name;const ta=el('textarea',{class:'field',rows:'6','aria-label':'Steps for '+v.name});ta.value=stepLines(v.steps);tas.push({nm,ta,prev:v.steps});sh.append(el('label',{class:'hint',text:'Path '+(i+1)}),nm,ta)})}
+    else{const ta=el('textarea',{class:'field',rows:'9','aria-label':'Steps'});ta.value=stepLines(r.steps);tas.push({ta,prev:r.steps});sh.append(el('label',{class:'hint',text:'The steps'}),ta)}
+    const save=()=>{
+      let ov=studies().find(x=>x.kind==='recipe'&&x.ap===id);if(!ov){ov={id:'r_'+id,kind:'recipe',ap:id,created:Date.now(),u:Date.now()};studies().push(ov)}
+      ov.edited=true;
+      if(r.variants){ov.variants=tas.map(t=>({name:t.nm.value.trim()||'Path',steps:parseStepLines(t.ta.value,t.prev)}));delete ov.steps}
+      else{const st=parseStepLines(tas[0].ta.value,tas[0].prev);if(!st.length){toast('Keep at least one step.');return false}ov.steps=st}
+      if(base.rule!=null||r.rule!=null)ov.rule=rule.value.trim();else ov.uncover=unc.value.split('\n').map(s=>s.trim()).filter(Boolean);
+      persist();return true;
+    };
+    const row=el('div',{class:'row',style:'margin-top:12px'},el('button',{class:'primary',text:'Save',onclick:()=>{if(save()){close();toast('Recipe saved');render()}}}));
+    if(r.edited){row.append(el('button',{class:'ghost',text:'Reset to the original',onclick:()=>{S.studies=studies().filter(x=>!(x.kind==='recipe'&&x.ap===id));persist();close();toast('Back to the original');render()}}))}
+    sh.append(row);
+  },{full:true});
+}
+
 
 /* ---------- sample material and upgrades ---------- */
 function addSamples2(S){
@@ -1974,7 +2246,7 @@ function addSamples2(S){
   ].forEach(o=>{if(!has(o.id))S.questions.push(Object.assign({answer:'',created:t-2*D,u:t-2*D,sample:true},o))});
 }
 function upgrade(s){
-  s.questions=s.questions||[];
+  s.questions=s.questions||[];s.studies=s.studies||[];
   if(!s.v2){s.v2=true;if(s.entries.some(e=>e.sample)||s.clips.some(c=>c.sample))addSamples2(s)}
   if(!s.v3){s.v3=true;if(s.entries.some(e=>e.sample)||s.clips.some(c=>c.sample))addSamples3(s)}
   if(!s.v4){s.v4=true;if(s.entries.some(e=>e.sample)||s.clips.some(c=>c.sample))addSamples4(s)}
